@@ -76,7 +76,6 @@ export const useHomeStore = defineStore('home', () => {
         }
         return new Promise<void>((resolve) => {
           let url = 'http://localhost:8080';
-      
           if (productType !== null && manufacturerId !== null) {
             url += `?productType=${productType}&manufacturerId=${manufacturerId}`;
           } else if (productType !== null) {
@@ -84,7 +83,6 @@ export const useHomeStore = defineStore('home', () => {
           } else if (manufacturerId !== null) {
             url += `?manufacturerId=${manufacturerId}`;
           }
-      
           axios.get(url, {}).then((response) => {
             const { data } = response;
             const transformedData: Item[] = data.map((item: any) => ({

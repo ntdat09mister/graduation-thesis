@@ -23,11 +23,12 @@ public class ProductService {
     public List<ProdcutDto> getListProducts(Long productType, Long manufacturerId) {
         List<ProdcutDto> prodcutDtos = new ArrayList<>();
         List<Product> products = new ArrayList<>();
-        if (productType != null && manufacturerId != null) {
+        if (productType != null && manufacturerId != null && manufacturerId != 0L) {
             products = productRepository.getProductsByProductTypeAndManufacturerId(productType, manufacturerId);
-
         } else if (productType != null & manufacturerId == null){
             products = productRepository.getProductsByProductType(productType);
+        } else if (manufacturerId == 0L){
+            products = productRepository.findAll();
         } else {
             products = productRepository.findAll();
         }
