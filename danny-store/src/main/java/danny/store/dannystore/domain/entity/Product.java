@@ -23,6 +23,7 @@ public class Product {
     private String description;
     private String src;
     private Long productType;
+    private Long manufacturerId;
     private Date createTime;
     private Date modifiedTime;
 }

@@ -20,9 +20,17 @@ public class ProductService {
     private ObjectMapper objectMapper;
     private final ProductRepository productRepository;
     private final ProductManufacturerRepository manufacturerRepository;
-    public List<ProdcutDto> getListProducts(Long productType) {
+    public List<ProdcutDto> getListProducts(Long productType, Long manufacturerId) {
         List<ProdcutDto> prodcutDtos = new ArrayList<>();
-        List<Product> products = productRepository.getListProducts(productType);
+        List<Product> products = new ArrayList<>();
+        if (productType != null && manufacturerId != null) {
+            products = productRepository.getProductsByProductTypeAndManufacturerId(productType, manufacturerId);
+
+        } else if (productType != null & manufacturerId == null){
+            products = productRepository.getProductsByProductType(productType);
+        } else {
+            products = productRepository.findAll();
+        }
         for (Product product : products) {
             ProdcutDto productDto = objectMapper.convertValue(product, ProdcutDto.class);
             prodcutDtos.add(productDto);

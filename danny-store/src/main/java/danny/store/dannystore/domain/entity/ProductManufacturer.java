@@ -18,4 +18,5 @@ public class ProductManufacturer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String manufacturer;
+    private Long productType;
 }

@@ -32,20 +32,7 @@ export const useHomeStore = defineStore('home', () => {
         { id: 2, src: 'https://hanoicomputercdn.com/media/banner/25_Jul881704812919b35faec78a46dee5a555.png' },
         { id: 3, src: 'https://hanoicomputercdn.com/media/banner/28_Julbf16a308bf06183c64581b5a763da365.jpg' },
         { id: 4, src: 'https://hanoicomputercdn.com/media/banner/31_Julf855258be0815e2eb82e233d3f2954d0.jpg' }
-    ],
-        companyList = [
-            { id: 1, name: 'Apple' },
-            { id: 2, name: 'Samsung' },
-            { id: 3, name: 'Xiaomi' },
-            { id: 4, name: 'Oppo' },
-            { id: 5, name: 'Vivo' },
-            { id: 6, name: 'Realme' },
-            { id: 7, name: 'Nokia' },
-            { id: 8, name: 'Asus' },
-            { id: 9, name: 'Tecno' },
-            { id: 10, name: 'Xem tất cả' }
-        ]
-
+    ]
     interface Item {
         id: number;
         name: string;
@@ -56,28 +43,63 @@ export const useHomeStore = defineStore('home', () => {
 
     interface Manufacturer {
         id: number,
-        manufacturer: string
+        manufacturer: string,
+        productType: number
     }
 
     const listIphones = ref<Item[]>([]);
 
-    function getListIphones() {
+    // function getListIphones(productType: number, manufacturerId: number) {
+    //     return new Promise<void>((resolve) => {
+    //         axios.get(`http://localhost:8080?productType=${productType}&manufacturerId=${manufacturerId}`, {}).then((response) => {
+    //             const { data } = response;
+    //             const transformedData: Item[] = data.map((item: any) => ({
+    //                 id: item.id,
+    //                 name: item.name,
+    //                 price: parseFloat(item.price),
+    //                 description: item.description,
+    //                 src: item.src.replace(/\\/g, '/'),
+    //             }));
+    //             listIphones.value = transformedData;
+    //             console.log(transformedData);
+    //             resolve();
+    //         });
+    //     });
+    // }
+    function getListIphones(productType: number | null, manufacturerId: number | null) {
+        if (productType === undefined || productType===null) {
+          productType = null;
+        }
+      
+        if (manufacturerId === undefined || manufacturerId === null) {
+          manufacturerId = null;
+        }
         return new Promise<void>((resolve) => {
-            axios.get('http://localhost:8080/?productType=1', {}).then((response) => {
-                const { data } = response;
-                const transformedData: Item[] = data.map((item: any) => ({
-                    id: item.id,
-                    name: item.name,
-                    price: parseFloat(item.price),
-                    description: item.description,
-                    src: item.src.replace(/\\/g, '/'),
-                }));
-                listIphones.value = transformedData;
-                console.log(transformedData);
-                resolve();
-            });
+          let url = 'http://localhost:8080';
+      
+          if (productType !== null && manufacturerId !== null) {
+            url += `?productType=${productType}&manufacturerId=${manufacturerId}`;
+          } else if (productType !== null) {
+            url += `?productType=${productType}`;
+          } else if (manufacturerId !== null) {
+            url += `?manufacturerId=${manufacturerId}`;
+          }
+      
+          axios.get(url, {}).then((response) => {
+            const { data } = response;
+            const transformedData: Item[] = data.map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              price: parseFloat(item.price),
+              description: item.description,
+              src: item.src.replace(/\\/g, '/'),
+            }));
+            listIphones.value = transformedData;
+            console.log(transformedData);
+            resolve();
+          });
         });
-    }
+      }
 
     const listManufacturers = ref<Manufacturer[]>([])
 
@@ -85,19 +107,24 @@ export const useHomeStore = defineStore('home', () => {
         return new Promise<void>((resolve) => {
             axios.get('http://localhost:8080/manufacturer', {}).then((response) => {
                 const { data } = response;
-                const transformedData: Manufacturer[] = data.map((item: any) => {
-                    id: item.id,
-                    
-                })
-            })
-        })
+                const transformedData: Manufacturer[] = data.map((manu: any) => ({
+                    id: manu.id,
+                    manufacturer: manu.manufacturer,
+                    productType: manu.productType
+                }));
+                listManufacturers.value = transformedData;
+                console.log(transformedData);
+                resolve();
+            });
+        });
     }
-
+    
     return {
-        getListIphones,
-        listIphones,
-        imageList,
-        contentComponents,
-        companyList
-    }
-})
+            getListIphones,
+            listIphones,
+            imageList,
+            contentComponents,
+            getListManufacturers,
+            listManufacturers
+        }
+    })

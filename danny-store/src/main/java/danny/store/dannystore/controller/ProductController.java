@@ -15,8 +15,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping
-    public List<ProdcutDto> getListProducts(@RequestParam Long productType) {
-        return productService.getListProducts(productType);
+    public List<ProdcutDto> getListProducts(@RequestParam(required = false) Long productType, @RequestParam(required = false) Long manufacturerId) {
+        return productService.getListProducts(productType, manufacturerId);
     }
     @GetMapping("/manufacturer")
     public List<ProductManufacturer> getListProductManufacturers() {

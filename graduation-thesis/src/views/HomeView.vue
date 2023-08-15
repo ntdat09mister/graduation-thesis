@@ -19,15 +19,22 @@ export default defineComponent({
     ...mapState(useHomeStore, {
         contentComponents: 'contentComponents',
         imageList: 'imageList',
-        companyList: 'companyList',
-        listIphones:'listIphones'
+        listIphones:'listIphones',
+        listManufacturers:'listManufacturers'
     })
   },
+  data() {
+    return {
+      productType: 1,
+      manufacturerId: null
+    }
+  },
   methods: {
-    ...mapActions(useHomeStore,['getListIphones'])
+    ...mapActions(useHomeStore,['getListIphones','getListManufacturers'])
   },
   mounted() {
-    this.getListIphones();
+    this.getListIphones(this.productType, this.manufacturerId),
+    this.getListManufacturers()
   }
 })
 </script>
@@ -81,8 +88,8 @@ export default defineComponent({
       <div class="w-[1200px] flex flex-row justify-between items-center mt-[10px]">
         <h2 class="text-[30px] font-[600]">Hàng mới về</h2>
         <div class="flex flex-row justify-between">
-          <div v-for="(company, id) in companyList" :key="id" class="text-[22px] bg-[#f3f4f6] rounded-[7px] mr-[10px]">
-            <span>{{ company.name }}</span>
+          <div v-for="(company, id) in listManufacturers" :key="id" class="text-[22px] bg-[#f3f4f6] rounded-[7px] mr-[10px] cursor-pointer" @click="getListIphones(1, company.id)">
+            <span>{{ company.manufacturer }}</span>
           </div>
         </div>
       </div>
