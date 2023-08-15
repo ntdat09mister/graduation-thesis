@@ -1,10 +1,11 @@
 <script lang="ts">
+import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useHomeStore } from '../stores/home'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-import { mapState } from 'pinia';
+import { mapActions, mapState } from 'pinia';
 export default defineComponent({
     components: {
     Carousel,
@@ -22,22 +23,11 @@ export default defineComponent({
         listIphones:'listIphones'
     })
   },
-  setup() {
-    const homeStore = useHomeStore();
-    const listIphones = ref([]);
-
-    onMounted(() => {
-      homeStore.getListIphones().then(() => {
-        listIphones.value = homeStore.listIphones;
-        logScreen();
-      });
-    });
-    function logScreen() {
-      console.log("123123123");
-    }
-    return {
-      listIphones,
-    }
+  methods: {
+    ...mapActions(useHomeStore,['getListIphones'])
+  },
+  mounted() {
+    this.getListIphones();
   }
 })
 </script>
@@ -54,15 +44,15 @@ export default defineComponent({
             </div>
           </div>
         </div>
-        <div class="flex justify-center items-center shadow-inner rounded-[10px]">
-          <carousel :items-to-show="1" :autoplay="1500" :wrap-around="true">
+        <div class="w-[650px] flex justify-center items-center shadow-inner rounded-[10px]">
+          <carousel :items-to-show="1" :autoplay="2000" :wrap-around="true">
             <slide v-for="item in imageList" :key="item.id">
               <img class="w-[650px] h-[370px]" :src="item.src" alt="image_alt">
             </slide>
-            <!-- <template #addons>
+            <template #addons>
               <navigation />
               <pagination />
-            </template> -->
+            </template>
           </carousel>
         </div>
         <div class="w-[258px] h-[376px] flex flex-col justify-around shadow-inner rounded-[10px]">
@@ -103,7 +93,7 @@ export default defineComponent({
             <slide v-for="item in listIphones" :key="item.id">
               <div class="w-[228px] h-[350px] flex flex-col justify-around">
                 <div class="flex justify-center items-center">
-                  <img class="w-[160px] h-[160px]" :src="item.src" :alt="item.id">
+                  <img class="w-[160px] h-[160px]" :src="item.src" :alt="item.description">
                 </div>
                 <h3 class="text-[14px] font-[600]">{{ item.name }}</h3>
   
@@ -129,10 +119,9 @@ export default defineComponent({
             <slide v-for="item in listIphones" :key="item.id">
               <div class="w-[228px] h-[350px] flex flex-col justify-around">
                 <div class="flex justify-center items-center">
-                  <img class="w-[160px] h-[160px]" :src="item.src" :alt="item.id">
+                  <img class="w-[160px] h-[160px]" :src="item.src" :alt="item.description">
                 </div>
                 <h3 class="text-[14px] font-[600]">{{ item.name }}</h3>
-  
                 <div class="flex justify-center items">
                   <span class="text-[18px] font-[700] text-red-600">{{ item.price }}đ</span>
                 </div>

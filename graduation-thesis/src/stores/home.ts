@@ -33,30 +33,66 @@ export const useHomeStore = defineStore('home', () => {
         { id: 3, src: 'https://hanoicomputercdn.com/media/banner/28_Julbf16a308bf06183c64581b5a763da365.jpg' },
         { id: 4, src: 'https://hanoicomputercdn.com/media/banner/31_Julf855258be0815e2eb82e233d3f2954d0.jpg' }
     ],
-    companyList = [
-        { id: 1, name: 'Apple' },
-        { id: 2, name: 'Samsung' },
-        { id: 3, name: 'Xiaomi' },
-        { id: 4, name: 'Oppo' },
-        { id: 5, name: 'Vivo' },
-        { id: 6, name: 'Realme' },
-        { id: 7, name: 'Nokia' },
-        { id: 8, name: 'Asus' },
-        { id: 9, name: 'Tecno' },
-        { id: 10, name: 'Xem tất cả' }
-      ]
-    const listIphones = ref([])
+        companyList = [
+            { id: 1, name: 'Apple' },
+            { id: 2, name: 'Samsung' },
+            { id: 3, name: 'Xiaomi' },
+            { id: 4, name: 'Oppo' },
+            { id: 5, name: 'Vivo' },
+            { id: 6, name: 'Realme' },
+            { id: 7, name: 'Nokia' },
+            { id: 8, name: 'Asus' },
+            { id: 9, name: 'Tecno' },
+            { id: 10, name: 'Xem tất cả' }
+        ]
+
+    interface Item {
+        id: number;
+        name: string;
+        price: number;
+        description: string;
+        src: string;
+    }
+
+    interface Manufacturer {
+        id: number,
+        manufacturer: string
+    }
+
+    const listIphones = ref<Item[]>([]);
+
     function getListIphones() {
-        return new Promise((resolve) => {
-            axios.get('http://localhost:8080/?productType=1', {})
-            .then(response => {
-                const { data } = response
-                listIphones.value = data
-                console.log(data);
-                resolve(null)
+        return new Promise<void>((resolve) => {
+            axios.get('http://localhost:8080/?productType=1', {}).then((response) => {
+                const { data } = response;
+                const transformedData: Item[] = data.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                    price: parseFloat(item.price),
+                    description: item.description,
+                    src: item.src.replace(/\\/g, '/'),
+                }));
+                listIphones.value = transformedData;
+                console.log(transformedData);
+                resolve();
+            });
+        });
+    }
+
+    const listManufacturers = ref<Manufacturer[]>([])
+
+    function getListManufacturers() {
+        return new Promise<void>((resolve) => {
+            axios.get('http://localhost:8080/manufacturer', {}).then((response) => {
+                const { data } = response;
+                const transformedData: Manufacturer[] = data.map((item: any) => {
+                    id: item.id,
+                    
+                })
             })
         })
     }
+
     return {
         getListIphones,
         listIphones,
