@@ -6,6 +6,7 @@ import { useHomeStore } from '../stores/home'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import { mapActions, mapState } from 'pinia';
+import Product from '@/components/Product.vue';
 export default defineComponent({
     components: {
     Carousel,
@@ -13,7 +14,8 @@ export default defineComponent({
     Pagination,
     Navigation,
     Header,
-    Footer
+    Footer,
+    Product
   },
   computed: {
     ...mapState(useHomeStore, {
@@ -98,19 +100,7 @@ export default defineComponent({
         <div class="flex justify-center items-center">
           <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
             <slide v-for="item in listIphones" :key="item.id">
-              <div class="w-[228px] h-[350px] flex flex-col justify-around">
-                <div class="flex justify-center items-center">
-                  <img class="w-[160px] h-[160px]" :src="item.src" :alt="item.description">
-                </div>
-                <h3 class="text-[14px] font-[600]">{{ item.name }}</h3>
-  
-                <div class="flex justify-center items">
-                  <span class="text-[18px] font-[700] text-red-600">{{ item.price }}đ</span>
-                </div>
-                <div class="w-[208px] h-[48px] flex justify-center items-center text-[12px] bg-[#f3f4f6] rounded-[7px]">
-                  <span>{{ item.description }}</span>
-                </div>
-              </div>
+              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" />
             </slide>
             <template #addons>
               <navigation />
@@ -124,18 +114,7 @@ export default defineComponent({
         <div class="flex justify-center items-center">
           <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
             <slide v-for="item in listIphones" :key="item.id">
-              <div class="w-[228px] h-[350px] flex flex-col justify-around">
-                <div class="flex justify-center items-center">
-                  <img class="w-[160px] h-[160px]" :src="item.src" :alt="item.description">
-                </div>
-                <h3 class="text-[14px] font-[600]">{{ item.name }}</h3>
-                <div class="flex justify-center items">
-                  <span class="text-[18px] font-[700] text-red-600">{{ item.price }}đ</span>
-                </div>
-                <div class="w-[208px] h-[48px] flex justify-center items-center text-[12px] bg-[#f3f4f6] rounded-[7px]">
-                  <span>{{ item.description }}</span>
-                </div>
-              </div>
+              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" />
             </slide>
             <template #addons>
               <navigation />
