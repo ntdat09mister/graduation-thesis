@@ -76,11 +76,11 @@ export default defineComponent({
                             </div>
                         </template>
                     </div>
-                    <div class="flex flex-row mt-[10px]">
+                    <div class="flex flex-row mt-[20px]">
                         <img src="https://cdn2.cellphones.com.vn/x120/https://dashboard.cellphones.com.vn/storage/B2SDIENTHOAI.jpg"
                             alt="">
                     </div>
-                    <div class="w-[460px] h-[70px] flex flex-row justify-around items-center">
+                    <div class="w-[460px] h-[70px] flex flex-row justify-around items-center mt-[10px]">
                         <div class="w-[390px] h-[60px] flex flex-col justify-center items-center bg-[red] rounded-xl">
                             <strong class="text-white text-base text-sm">Mua ngay</strong>
                             <span class="text-white text-base text-xs">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>
@@ -91,7 +91,7 @@ export default defineComponent({
                             <span class="text-[7px] text-[red]">Thêm vào giỏ</span>
                         </div>
                     </div>
-                    <div class="w-[460px] flex flex-col mt-[10px] border border-red-200 rounded-lg">
+                    <div class="w-[460px] flex flex-col mt-[10px] border border-red-200 rounded-lg mt-[10px]">
                         <div class="w-[458px] h-[42px] flex flex-row items-center bg-red-100">
                             <IconGift class="w-[20px] h-[20px] ml-[10px] fill-[#FF0000]"/>
                             <p class="ml-[10px] text-red-600 font-semibold">Khuyến mãi</p>
