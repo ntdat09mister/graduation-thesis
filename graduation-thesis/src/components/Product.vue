@@ -3,6 +3,7 @@ import router from '@/router';
 import { defineComponent } from 'vue';
 export default defineComponent({
     props: {
+        id: { type: Number, require: true },
         src: { type: String, require: true },
         description: { type: String, require: true },
         name: { type: String, require: true },
@@ -10,7 +11,7 @@ export default defineComponent({
     },
     methods: {
         handleClick(id: number) {
-            router.push({ name: 'detail', params: { id: Number(id) } })
+            router.push({ name: 'productDetail', params: { id: Number(id) } })
         }
     }
 })
@@ -19,7 +20,7 @@ export default defineComponent({
 <template>
     <div class="w-[228px] h-[350px] flex flex-col justify-around">
         <div class="flex justify-center items-center">
-            <img class="w-[160px] h-[160px]" :src="src" :alt="name">
+            <a href="" @click="handleClick(Number(id))"><img class="w-[160px] h-[160px]" :src="src" :alt="name"></a>
         </div>
         <h3 class="text-[14px] font-[600]">{{ name }}</h3>
         <div class="flex justify-center items">

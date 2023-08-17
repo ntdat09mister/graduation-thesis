@@ -11,6 +11,7 @@ import IconLocal from '@/components/icons/IconLocal.vue'
 import IconOrderLookUp from './icons/IconOrderLookUp.vue';
 import IconCart from './icons/IconCart.vue';
 import IconLogin from './icons/IconLogin.vue';
+import router from '@/router';
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -24,6 +25,11 @@ export default defineComponent({
         IconOrderLookUp,
         IconCart,
         IconLogin
+    },
+    methods: {
+        handleClick() {
+            router.push({ name: 'home' })
+        }
     }
 })
 </script>
@@ -62,7 +68,7 @@ export default defineComponent({
                 </div>
             </div>
             <div class="mr-[30px] ml-[30px]">
-                <LogoDannyStore class="w-[140px] h-[100px]" />
+                <a href="" @click="handleClick()"><LogoDannyStore class="w-[140px] h-[100px]" /></a>
             </div>
             <div class="w-[500px] flex flex-row justify-between">
                 <div class="flex flex-col justify-center items-center">

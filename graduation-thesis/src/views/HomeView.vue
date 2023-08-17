@@ -98,9 +98,9 @@ export default defineComponent({
       <div class="w-[1200px] h-[422px] flex flex-col justify-around items-center">
         <h1 class="text-[30px] font-[600]">HOT SALE CUỐI TUẦN</h1>
         <div class="flex justify-center items-center">
-          <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
+          <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="2500" :wrap-around="true">
             <slide v-for="item in listIphones" :key="item.id">
-              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" />
+              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" :id="item.id" />
             </slide>
             <template #addons>
               <navigation />
@@ -114,7 +114,7 @@ export default defineComponent({
         <div class="flex justify-center items-center">
           <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
             <slide v-for="item in listIphones" :key="item.id">
-              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" />
+              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" :id="item.id" />
             </slide>
             <template #addons>
               <navigation />

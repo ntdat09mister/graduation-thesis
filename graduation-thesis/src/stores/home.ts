@@ -48,24 +48,7 @@ export const useHomeStore = defineStore('home', () => {
     }
 
     const listIphones = ref<Item[]>([]);
-
-    // function getListIphones(productType: number, manufacturerId: number) {
-    //     return new Promise<void>((resolve) => {
-    //         axios.get(`http://localhost:8080?productType=${productType}&manufacturerId=${manufacturerId}`, {}).then((response) => {
-    //             const { data } = response;
-    //             const transformedData: Item[] = data.map((item: any) => ({
-    //                 id: item.id,
-    //                 name: item.name,
-    //                 price: parseFloat(item.price),
-    //                 description: item.description,
-    //                 src: item.src.replace(/\\/g, '/'),
-    //             }));
-    //             listIphones.value = transformedData;
-    //             console.log(transformedData);
-    //             resolve();
-    //         });
-    //     });
-    // }
+    
     function getListIphones(productType: number | null, manufacturerId: number | null) {
         if (productType === undefined || productType===null) {
           productType = null;
