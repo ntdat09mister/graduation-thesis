@@ -31,7 +31,7 @@ public class ProductService {
             products = productRepository.getProductsByProductTypeAndManufacturerId(productType, manufacturerId);
         } else if (productType != null & manufacturerId == null){
             products = productRepository.getProductsByProductType(productType);
-        } else if (manufacturerId == 0L){
+        } else if (manufacturerId == null){
             products = productRepository.findAll();
         } else {
             products = productRepository.findAll();

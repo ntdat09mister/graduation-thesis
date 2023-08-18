@@ -12,6 +12,7 @@ import IconOrderLookUp from './icons/IconOrderLookUp.vue';
 import IconCart from './icons/IconCart.vue';
 import IconLogin from './icons/IconLogin.vue';
 import router from '@/router';
+import IconSearch from './icons/IconSearch.vue';
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -24,7 +25,8 @@ export default defineComponent({
         IconLocal,
         IconOrderLookUp,
         IconCart,
-        IconLogin
+        IconLogin,
+        IconSearch
     },
     methods: {
         handleClick() {
@@ -44,8 +46,9 @@ export default defineComponent({
             <img src="https://cdn2.cellphones.com.vn/x30,webp,q100/https://dashboard.cellphones.com.vn/storage/top-banner-giao-nhanh-mien-phi.png"
                 alt="">
         </div>
-        <div class="w-[1200px] flex flex-row justify-center items-center">
-            <div class="w-[500px] flex flex-row justify-between">
+        <div class="w-[100%] flex justify-center items-center bg-[#e9efff]">
+            <div class="w-[1200px] flex flex-row justify-between items-center mt-[10px]">
+                <!-- <div class="w-[500px] flex flex-row justify-between">
                 <div class="flex flex-col justify-center items-center">
                     <IconIphone width="40px" />
                     <span>iPhone</span>
@@ -66,32 +69,47 @@ export default defineComponent({
                     <IconAboutUs />
                     <span>Về chúng tôi</span>
                 </div>
-            </div>
-            <div class="mr-[30px] ml-[30px]">
-                <a href="" @click="handleClick()"><LogoDannyStore class="w-[140px] h-[100px]" /></a>
-            </div>
-            <div class="w-[500px] flex flex-row justify-between">
-                <div class="flex flex-col justify-center items-center">
-                    <IconCall />
-                    <span>Liên hệ</span>
+            </div> -->
+                <div class="mr-[30px] ml-[30px]">
+                    <a href="" @click="handleClick()">
+                        <LogoDannyStore class="w-[120px] h-[70px]" />
+                    </a>
                 </div>
-                <div class="flex flex-col justify-center items-center">
+                <div class="w-[650px] h-[42px] border-[2px] flex justify-between items-center border-red-500 rounded-xl">
+                    <form action="" class="flex flex-row items-center">
+                        <div class="w-[590px] h-[42px] flex items-center">
+                            <input class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none" type="text"
+                                placeholder="Nhập tên sản phẩm, từ khóa cần tìm kiếm....">
+                        </div>
+                        <div class="w-[62px] h-[42px] flex justify-center items-center rounded-xl bg-[red]">
+                            <IconSearch class="w-[22px] h-[22px] fill-white" />
+                        </div>
+                    </form>
+                </div>
+                <div class="w-[350px] flex flex-row justify-around">
+                    <div class="flex flex-col justify-center items-center">
+                        <IconCall class="w-[30px]" />
+                        <span class="text-[12px]">Liên hệ</span>
+                    </div>
+                    <!-- <div class="flex flex-col justify-center items-center">
                     <IconLocal />
                     <span>Cửa hàng gần bạn</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconOrderLookUp />
-                    <span>Tra cứu đơn hàng</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconCart />
-                    <span>Giỏ hàng</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconLogin />
-                    <span>Đăng nhập</span>
+                </div> -->
+                    <div class="flex flex-col justify-center items-center">
+                        <IconOrderLookUp class="w-[30px]" />
+                        <span class="text-[12px]">Tra cứu đơn hàng</span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center">
+                        <IconCart class="w-[30px]" />
+                        <span class="text-[12px]">Giỏ hàng</span>
+                    </div>
+                    <div class="flex flex-col justify-center items-center">
+                        <IconLogin class="w-[30px]" />
+                        <span class="text-[12px]">Đăng nhập</span>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
