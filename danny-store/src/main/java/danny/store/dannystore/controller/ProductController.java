@@ -32,4 +32,8 @@ public class ProductController {
     public ProductDto getProductDtoById(@PathVariable Long id) throws ClassNotFoundException {
         return productService.getProductDtoById(id);
     }
+    @GetMapping("/search")
+    public List<ProductDto> searchProductDtosByName(@RequestParam String name) {
+        return productService.searchProductDtosByName(name);
+    }
 }

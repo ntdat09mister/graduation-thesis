@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getProductsByProductTypeAndManufacturerId(Long productType, Long manufacturerId);
     @Query(value = "select * from product p where p.product_type = ?1", nativeQuery = true)
     List<Product> getProductsByProductType(Long productType);
+    @Query(value = "select * from product p where p.name like %?1%", nativeQuery = true)
+    List<Product> searchProductDtosByName(String name);
 }

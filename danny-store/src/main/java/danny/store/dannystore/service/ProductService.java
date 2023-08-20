@@ -66,4 +66,14 @@ public class ProductService {
             throw new ClassNotFoundException();
         }
     }
+
+    public List<ProductDto> searchProductDtosByName(String name) {
+        List<Product> productList = productRepository.searchProductDtosByName(name);
+        List<ProductDto> productDtos = new ArrayList<>();
+        for (Product product : productList) {
+            ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);
+            productDtos.add(productDto);
+        }
+        return productDtos;
+    }
 }

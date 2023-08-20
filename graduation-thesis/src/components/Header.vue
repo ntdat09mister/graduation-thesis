@@ -81,7 +81,7 @@ export default defineComponent({
                             <input class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none" type="text"
                                 placeholder="Nhập tên sản phẩm, từ khóa cần tìm kiếm....">
                         </div>
-                        <div class="w-[62px] h-[42px] flex justify-center items-center rounded-xl bg-[red]">
+                        <div class="w-[62px] h-[42px] flex justify-center items-center rounded-xl bg-[red] cursor-pointer">
                             <IconSearch class="w-[22px] h-[22px] fill-white" />
                         </div>
                     </form>
