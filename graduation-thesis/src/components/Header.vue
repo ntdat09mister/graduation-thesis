@@ -13,6 +13,8 @@ import IconCart from './icons/IconCart.vue';
 import IconLogin from './icons/IconLogin.vue';
 import router from '@/router';
 import IconSearch from './icons/IconSearch.vue';
+import { useSearchStore } from '@/stores/search';
+import { mapActions } from 'pinia';
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -28,11 +30,41 @@ export default defineComponent({
         IconLogin,
         IconSearch
     },
+    state: () => ({
+        searchKeywordGlobal: sessionStorage.getItem("searchKeyword")
+    }),
+    data() {
+        return {
+            searchKeyword: ''
+        }
+    },
     methods: {
         handleClick() {
             router.push({ name: 'home' })
+        },
+        setVModelInput() {
+            this.searchKeyword = String(sessionStorage.getItem("searchKeyword"))
+            console.log("123")
+        },
+        ...mapActions(useSearchStore, ['getListSearch']),
+        handleSearch() {
+            const keyword = this.searchKeyword;
+            sessionStorage.setItem("searchKeyword", keyword)
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
+            console.log(this.searchKeyword)
+            router.push({ name: 'search' })
+            this.setVModelInput()
+        },
+        handleEnter() {
+            const keyword = this.searchKeyword;
+            sessionStorage.setItem("searchKeyword", keyword);
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")));
+            console.log(this.searchKeyword);
+            router.push({ name: 'search' });
+            this.setVModelInput()
         }
     }
+
 })
 </script>
 
@@ -76,12 +108,13 @@ export default defineComponent({
                     </a>
                 </div>
                 <div class="w-[650px] h-[42px] border-[2px] flex justify-between items-center border-red-500 rounded-xl">
-                    <form action="" class="flex flex-row items-center">
+                    <form action="" class="flex flex-row items-center" @keydown.enter="handleEnter">
                         <div class="w-[590px] h-[42px] flex items-center">
                             <input class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none" type="text"
-                                placeholder="Nhập tên sản phẩm, từ khóa cần tìm kiếm....">
+                                placeholder="Nhập tên sản phẩm, từ khóa cần tìm kiếm...." v-model="searchKeyword">
                         </div>
-                        <div class="w-[62px] h-[42px] flex justify-center items-center rounded-xl bg-[red] cursor-pointer">
+                        <div class="w-[62px] h-[42px] flex justify-center items-center rounded-xl bg-[red] cursor-pointer"
+                            @click="handleSearch()">
                             <IconSearch class="w-[22px] h-[22px] fill-white" />
                         </div>
                     </form>

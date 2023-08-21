@@ -8,7 +8,7 @@ import Footer from '@/components/Footer.vue'
 import { mapActions, mapState } from 'pinia';
 import Product from '@/components/Product.vue';
 export default defineComponent({
-    components: {
+  components: {
     Carousel,
     Slide,
     Pagination,
@@ -19,10 +19,10 @@ export default defineComponent({
   },
   computed: {
     ...mapState(useHomeStore, {
-        contentComponents: 'contentComponents',
-        imageList: 'imageList',
-        listIphones:'listIphones',
-        listManufacturers:'listManufacturers'
+      contentComponents: 'contentComponents',
+      imageList: 'imageList',
+      listIphones: 'listIphones',
+      listManufacturers: 'listManufacturers'
     })
   },
   data() {
@@ -32,97 +32,100 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapActions(useHomeStore,['getListIphones','getListManufacturers'])
+    ...mapActions(useHomeStore, ['getListIphones', 'getListManufacturers'])
   },
   mounted() {
     this.getListIphones(this.productType, this.manufacturerId),
-    this.getListManufacturers()
+      this.getListManufacturers()
   }
 })
 </script>
 
 <template>
-    <div class="flex flex-col justify-center items-center">
-      <Header />
-      <div class="w-[1200px] h-[385px] flex flex-row justify-between items-center mt-[5px]">
-        <div class="w-[200px] h-[376px] flex flex-col justify-around shadow-inner rounded-[15px]">
-          <div v-for="(component, id) in contentComponents" :key="id">
-            <div class="w-[181px] h-[29px] flex flex-row justify-between items-center">
-              <component :is="component.component" width="25px" />
-              <span>{{ component.content }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="w-[650px] flex justify-center items-center shadow-inner rounded-[10px]">
-          <carousel :items-to-show="1" :autoplay="2000" :wrap-around="true">
-            <slide v-for="item in imageList" :key="item.id">
-              <img class="w-[650px] h-[370px]" :src="item.src" alt="image_alt">
-            </slide>
-            <template #addons>
-              <navigation />
-              <pagination />
-            </template>
-          </carousel>
-        </div>
-        <div class="w-[258px] h-[376px] flex flex-col justify-around shadow-inner rounded-[10px]">
-          <div class="w-[260px] h-[115px]">
-            <img
-              src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/right-watch6-009-new-th8.png"
-              alt="">
-          </div>
-          <div class="w-[260px] h-[115px]">
-            <img
-              src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/ipadth7-new.png"
-              alt="">
-          </div>
-          <div class="w-[260px] h-[115px]">
-            <img
-              src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/asus tuf.jpg"
-              alt="">
+  <div class="flex flex-col justify-center items-center">
+    <Header />
+    <div class="w-[1200px] h-[385px] flex flex-row justify-between items-center mt-[5px]">
+      <div class="w-[200px] h-[376px] flex flex-col justify-around shadow-inner rounded-[15px]">
+        <div v-for="(component, id) in contentComponents" :key="id">
+          <div class="w-[181px] h-[29px] flex flex-row justify-between items-center">
+            <component :is="component.component" width="25px" />
+            <span>{{ component.content }}</span>
           </div>
         </div>
       </div>
-      <div class="w-[1200px] h-[75px] mt-[15px]">
-        <img
-          src="https://cdn2.cellphones.com.vn/1200x75,webp,q100/https://dashboard.cellphones.com.vn/storage/b2s-special-desktop-dday-p1.png"
-          alt="">
+      <div class="w-[650px] flex justify-center items-center shadow-inner rounded-[10px]">
+        <carousel :items-to-show="1" :autoplay="2000" :wrap-around="true">
+          <slide v-for="item in imageList" :key="item.id">
+            <img class="w-[650px] h-[370px]" :src="item.src" alt="image_alt">
+          </slide>
+          <template #addons>
+            <navigation />
+            <pagination />
+          </template>
+        </carousel>
       </div>
-      <div class="w-[1200px] flex flex-row justify-between items-center mt-[10px]">
-        <h2 class="text-[30px] font-[600]">Hàng mới về</h2>
-        <div class="flex flex-row justify-between">
-          <div v-for="(company, id) in listManufacturers" :key="id" class="text-[22px] bg-[#f3f4f6] rounded-[7px] mr-[10px] cursor-pointer" @click="getListIphones(1, company.id)">
-            <span>{{ company.manufacturer }}</span>
-          </div>
+      <div class="w-[258px] h-[376px] flex flex-col justify-around shadow-inner rounded-[10px]">
+        <div class="w-[260px] h-[115px]">
+          <img
+            src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/right-watch6-009-new-th8.png"
+            alt="">
+        </div>
+        <div class="w-[260px] h-[115px]">
+          <img
+            src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/ipadth7-new.png"
+            alt="">
+        </div>
+        <div class="w-[260px] h-[115px]">
+          <img
+            src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/asus tuf.jpg"
+            alt="">
         </div>
       </div>
-      <div class="w-[1200px] h-[422px] flex flex-col justify-around items-center">
-        <h1 class="text-[30px] font-[600]">HOT SALE CUỐI TUẦN</h1>
-        <div class="flex justify-center items-center">
-          <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="2500" :wrap-around="true">
-            <slide v-for="item in listIphones" :key="item.id">
-              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" :id="item.id" />
-            </slide>
-            <template #addons>
-              <navigation />
-              <!-- <pagination /> -->
-            </template>
-          </carousel>
-        </div>
-      </div>
-      <div class="w-[1200px] h-[422px] flex flex-col justify-around items-center">
-        <h1 class="text-[30px] font-[600]">Điện thoại</h1>
-        <div class="flex justify-center items-center">
-          <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
-            <slide v-for="item in listIphones" :key="item.id">
-              <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price" :description="item.description" :id="item.id" />
-            </slide>
-            <template #addons>
-              <navigation />
-              <!-- <pagination /> -->
-            </template>
-          </carousel>
-        </div>
-      </div>
-      <Footer />
     </div>
-  </template>
+    <div class="w-[1200px] h-[75px] mt-[15px]">
+      <img
+        src="https://cdn2.cellphones.com.vn/1200x75,webp,q100/https://dashboard.cellphones.com.vn/storage/b2s-special-desktop-dday-p1.png"
+        alt="">
+    </div>
+    <div class="w-[1200px] flex flex-row justify-between items-center mt-[10px]">
+      <h2 class="text-[30px] font-[600]">Hàng mới về</h2>
+      <div class="flex flex-row justify-between">
+        <div v-for="(company, id) in listManufacturers" :key="id"
+          class="text-[22px] bg-[#f3f4f6] rounded-[7px] mr-[10px] cursor-pointer" @click="getListIphones(1, company.id)">
+          <span>{{ company.manufacturer }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="w-[1200px] h-[422px] flex flex-col justify-around items-center">
+      <h1 class="text-[30px] font-[600]">HOT SALE CUỐI TUẦN</h1>
+      <div class="flex justify-center items-center">
+        <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="2500" :wrap-around="true">
+          <slide v-for="item in listIphones" :key="item.id">
+            <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price"
+              :description="item.description" :id="item.id" />
+          </slide>
+          <template #addons>
+            <navigation />
+            <!-- <pagination /> -->
+          </template>
+        </carousel>
+      </div>
+    </div>
+    <div class="w-[1200px] h-[422px] flex flex-col justify-around items-center">
+      <h1 class="text-[30px] font-[600]">Điện thoại</h1>
+      <div class="flex justify-center items-center">
+        <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
+          <slide v-for="item in listIphones" :key="item.id">
+            <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price"
+              :description="item.description" :id="item.id" />
+          </slide>
+          <template #addons>
+            <navigation />
+            <!-- <pagination /> -->
+          </template>
+        </carousel>
+      </div>
+    </div>
+    <Footer />
+  </div>
+</template>

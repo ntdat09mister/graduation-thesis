@@ -1,22 +1,39 @@
 <script lang="ts">
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useHomeStore } from '../stores/home'
 import { mapActions, mapState } from 'pinia';
 import { useSearchStore } from '@/stores/search';
+import { ElPagination } from 'element-plus';
+import Product from '@/components/Product.vue';
 export default defineComponent({
     components: {
         Header,
         Footer,
+        ElPagination,
+        Product
     },
     computed: {
         ...mapState(useHomeStore, {
             listManufacturers: 'listManufacturers'
         }),
         ...mapState(useSearchStore, {
-            listPhoneSearch: 'listPhoneSearch'
+            totalProducts: 'totalProducts',
+            setPage: 'setPage',
+            listDisplayProducts: 'listDisplayProducts',
+            limit: 'limit'
         })
+    },
+    setup() {
+        const currentPage = ref(1);
+        const handlePageChange = (newPage: number) => {
+            currentPage.value = newPage;
+        };
+        return {
+            currentPage,
+            handlePageChange,
+        };
     },
     methods: {
         ...mapActions(useHomeStore, ['getListIphones', 'getListManufacturers']),
@@ -25,12 +42,14 @@ export default defineComponent({
     data() {
         return {
             productType: 1,
-            manufacturerId: null
+            manufacturerId: null,
+            name: ""
         }
     },
     mounted() {
         this.getListIphones(this.productType, this.manufacturerId),
-        this.getListManufacturers()
+            this.getListManufacturers(),
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
     }
 })
 </script>
@@ -66,11 +85,19 @@ export default defineComponent({
                 </div>
             </div>
         </div>
+        <div class="flex flex-row justify-center">
+            <div v-for="item in listDisplayProducts" :key="item.id">
+                <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price"
+                    :description="item.description" :id="item.id" />
+            </div>
+        </div>
         <div class="flex flex-row justify-center items-center">
             <div class="w-[212px] flex flex-row justify-between">
                 <div class="comment-group scroll-comment-list">
                     <div class="comment-pagination">
-                        <el-pagination background layout="prev, pager, next" :page-size="1" :total="5" />
+                        <el-pagination background layout="prev, pager, next" :page-size="4" :total="totalProducts"
+                            :current-page.sync="currentPage" @current-change="handlePageChange"
+                            @click="setPage(currentPage)" />
                     </div>
                 </div>
             </div>
