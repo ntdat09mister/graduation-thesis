@@ -43,13 +43,16 @@ export default defineComponent({
         return {
             productType: 1,
             manufacturerId: null,
-            name: ""
+            name: "",
+            nameSearch: String(sessionStorage.getItem("searchKeyword"))
         }
     },
     mounted() {
         this.getListIphones(this.productType, this.manufacturerId),
             this.getListManufacturers(),
-            this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword"))).then(() => {
+            this.nameSearch = String(sessionStorage.getItem("searchKeyword"));
+        });
     }
 })
 </script>
@@ -58,10 +61,10 @@ export default defineComponent({
         <Header />
         <div class="flex flex-col justify-center items-center">
             <div class="w-[1200px] h-[21px] flex justify-center items-center">
-                <h1>Tìm thấy <strong>30</strong> sản phẩm cho từ khóa 'iPhone'</h1>
+                <h1>Tìm thấy <strong>{{ totalProducts }}</strong> sản phẩm cho từ khóa '{{ nameSearch }}'</h1>
             </div>
             <div class="w-[1200px] flex flex-row justify-between items-center">
-                <h2 class="text-[25px] font-[600]">Kết quả tìm kiếm cho: 'iPhone'</h2>
+                <h2 class="text-[25px] font-[600]">Kết quả tìm kiếm cho: '{{ nameSearch }}'</h2>
                 <div class="w-[600px] flex flex-row justify-between item-center">
                     <div v-for="(company, id) in listManufacturers" :key="id"
                         class="text-[18px] bg-[#f3f4f6] rounded-[7px] mr-[10px] cursor-pointer"

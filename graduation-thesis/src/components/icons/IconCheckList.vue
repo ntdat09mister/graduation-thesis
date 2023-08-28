@@ -1,14 +1,10 @@
 <template>
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-        y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-        <g id="Layer_1_1_">
-            <path d="M49,1H1v48h48V1z M47,47H3V3h44V47z" />
-            <polygon points="21.707,8.707 20.293,7.293 12,15.586 8.707,12.293 7.293,13.707 12,18.414 	" />
-            <rect x="25" y="12" width="18" height="2" />
-            <polygon points="21.707,20.707 20.293,19.293 12,27.586 8.707,24.293 7.293,25.707 12,30.414 	" />
-            <rect x="25" y="24" width="18" height="2" />
-            <polygon points="21.707,32.707 20.293,31.293 12,39.586 8.707,36.293 7.293,37.707 12,42.414 	" />
-            <rect x="25" y="36" width="18" height="2" />
-        </g>
-    </svg>
-</template>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+    <line x1="8" y1="12" x2="21" y2="12"></line>
+    <line x1="8" y1="18" x2="21" y2="18"></line>
+    <line x1="3" y1="6" x2="3" y2="6"></line>
+    <line x1="3" y1="12" x2="3" y2="12"></line>
+    <line x1="3" y1="18" x2="3" y2="18"></line>
+</svg></template>

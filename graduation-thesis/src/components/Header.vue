@@ -108,7 +108,7 @@ export default defineComponent({
                     </a>
                 </div>
                 <div class="w-[650px] h-[42px] border-[2px] flex justify-between items-center border-red-500 rounded-xl">
-                    <form action="" class="flex flex-row items-center" @keydown.enter="handleEnter">
+                    <div action="" class="flex flex-row items-center" @keydown.enter="handleEnter">
                         <div class="w-[590px] h-[42px] flex items-center">
                             <input class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none" type="text"
                                 placeholder="Nhập tên sản phẩm, từ khóa cần tìm kiếm...." v-model="searchKeyword">
@@ -117,7 +117,7 @@ export default defineComponent({
                             @click="handleSearch()">
                             <IconSearch class="w-[22px] h-[22px] fill-white" />
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="w-[350px] flex flex-row justify-around">
                     <div class="flex flex-col justify-center items-center">
