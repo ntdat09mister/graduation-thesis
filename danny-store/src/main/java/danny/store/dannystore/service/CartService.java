@@ -22,9 +22,9 @@ public class CartService {
     private final ProductRepository productRepository;
     @Autowired
     private ObjectMapper objectMapper;
-    public CartDtoAndAmount getListCart(Long customerId) {
+    public CartDtoAndAmount getListCart(Long userId) {
         CartDtoAndAmount cartDtoAndAmount = new CartDtoAndAmount();
-        List<Cart> cartList = cartRepository.findByCustomerId(customerId);
+        List<Cart> cartList = cartRepository.findByUserId(userId);
         List<CartDto> cartDtoList = new ArrayList<>();
         Long countTotalAmount = 0L;
         for (Cart cart : cartList) {

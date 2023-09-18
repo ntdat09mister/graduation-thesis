@@ -11,22 +11,13 @@ export const useCartStore = defineStore('cart', () => {
     }
     const listCart = ref<Cart[]>([])
     const totalAmountRef = ref<number>(0)
-    function getListCart(customerId: number) {
-        axios.get(`http://localhost:8080/cart?customerId=${customerId}`, {})
+    function getListCart(userId: number) {
+        axios.get(`http://localhost:8080/cart?userId=${userId}`, {})
         .then((response) => {
             const { cartDtoList } = response.data;
             listCart.value = cartDtoList;
             const { totalAmount } = response.data;
             totalAmountRef.value = Number(totalAmount);
-            // const { data } = response
-            // const transformedData: Cart[] = data.map((cart: any) => ({
-            //     id: cart.id,
-            //     src: cart.src,
-            //     nameProduct: cart.nameProduct,
-            //     price: cart.price,
-            //     quantity: cart.quantity
-            // }))
-            // listCart.value = transformedData
             console.log(listCart)
             console.log(totalAmount)
         })

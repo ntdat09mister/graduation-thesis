@@ -19,7 +19,7 @@ export default defineComponent({
     },
     data() {
         return {
-            customerId: 1,
+            userId: 1,
             totalAmountShow: 0
         }
     },
@@ -27,7 +27,7 @@ export default defineComponent({
         ...mapActions(useCartStore, ['getListCart'])
     },
     mounted() {
-        this.getListCart(this.customerId)
+        this.getListCart(this.userId)
     }
 })
 </script>

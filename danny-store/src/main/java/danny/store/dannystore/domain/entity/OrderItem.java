@@ -1,23 +1,26 @@
 package danny.store.dannystore.domain.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "`order`")
+@Table(name = "order_item")
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class Order {
+@NoArgsConstructor
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long totalAmount;
-    private Long statusId;
+    private Long orderId;
+    private Long productId;
+    private Long quantity;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

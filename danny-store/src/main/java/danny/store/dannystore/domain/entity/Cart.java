@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -16,8 +17,10 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long customerId;
+    private Long userId;
     private Long productId;
     private Date createDate;
     private Long quantity;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }

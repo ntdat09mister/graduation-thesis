@@ -17,7 +17,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
     @GetMapping
-    public CartDtoAndAmount getListCart(@RequestParam Long customerId) {
+    public CartDtoAndAmount getListCart(@RequestParam Long userId) {
         return cartService.getListCart(1L);
     }
 }

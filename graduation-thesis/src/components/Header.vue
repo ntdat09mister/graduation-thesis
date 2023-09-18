@@ -42,6 +42,9 @@ export default defineComponent({
         handleClick() {
             router.push({ name: 'home' })
         },
+        routerCart() {
+            router.push({ name: 'cart' })
+        },
         setVModelInput() {
             this.searchKeyword = String(sessionStorage.getItem("searchKeyword"))
             console.log("123")
@@ -133,7 +136,9 @@ export default defineComponent({
                         <span class="text-[12px]">Tra cứu đơn hàng</span>
                     </div>
                     <div class="flex flex-col justify-center items-center">
-                        <IconCart class="w-[30px]" />
+                        <a href="" @click="routerCart()">
+                            <IconCart class="w-[30px]" />
+                        </a>
                         <span class="text-[12px]">Giỏ hàng</span>
                     </div>
                     <div class="flex flex-col justify-center items-center">

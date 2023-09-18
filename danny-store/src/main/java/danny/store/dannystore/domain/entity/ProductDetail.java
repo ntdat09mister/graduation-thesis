@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity(name = "product_detail")
 @Data
@@ -19,4 +20,6 @@ public class ProductDetail {
     private Long id;
     private Long productId;
     private String imageSrc;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }
