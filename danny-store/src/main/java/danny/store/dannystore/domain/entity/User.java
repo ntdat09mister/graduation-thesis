@@ -1,16 +1,19 @@
 package danny.store.dannystore.domain.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Table(name = "user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +21,15 @@ public class User {
     private String username;
     private String password;
     private String name;
-    private Boolean gender;
+    private String gender;
     private String address;
     private String phone;
-    private Long roleId;
+    private String role;
     private String avatar;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Boolean active;
+    private Date createdAt;
+    private Date modifiedAt;
+    private String passwordResetToken;
+    private Date passwordResetTokenExpiryDate;
 }
+

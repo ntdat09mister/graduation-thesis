@@ -1,0 +1,31 @@
+service:
+  hostname:
+    discovery: localhost
+    mysql: ${MYSQL_HOST:localhost}
+
+spring:
+  application:
+    name: auth-service
+  jpa:
+    databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddlAuto: update
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/danny-store-db
+    username: root
+    password: ENC(AdxkT8pIWxe+6B83WYzUdLm9qShfSy1+)
+server:
+  port: 8080
+
+security:
+  oauth2:
+    client:
+      clientId: client
+      clientSecret: ENC(48mMvLaMDImeOJFUE/DT0ufm7y9Rcdn/)
+      accessTokenValiditySeconds: 5000000
+      refreshTokenValiditySeconds: 18000
+encrypt:
+  keyStore:
+    alias: jwt
+    password: ENC(TQVu0i9dxQgQDOo19OSnKg==)
