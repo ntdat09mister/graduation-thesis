@@ -14,22 +14,30 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         imageSrc: string
     }
 
-    const listImagesDetailProducts = ref<imagesDetailProduct[]>([])
-    function getProductImgDetail(productId: Number) {
-        return new Promise<void>((resolve) => {
-            axios.get(`http://localhost:8080/detail/${productId}`, {}).then((response) => {
-                const { data } = response;
-                const transformedData: imagesDetailProduct[] = data.map((idp: any) => ({
-                    id: idp.id,
-                    productId: idp.productId,
-                    imageSrc: idp.imageSrc
-                }))
-                listImagesDetailProducts.value = transformedData
-                console.log(transformedData);
-                resolve();
-            })
-        })
+    const listImagesDetailProducts = ref<imagesDetailProduct[]>([]);
+
+    async function getProductImgDetail(productId: Number) {
+      try {
+        const response = await axios.get(`http://localhost:8080/product/detail/${productId}`);
+        const responseData = response.data;
+    
+        // Kiểm tra xem responseData có thuộc tính "data" và "data" là mảng không
+        if (responseData && Array.isArray(responseData.data)) {
+          const transformedData: imagesDetailProduct[] = responseData.data.map((idp: any) => ({
+            id: idp.id,
+            productId: idp.productId,
+            imageSrc: idp.imageSrc
+          }));
+          listImagesDetailProducts.value = transformedData;
+          console.log(transformedData);
+        } else {
+          console.error('Data is not an array:', responseData);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
+
     interface Item {
         id: number;
         name: string;
@@ -38,23 +46,31 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         src: string;
     }
     const productDto = ref<Item | null>(null);
-    function getProductDtoById(id: Number) {
-        return new Promise<void>((resolve) => {
-          axios.get(`http://localhost:8080/${id}`, {}).then((response) => {
-            const { data } = response;
-            const transformedData: Item = {
-              id: data.id,
-              name: data.name,
-              price: parseFloat(data.price),
-              description: data.description,
-              src: data.src.replace(/\\/g, '/'),
-            };
-            productDto.value = transformedData;
-            console.log(transformedData);
-            resolve();
-          });
-        });
+
+    async function getProductDtoById(id: Number) {
+      try {
+        const response = await axios.get(`http://localhost:8080/product/${id}`);
+        const data = response.data;
+    
+        // Kiểm tra xem response có dữ liệu không và có thuộc tính "data" không
+        if (data && data.data) {
+          const productData = data.data;
+          const transformedData: Item = {
+            id: productData.id,
+            name: productData.name,
+            price: parseFloat(productData.price || "0"), // Sử dụng 0 nếu không có giá trị price
+            description: productData.description,
+            src: productData.src ? productData.src.replace(/\\/g, '/') : '' // Kiểm tra src trước khi thực hiện replace
+          };
+          productDto.value = transformedData;
+          console.log(transformedData);
+        } else {
+          console.error('No data received for ID:', id);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
+    }
     return {
         imageList,
         getProductImgDetail,

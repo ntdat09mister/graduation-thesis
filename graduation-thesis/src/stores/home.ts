@@ -49,26 +49,29 @@ export const useHomeStore = defineStore('home', () => {
 
   const listIphones = ref<Item[]>([]);
 
-  function getListIphones(productType: number | null, manufacturerId: number | null) {
-    if (productType === undefined || productType === null) {
-      productType = null;
-    }
-
-    if (manufacturerId === undefined || manufacturerId === null) {
-      manufacturerId = null;
-    }
-    return new Promise<void>((resolve) => {
-      let url = 'http://localhost:8080';
-      if (productType !== null && manufacturerId !== null) {
-        url += `?productType=${productType}&manufacturerId=${manufacturerId}`;
-      } else if (productType !== null) {
-        url += `?productType=${productType}`;
-      } else if (manufacturerId !== null) {
-        url += `?manufacturerId=${manufacturerId}`;
+  async function getListIphones(productType: number | null, manufacturerId: number | null) {
+    try {
+      let url = 'http://localhost:8080/product';
+      const params = new URLSearchParams();
+  
+      if (productType !== null) {
+        params.append('productType', productType.toString());
       }
-      axios.get(url, {}).then((response) => {
-        const { data } = response;
-        const transformedData: Item[] = data.map((item: any) => ({
+  
+      if (manufacturerId !== null) {
+        params.append('manufacturerId', manufacturerId.toString());
+      }
+  
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+  
+      const response = await axios.get(url);
+      const responseData = response.data;
+  
+      // Kiểm tra xem responseData có thuộc tính "data" và "data" là mảng không
+      if (responseData && Array.isArray(responseData.data)) {
+        const transformedData: Item[] = responseData.data.map((item: any) => ({
           id: item.id,
           name: item.name,
           price: parseFloat(item.price),
@@ -77,27 +80,36 @@ export const useHomeStore = defineStore('home', () => {
         }));
         listIphones.value = transformedData;
         console.log(transformedData);
-        resolve();
-      });
-    });
+      } else {
+        console.error('Data is not an array:', responseData);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
-  const listManufacturers = ref<Manufacturer[]>([])
+  const listManufacturers = ref<Manufacturer[]>([]);
 
-  function getListManufacturers() {
-    return new Promise<void>((resolve) => {
-      axios.get('http://localhost:8080/manufacturer', {}).then((response) => {
-        const { data } = response;
-        const transformedData: Manufacturer[] = data.map((manu: any) => ({
+  async function getListManufacturers() {
+    try {
+      const response = await axios.get('http://localhost:8080/product/manufacturer');
+      const responseData = response.data;
+  
+      // Kiểm tra xem responseData có thuộc tính "data" và "data" là mảng không
+      if (responseData && Array.isArray(responseData.data)) {
+        const transformedData: Manufacturer[] = responseData.data.map((manu: any) => ({
           id: manu.id,
           manufacturer: manu.manufacturer,
           productType: manu.productType
         }));
         listManufacturers.value = transformedData;
         console.log(transformedData);
-        resolve();
-      });
-    });
+      } else {
+        console.error('Data is not an array:', responseData);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
   return {

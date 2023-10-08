@@ -10,16 +10,17 @@ export const useProductStore = defineStore('product', () => {
         price: number
         unitCount: string;
     }
-    const listProducts = ref<Product[]>([]);
+    
     function changeProduct(id: number, name: string, description: string, qty: number, price: number, unitCount: string) {
-        axios.put(`http://localhost:8080/?id=${id}&name=${name}&description=${description}&qty=${qty}&price=${price}&unitCount=${unitCount}`, {})
+        axios.put(`http://localhost:8080/product?id=${id}&name=${name}&description=${description}&qty=${qty}&price=${price}&unitCount=${unitCount}`, {})
         .then((response) => {
             const { data } = response;
             console.log(data);
         })
     }
+    const listProducts = ref<Product[]>([]);
     function getProducts() {
-        axios.get(`http://localhost:8080/`, {})
+        axios.get(`http://localhost:8080/product`, {})
         .then((response) => {
             const { data } = response;
             const transformedData: Product[] = data.map((product: any) => ({

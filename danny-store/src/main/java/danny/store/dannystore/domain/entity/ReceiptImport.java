@@ -6,23 +6,22 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "user")
+@Table(name = "receipt_import")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class ReceiptImport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String name;
-    private Boolean gender;
-    private String address;
-    private String phone;
-    private Long roleId;
-    private String avatar;
+    private Long idManufacturer;
+    private Long userId;
+    private Long productId;
+    private String productName;
+    private Long price;
+    private Long totalAmount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

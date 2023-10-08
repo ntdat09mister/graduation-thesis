@@ -9,26 +9,35 @@ export const useSearchStore = defineStore('search', () => {
         description: string;
         src: string;
     }
-    const listPhoneSearch = ref<Item[]>([])
+
     const page = ref(1)
     const limit = ref(4)
 
-    function getListSearch(name: string) {
-        return new Promise<void>((resolve) => {
-            axios.get(`http://localhost:8080/search?name=${name}`, {}).then((response) => {
-                const { data } = response;
+    const listPhoneSearch = ref<Item[]>([]);
+
+    async function getListSearch(name: string) {
+        try {
+            const response = await axios.get(`http://localhost:8080/product/search?name=${name}`);
+            const responseData = response.data;
+
+            // Kiểm tra xem response có thuộc tính "data" không
+            if (responseData && Array.isArray(responseData.data)) {
+                const data = responseData.data;
                 const transformedData: Item[] = data.map((item: any) => ({
                     id: item.id,
                     name: item.name,
-                    price: item.price,
+                    price: parseFloat(item.price), // Chuyển đổi giá trị thành số
                     description: item.description,
                     src: item.src
                 }));
                 listPhoneSearch.value = transformedData;
                 console.log(transformedData);
-                resolve();
-            });
-        });
+            } else {
+                console.error('Invalid data received from the API:', responseData);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
     const listDisplayProducts = computed(() => {
         const fromProduct = (page.value - 1) * limit.value

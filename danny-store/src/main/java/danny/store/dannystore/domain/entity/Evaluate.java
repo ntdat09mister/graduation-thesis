@@ -6,23 +6,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "user")
+@Table(name = "evaluate")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Evaluate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String name;
-    private Boolean gender;
-    private String address;
-    private String phone;
-    private Long roleId;
-    private String avatar;
+    private Long userId;
+    private Long voteStars;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

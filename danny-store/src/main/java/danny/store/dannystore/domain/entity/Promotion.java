@@ -6,23 +6,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "user")
+@Table(name = "promotion")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String name;
-    private Boolean gender;
-    private String address;
-    private String phone;
-    private Long roleId;
-    private String avatar;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private String percentValue;
+    private LocalDateTime startDayPromotion;
+    private LocalDateTime endDayPromotion;
 }
