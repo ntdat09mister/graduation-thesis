@@ -18,9 +18,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
-    private Long productId;
-    private Date createDate;
-    private Long quantity;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

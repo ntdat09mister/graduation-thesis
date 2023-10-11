@@ -18,10 +18,6 @@ public class ReceiptImport {
     private Long id;
     private Long idManufacturer;
     private Long userId;
-    private Long productId;
-    private String productName;
-    private Long price;
-    private Long totalAmount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

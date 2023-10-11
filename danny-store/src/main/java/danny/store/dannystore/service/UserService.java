@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class UserService {
             throw new NotFoundException("Username already exist!");
         User user = objectMapper.convertValue(userInput, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(RoleType.USER);
+        user.setRole(RoleType.CUSTOMER);
         user.setActive(StatusType.ACTIVE);
         user.setCreatedAt(new Date());
         userRepository.save(user);
@@ -34,5 +35,15 @@ public class UserService {
     }
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    public User findByUserName(String userName) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findByUsername(userName);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user;
+        } else {
+            throw new NotFoundException("Not found any user!");
+        }
     }
 }
