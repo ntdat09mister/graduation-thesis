@@ -18,17 +18,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
-                        .allowedOrigins("*");
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
+//                        .allowedOrigins("*");
+//            }
+//        };
+//    }
+
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
