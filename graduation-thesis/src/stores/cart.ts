@@ -11,12 +11,10 @@ export const useCartStore = defineStore('cart', () => {
     }
     const listCart = ref<Cart[]>([]);
     const totalAmountRef = ref<number>(0);
-    
     async function getListCart(userId: number) {
       try {
         const response = await axios.get(`http://localhost:8080/cart?userId=${userId}`);
         const responseData = response.data;
-    
         // Kiểm tra xem response có thuộc tính "data" không
         if (responseData && responseData.data) {
           const data = responseData.data;
@@ -24,7 +22,6 @@ export const useCartStore = defineStore('cart', () => {
           if (data.cartDtoList && Array.isArray(data.cartDtoList) && typeof data.totalAmount === 'number') {
             // Dùng data.cartDtoList để cập nhật listCart
             listCart.value = data.cartDtoList;
-    
             // Dùng data.totalAmount để cập nhật totalAmountRef
             totalAmountRef.value = data.totalAmount;
     

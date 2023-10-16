@@ -19,20 +19,15 @@ export default defineComponent({
     },
     data() {
         return {
-            loginRequest: {
-                username: '',
-                password: ''
-            }
+            username: '',
+            password: ''
         }
     },
     methods: {
         handleClick() {
             router.push({ name: 'home' })
         },
-        ...mapActions(uathStore, ['login','getToken'])
-    },
-    mounted() {
-        this.getToken(this.loginRequest)
+        ...mapActions(uathStore, ['login'])
     }
 })
 </script>
@@ -48,14 +43,14 @@ export default defineComponent({
             </a>
         </div>
         <div class="flex flex-col justify-around items-center h-[200px]">
-            <input v-model="loginRequest.username"
+            <input v-model="username"
                 class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300 " type="text"
                 placeholder="Nhập username.....">
-            <input v-model="loginRequest.password"
+            <input v-model="password"
                 class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300 " type="password"
                 placeholder="Nhập password.....">
             <button
-                class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none" @click="getToken(loginRequest)">
+                class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none" @click="login(username, password)">
                 Login
             </button>
         </div>

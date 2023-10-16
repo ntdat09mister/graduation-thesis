@@ -29,4 +29,4 @@ encrypt:
     password: ENC(TQVu0i9dxQgQDOo19OSnKg==)
 app:
   cors:
-    allowedOrigins: http://localhost:5173
+

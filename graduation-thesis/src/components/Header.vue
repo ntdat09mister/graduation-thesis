@@ -13,6 +13,7 @@ import IconCart from './icons/IconCart.vue';
 import IconLogin from './icons/IconLogin.vue';
 import router from '@/router';
 import IconSearch from './icons/IconSearch.vue';
+import IconInformationMySelf from './icons/IconInformationMySelf.vue';
 import { useSearchStore } from '@/stores/search';
 import { mapActions } from 'pinia';
 export default defineComponent({
@@ -28,14 +29,17 @@ export default defineComponent({
         IconOrderLookUp,
         IconCart,
         IconLogin,
-        IconSearch
+        IconSearch,
+        IconInformationMySelf
     },
     state: () => ({
-        searchKeywordGlobal: sessionStorage.getItem("searchKeyword")
+        searchKeywordGlobal: sessionStorage.getItem("searchKeyword"),
+        authenticatedBoolean: String(localStorage.getItem("AUTHENTICATED"))
     }),
     data() {
         return {
-            searchKeyword: ''
+            searchKeyword: '',
+            AUTHENTICATED: this.authenticatedBoolean
         }
     },
     methods: {
@@ -65,6 +69,9 @@ export default defineComponent({
             console.log(this.searchKeyword);
             router.push({ name: 'search' });
             this.setVModelInput()
+        },
+        routerLogin() {
+            router.push({ name: 'login' })
         }
     }
 
@@ -83,28 +90,6 @@ export default defineComponent({
         </div>
         <div class="w-[100%] flex justify-center items-center bg-[#e9efff]">
             <div class="w-[1200px] flex flex-row justify-between items-center mt-[10px]">
-                <!-- <div class="w-[500px] flex flex-row justify-between">
-                <div class="flex flex-col justify-center items-center">
-                    <IconIphone width="40px" />
-                    <span>iPhone</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconIpad />
-                    <span>iPad</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconAccessories width="40px" />
-                    <span>Phụ kiện</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconFixing />
-                    <span>Linh kiện</span>
-                </div>
-                <div class="flex flex-col justify-center items-center">
-                    <IconAboutUs />
-                    <span>Về chúng tôi</span>
-                </div>
-            </div> -->
                 <div class="mr-[30px] ml-[30px]">
                     <a href="" @click="handleClick()">
                         <LogoDannyStore class="w-[120px] h-[70px]" />
@@ -127,10 +112,6 @@ export default defineComponent({
                         <IconCall class="w-[30px]" />
                         <span class="text-[12px]">Liên hệ</span>
                     </div>
-                    <!-- <div class="flex flex-col justify-center items-center">
-                    <IconLocal />
-                    <span>Cửa hàng gần bạn</span>
-                </div> -->
                     <div class="flex flex-col justify-center items-center">
                         <IconOrderLookUp class="w-[30px]" />
                         <span class="text-[12px]">Tra cứu đơn hàng</span>
@@ -142,8 +123,16 @@ export default defineComponent({
                         <span class="text-[12px]">Giỏ hàng</span>
                     </div>
                     <div class="flex flex-col justify-center items-center">
-                        <IconLogin class="w-[30px]" />
-                        <span class="text-[12px]">Đăng nhập</span>
+                        <template v-if="String(AUTHENTICATED) === 'true'">
+                            <IconInformationMySelf class="w-[30px]" />
+                            <span class="text-[12px]">Xem thông tin bản thân</span>
+                        </template>
+                        <template v-else>
+                            <a href="" @click="routerLogin()">
+                                <IconLogin class="w-[30px]" />
+                            </a>
+                            <span class="text-[12px]">Đăng nhập</span>
+                        </template>
                     </div>
                 </div>
             </div>
