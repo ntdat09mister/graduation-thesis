@@ -15,7 +15,8 @@ import router from '@/router';
 import IconSearch from './icons/IconSearch.vue';
 import IconInformationMySelf from './icons/IconInformationMySelf.vue';
 import { useSearchStore } from '@/stores/search';
-import { mapActions } from 'pinia';
+import { authStore } from '@/stores/auth';
+import { mapActions, mapState } from 'pinia';
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -34,12 +35,16 @@ export default defineComponent({
     },
     state: () => ({
         searchKeywordGlobal: sessionStorage.getItem("searchKeyword"),
-        authenticatedBoolean: String(localStorage.getItem("AUTHENTICATED"))
+        authenticatedBoolean: localStorage.getItem("authenticated")
     }),
+    computed: {
+        ...mapState(authStore, {
+            authenticated: 'authenticated'
+        })
+    },
     data() {
         return {
-            searchKeyword: '',
-            AUTHENTICATED: this.authenticatedBoolean
+            searchKeyword: ''
         }
     },
     methods: {
@@ -123,7 +128,7 @@ export default defineComponent({
                         <span class="text-[12px]">Giỏ hàng</span>
                     </div>
                     <div class="flex flex-col justify-center items-center">
-                        <template v-if="String(AUTHENTICATED) === 'true'">
+                        <template v-if="authenticated">
                             <IconInformationMySelf class="w-[30px]" />
                             <span class="text-[12px]">Xem thông tin bản thân</span>
                         </template>

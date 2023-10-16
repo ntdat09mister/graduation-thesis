@@ -2,7 +2,7 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import { mapActions, mapState } from 'pinia'
-import { uathStore } from '../stores/auth'
+import { authStore } from '../stores/auth'
 import LogoDannyStore from '@/components/icons/LogoDannyStore.vue'
 import { defineComponent } from 'vue'
 import router from '@/router'
@@ -13,7 +13,7 @@ export default defineComponent({
         LogoDannyStore
     },
     computed: {
-        ...mapState(uathStore, {
+        ...mapState(authStore, {
 
         })
     },
@@ -27,7 +27,7 @@ export default defineComponent({
         handleClick() {
             router.push({ name: 'home' })
         },
-        ...mapActions(uathStore, ['login'])
+        ...mapActions(authStore, ['login'])
     }
 })
 </script>

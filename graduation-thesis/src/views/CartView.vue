@@ -27,7 +27,7 @@ export default defineComponent({
         ...mapActions(useCartStore, ['getListCart'])
     },
     mounted() {
-        this.getListCart(this.userId)
+        this.getListCart()
     }
 })
 </script>
