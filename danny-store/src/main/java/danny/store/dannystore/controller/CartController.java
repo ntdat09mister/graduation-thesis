@@ -4,12 +4,12 @@ import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.resolver.UserInfoArgumentResolver;
 import danny.store.dannystore.service.CartService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cart")
@@ -21,6 +21,14 @@ public class CartController extends BaseController{
     @GetMapping("/all")
     public ResponseEntity<?> findAllCarts(@UserInfo User user) {
         return successResponse(cartService.getListCartsUser(user.getId()));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addToCart(@UserInfo User user,
+                                       @RequestParam Long productId,
+                                       @RequestParam Long quantity,
+                                       @RequestParam Long price) throws NotFoundException {
+        return successResponseCreated(cartService.addToCart(user.getId(), productId, quantity, price), null, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyAuthority('admin')")

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "evaluate")
@@ -18,6 +18,6 @@ public class Evaluate {
     private Long id;
     private Long userId;
     private Long voteStars;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Date createdAt;
+    private Date modifiedAt;
 }

@@ -1,6 +1,5 @@
 package danny.store.dannystore.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.domain.dto.CartDto;
 import danny.store.dannystore.domain.dto.CartDtoAndAmount;
 import danny.store.dannystore.domain.entity.Cart;
@@ -9,13 +8,18 @@ import danny.store.dannystore.domain.entity.Product;
 import danny.store.dannystore.repository.CartDetailRepository;
 import danny.store.dannystore.repository.CartRepository;
 import danny.store.dannystore.repository.ProductRepository;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import static danny.store.dannystore.common.Const.RESPONSE_ADD_TO_CART_FAIL;
+import static danny.store.dannystore.common.Const.RESPONSE_ADD_TO_CART_SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -23,30 +27,6 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartDetailRepository cartDetailRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
-//    public CartDtoAndAmount getListCart(Long userId) {
-//        CartDtoAndAmount cartDtoAndAmount = new CartDtoAndAmount();
-//        List<Cart> cartList = cartRepository.findByUserId(userId);
-//        List<CartDto> cartDtoList = new ArrayList<>();
-//        Long countTotalAmount = 0L;
-//        for (Cart cart : cartList) {
-//            Optional<CartDetail> cartDetailOptional = cartDetailRepository.findById(cart.getId());
-//            CartDetail cartDetail = new CartDetail();
-//            cartDetail.setId(cart.getId());
-//            cartDetail.setQuantity(cartDetail.getQuantity());
-//            Optional<Product> productOptional = productRepository.findById(cartDetailOptional.get().getProductId());
-//            if (productOptional.isPresent()) {
-//                Product product = productOptional.get();
-//                cartDetail.setProductId(product.getId());
-//            }
-//            cartDtoList.add(cartDetail);
-//            countTotalAmount += Long.valueOf(cartDetail.getPrice()) * Long.valueOf(cartDetail.getQuantity());
-//        }
-//        cartDtoAndAmount.setCartDtoList(cartDtoList);
-//        cartDtoAndAmount.setTotalAmount(countTotalAmount);
-//        return cartDtoAndAmount;
-//    }
     public CartDtoAndAmount getListCartsUser(Long userId) {
         CartDtoAndAmount cartDtoAndAmount = new CartDtoAndAmount();
         List<CartDto> cartDtoList = new ArrayList<>();
@@ -69,5 +49,31 @@ public class CartService {
         cartDtoAndAmount.setTotalAmount(countTotalAmount);
         cartDtoAndAmount.setCartDtoList(cartDtoList);
         return cartDtoAndAmount;
+    }
+    @Transactional(rollbackOn = Exception.class)
+    public String addToCart(Long userId, Long productId, Long quantity, Long price) throws NotFoundException {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent() && productOptional.get().getQuantity() >= quantity) {
+            Cart cart = new Cart();
+            cart.setUserId(userId);
+            cart.setCreatedAt(new Date());
+            cart.setModifiedAt(new Date());
+            cartRepository.save(cart);
+            CartDetail cartDetail = new CartDetail();
+            cartDetail.setProductId(productId);
+            cartDetail.setCartId(cart.getId());
+            cartDetail.setQuantity(quantity);
+            cartDetail.setPrice(price);
+            cartDetail.setCreatedAt(new Date());
+            cartDetail.setModifiedAt(new Date());
+            cartDetailRepository.save(cartDetail);
+            Product product = productOptional.get();
+            product.setQuantity(productOptional.get().getQuantity() - quantity);
+            productRepository.save(product);
+            return RESPONSE_ADD_TO_CART_SUCCESS;
+        } else {
+            throw new NotFoundException(RESPONSE_ADD_TO_CART_FAIL);
+        }
+
     }
 }

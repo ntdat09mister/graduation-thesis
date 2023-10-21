@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "order_item")
@@ -21,6 +21,6 @@ public class OrderItem {
     private Long orderId;
     private Long productId;
     private Long quantity;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Date createdAt;
+    private Date modifiedAt;
 }

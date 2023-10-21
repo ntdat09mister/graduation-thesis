@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity(name = "product")
 @Data
@@ -25,6 +25,7 @@ public class Product {
     private Long productType;
     private Long manufacturerId;
     private Long promotionId;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Long quantity;
+    private Date createdAt;
+    private Date modifiedAt;
 }

@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Table(name = "`order`")
 @Data
@@ -18,6 +19,6 @@ public class Order {
     private Long userId;
     private Long totalAmount;
     private Long statusId;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Date createdAt;
+    private Date modifiedAt;
 }

@@ -44,6 +44,7 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         price: number;
         description: string;
         src: string;
+        quantity: number
     }
     const productDto = ref<Item | null>(null);
 
@@ -60,7 +61,8 @@ export const useProductDetailStore = defineStore('productDetail', () => {
             name: productData.name,
             price: parseFloat(productData.price || "0"), // Sử dụng 0 nếu không có giá trị price
             description: productData.description,
-            src: productData.src ? productData.src.replace(/\\/g, '/') : '' // Kiểm tra src trước khi thực hiện replace
+            src: productData.src ? productData.src.replace(/\\/g, '/') : '', // Kiểm tra src trước khi thực hiện replace
+            quantity: productData.quantity
           };
           productDto.value = transformedData;
           console.log(transformedData);

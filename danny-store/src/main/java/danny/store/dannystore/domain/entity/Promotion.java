@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "promotion")
@@ -17,6 +17,6 @@ public class Promotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String percentValue;
-    private LocalDateTime startDayPromotion;
-    private LocalDateTime endDayPromotion;
+    private Date startDayPromotion;
+    private Date endDayPromotion;
 }

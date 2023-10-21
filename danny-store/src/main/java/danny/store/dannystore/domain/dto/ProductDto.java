@@ -9,4 +9,5 @@ public class ProductDto {
     private String price;
     private String description;
     private String src;
+    private Long quantity;
 }
