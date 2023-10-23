@@ -31,7 +31,7 @@ public class CartService {
         CartDtoAndAmount cartDtoAndAmount = new CartDtoAndAmount();
         List<CartDto> cartDtoList = new ArrayList<>();
         List<Cart> cartList = cartRepository.findByUserId(userId);
-        Long countTotalAmount = 0L;
+        Float countTotalAmount = 0F;
         for (Cart cart: cartList) {
             CartDetail cartDetail = cartDetailRepository.findByCartId(cart.getId());
             CartDto cartDto = new CartDto();
@@ -39,19 +39,19 @@ public class CartService {
             if (productOptional.isPresent()) {
                 Product product = productOptional.get();
                 cartDto.setSrc(product.getSrc());
-                cartDto.setPrice(product.getPrice());
                 cartDto.setNameProduct(product.getName());
             }
+            cartDto.setPrice(cartDetail.getPrice());
             cartDto.setQuantity(cartDetail.getQuantity());
             cartDtoList.add(cartDto);
-            countTotalAmount += Long.valueOf(cartDetail.getPrice()) * Long.valueOf(cartDetail.getQuantity());
+            countTotalAmount += Float.valueOf(cartDetail.getPrice()) * Float.valueOf(cartDetail.getQuantity());
         }
         cartDtoAndAmount.setTotalAmount(countTotalAmount);
         cartDtoAndAmount.setCartDtoList(cartDtoList);
         return cartDtoAndAmount;
     }
     @Transactional(rollbackOn = Exception.class)
-    public String addToCart(Long userId, Long productId, Long quantity, Long price) throws NotFoundException {
+    public String addToCart(Long userId, Long productId, Long quantity, Float priceCoefficient) throws NotFoundException {
         Optional<Product> productOptional = productRepository.findById(productId);
         if (productOptional.isPresent() && productOptional.get().getQuantity() >= quantity) {
             Cart cart = new Cart();
@@ -63,15 +63,17 @@ public class CartService {
             cartDetail.setProductId(productId);
             cartDetail.setCartId(cart.getId());
             cartDetail.setQuantity(quantity);
-            cartDetail.setPrice(price);
+            cartDetail.setPrice(productOptional.get().getPrice() * priceCoefficient);
             cartDetail.setCreatedAt(new Date());
             cartDetail.setModifiedAt(new Date());
             cartDetailRepository.save(cartDetail);
             Product product = productOptional.get();
             product.setQuantity(productOptional.get().getQuantity() - quantity);
             productRepository.save(product);
+            System.out.println("Add success fully cart " + productOptional.get().getName());
             return RESPONSE_ADD_TO_CART_SUCCESS;
         } else {
+            System.out.println(RESPONSE_ADD_TO_CART_FAIL);
             throw new NotFoundException(RESPONSE_ADD_TO_CART_FAIL);
         }
 

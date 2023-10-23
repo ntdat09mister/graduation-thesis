@@ -27,14 +27,13 @@ public class UserInfoArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public User resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-
         String userName = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String userName = "customer@gmail.com";
         Optional<User> userOptional = userRepository.findByUsername(userName);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return user;
         } else {
+            System.out.println("Not found any user!");
             throw new NotFoundException("Not found any user!");
         }
     }

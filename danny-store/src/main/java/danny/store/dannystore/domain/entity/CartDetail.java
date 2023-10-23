@@ -19,7 +19,7 @@ public class CartDetail {
     private Long cartId;
     private Long productId;
     private Long quantity;
-    private Long price;
+    private Float price;
     private Date createdAt;
     private Date modifiedAt;
 }

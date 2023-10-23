@@ -13,6 +13,7 @@ import IconCart from './icons/IconCart.vue';
 import IconLogin from './icons/IconLogin.vue';
 import router from '@/router';
 import IconSearch from './icons/IconSearch.vue';
+import IconLogout from './icons/IconLogout.vue';
 import IconInformationMySelf from './icons/IconInformationMySelf.vue';
 import { useSearchStore } from '@/stores/search';
 import { authStore } from '@/stores/auth';
@@ -31,7 +32,8 @@ export default defineComponent({
         IconCart,
         IconLogin,
         IconSearch,
-        IconInformationMySelf
+        IconInformationMySelf,
+        IconLogout
     },
     state: () => ({
         searchKeywordGlobal: sessionStorage.getItem("searchKeyword"),
@@ -77,6 +79,11 @@ export default defineComponent({
         },
         routerLogin() {
             router.push({ name: 'login' })
+        },
+        logout() {
+            localStorage.removeItem("accessToken"),
+                localStorage.removeItem("authenticated")
+                router.push({ name: 'home' })
         }
     }
 
@@ -127,16 +134,26 @@ export default defineComponent({
                         </a>
                         <span class="text-[12px]">Giỏ hàng</span>
                     </div>
-                    <div class="flex flex-col justify-center items-center">
+                    <div class="flex flex-row justify-center items-center">
                         <template v-if="authenticated">
-                            <IconInformationMySelf class="w-[30px]" />
-                            <span class="text-[12px]">Xem thông tin bản thân</span>
+                            <div class="flex flex-col justify-center items-center">
+                                <IconInformationMySelf class="w-[30px]" />
+                                <span class="text-[12px]">Xem thông tin bản thân</span>
+                            </div>
+                            <div class="flex flex-col justify-center items-center cursor-pointer">
+                                <a href="" @click="logout()">
+                                    <IconLogout class="w-[30px]" />
+                                </a>
+                                <span class="text-[12px]">Đăng xuất</span>
+                            </div>
                         </template>
                         <template v-else>
-                            <a href="" @click="routerLogin()">
-                                <IconLogin class="w-[30px]" />
-                            </a>
-                            <span class="text-[12px]">Đăng nhập</span>
+                            <div class="flex flex-col justify-center items-center">
+                                <a href="" @click="routerLogin()">
+                                    <IconLogin class="w-[30px]" />
+                                </a>
+                                <span class="text-[12px]">Đăng nhập</span>
+                            </div>
                         </template>
                     </div>
                 </div>

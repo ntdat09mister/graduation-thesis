@@ -42,9 +42,26 @@ export const useCartStore = defineStore('cart', () => {
       console.error('Error fetching data:', error);
     }
   }
+
+  async function addToCart(productId: number, quantity: number, priceCoefficient: number) {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.error('Access token not found in localStorage');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.post(`http://localhost:8080/cart/add?productId=${productId}&quantity=${quantity}&priceCoefficient=${priceCoefficient}`, config);
+    console.log(response);
+  }
+
   return {
     getListCart,
     listCart,
-    totalAmountRef
+    totalAmountRef,
+    addToCart
   }
 })

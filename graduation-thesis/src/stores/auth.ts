@@ -30,7 +30,9 @@ export const authStore = defineStore('auth', () => {
                     if (access_token) {
                         localStorage.setItem("accessToken", access_token as string);
                         localStorage.setItem("authenticated", 'true');
-                        router.push({ name: 'home' });
+                        router.push({ name: 'home' }).then(() => {
+                            location.reload(); // Làm mới trang
+                        });
                     }
                     console.log(response)
                 })

@@ -7,6 +7,7 @@ import { useProductDetailStore } from '@/stores/productDetail';
 import { mapActions, mapState } from 'pinia';
 import IconGift from '@/components/icons/IconGift.vue'
 import IconAddToCart from '@/components/icons/IconAddToCart.vue'
+import { useCartStore } from '@/stores/cart';
 export default defineComponent({
     components: {
         Carousel,
@@ -28,16 +29,20 @@ export default defineComponent({
     data() {
         return {
             selected: 'Đen',
-            selectedVar: 1.25 // Giá trị được chọn
+            selectedVar: 1.25
         };
     },
     methods: {
         ...mapActions(useProductDetailStore, ['getProductImgDetail', 'getProductDtoById']),
+        ...mapActions(useCartStore, ['addToCart']),
         changeVariant(variant: number) {
             this.selectedVar = variant;
         },
         changeBackground(value: string) {
             this.selected = value;
+        },
+        clickAddToCart() {
+            this.addToCart(Number(this.productDto?.id), 1, this.selectedVar)
         }
     },
     created() {
@@ -104,7 +109,7 @@ export default defineComponent({
                             <span class="text-white text-base text-xs">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>
                         </div>
                         <div
-                            class="w-[60px] h-[60px] flex flex-col justify-center items-center border-[2px] border-red-500 rounded-xl">
+                            class="w-[60px] h-[60px] flex flex-col justify-center items-center border-[2px] border-red-500 rounded-xl cursor-pointer" @click="clickAddToCart">
                             <IconAddToCart class="w-[30px] h-[30px] fill-[#FF0000]" />
                             <span class="text-[7px] text-[red]">Thêm vào giỏ</span>
                         </div>

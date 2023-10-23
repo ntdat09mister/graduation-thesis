@@ -23,12 +23,19 @@ public class CartController extends BaseController{
         return successResponse(cartService.getListCartsUser(user.getId()));
     }
 
+//    @GetMapping("/add")
+//    public ResponseEntity<?> addToCart(@UserInfo User user,
+//                                       @RequestParam Long productId,
+//                                       @RequestParam(required = false) Long quantity,
+//                                       @RequestParam Float priceCoefficient) throws NotFoundException {
+//        return successResponseCreated(cartService.addToCart(user.getId(), productId, quantity, priceCoefficient), null, HttpStatus.CREATED);
+//    }
     @PostMapping("/add")
     public ResponseEntity<?> addToCart(@UserInfo User user,
                                        @RequestParam Long productId,
-                                       @RequestParam Long quantity,
-                                       @RequestParam Long price) throws NotFoundException {
-        return successResponseCreated(cartService.addToCart(user.getId(), productId, quantity, price), null, HttpStatus.CREATED);
+                                       @RequestParam(required = false) Long quantity,
+                                       @RequestParam Float priceCoefficient) throws NotFoundException {
+        return successResponseCreated(cartService.addToCart(user.getId(), productId, quantity, priceCoefficient), null, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyAuthority('admin')")
