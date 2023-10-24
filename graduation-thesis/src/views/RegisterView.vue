@@ -21,6 +21,9 @@ export default defineComponent({
         return {
             username: '',
             password: '',
+            retypePassword: '',
+            name: '',
+            phone: '',
             valueRouter: ''
         }
     },
@@ -28,7 +31,7 @@ export default defineComponent({
         handleClick(valueRouter: string) {
             router.push({ name: valueRouter })
         },
-        ...mapActions(authStore, ['login'])
+        ...mapActions(authStore, ['register'])
     }
 })
 </script>
@@ -36,19 +39,19 @@ export default defineComponent({
     <div class="flex flex-col justify-center items-center">
         <Header />
         <div class="text-2xl font-bold mx-auto text-center mt-[40px]">
-            <p class="">Đăng nhập vào hệ thống Danny Store</p>
+            <p class="">Đăng ký tài khoản Danny Store</p>
         </div>
-        <div class="mr-[30px] ml-[30px] mt-[40px]">
+        <div class="mr-[30px] ml-[30px] mt-[40px] mb-3">
             <a href="" @click="handleClick('home')">
                 <LogoDannyStore class="w-[240px] h-[140px]" />
             </a>
         </div>
-        <div class="flex flex-col justify-around items-center h-[200px]">
+        <div class="flex flex-col justify-around items-center h-[400px]">
             <div class="flex flex-col mb-3">
                 <span>Username:</span>
                 <input v-model="username"
-                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
-                    placeholder="Nhập username.....">
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
+                    type="text" placeholder="Nhập username.....">
             </div>
             <div class="flex flex-col mb-3">
                 <span>Password:</span>
@@ -56,15 +59,32 @@ export default defineComponent({
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
                     type="password" placeholder="Nhập password.....">
             </div>
-
+            <div class="flex flex-col mb-3">
+                <span>Nhập lại password:</span>
+                <input v-model="retypePassword"
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
+                    type="password" placeholder="Nhập lại password.....">
+            </div>
+            <div class="flex flex-col mb-3">
+                <span>Nhập tên của bạn:</span>
+                <input v-model="name"
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
+                    type="text" placeholder="Nhập tên của bạn.....">
+            </div>
+            <div class="flex flex-col mb-3">
+                <span>Nhập sđt:</span>
+                <input v-model="phone"
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
+                    placeholder="Nhập số điện thoại.....">
+            </div>
             <button
                 class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
-                @click="login(username, password)">
-                Login
+                @click="register(username, password, retypePassword, name, phone)">
+                Register
             </button>
             <div>
-                <span>Chưa có tài khoản? </span>
-                <a href="" @click="handleClick('register')">Đăng ký ngay</a>
+                <span>Đã tài khoản? </span>
+                <a href="" @click="handleClick('login')">Đăng nhập ngay</a>
             </div>
         </div>
         <Footer />

@@ -31,7 +31,7 @@ export const authStore = defineStore('auth', () => {
                         localStorage.setItem("accessToken", access_token as string);
                         localStorage.setItem("authenticated", 'true');
                         router.push({ name: 'home' }).then(() => {
-                            location.reload(); // Làm mới trang
+                            location.reload();
                         });
                     }
                     console.log(response)
@@ -39,6 +39,24 @@ export const authStore = defineStore('auth', () => {
                 .catch(function (response) {
                     console.log(response)
                 })
+        },
+        async register(username: string, password: string, retypePassword: string, name: string, phone: string) {
+            if (password !== retypePassword) {
+                alert('Passwords do not match. Please re-enter your password.');
+                return;
+            }
+            const apiUrl = 'http://localhost:8080/auth/register/'
+            const userInput = {
+                username: username,
+                password: password,
+                name: name,
+                phone: phone
+            }
+            const headers = { 'Content-Type': 'application/json', };
+            const response = await axios.post(apiUrl, userInput, { headers });
+            console.log(response);
+            alert('Create successfully new account with username' + username + '.You can login now!')
+            router.push({ name: 'login' })
         },
         getIsAuthenticatedFromLocalStorage
     }

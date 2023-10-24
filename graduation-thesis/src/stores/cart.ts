@@ -49,15 +49,17 @@ export const useCartStore = defineStore('cart', () => {
       console.error('Access token not found in localStorage');
       return;
     }
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await axios.post(`http://localhost:8080/cart/add?productId=${productId}&quantity=${quantity}&priceCoefficient=${priceCoefficient}`, config);
+    const apiUrl = 'http://localhost:8080/cart/add';
+    const requestData = {
+      productId: productId,
+      quantity: quantity,
+      priceCoefficient: priceCoefficient
+    }
+    const headers = { Authorization: `Bearer ${token}`, };
+    console.log('dat dz 123')
+    const response = await axios.post(apiUrl, requestData, { headers });
     console.log(response);
   }
-
   return {
     getListCart,
     listCart,

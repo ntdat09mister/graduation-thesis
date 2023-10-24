@@ -5,6 +5,7 @@ import danny.store.dannystore.domain.dto.CartDtoAndAmount;
 import danny.store.dannystore.domain.entity.Cart;
 import danny.store.dannystore.domain.entity.CartDetail;
 import danny.store.dannystore.domain.entity.Product;
+import danny.store.dannystore.domain.model.CartInput;
 import danny.store.dannystore.repository.CartDetailRepository;
 import danny.store.dannystore.repository.CartRepository;
 import danny.store.dannystore.repository.ProductRepository;
@@ -48,27 +49,28 @@ public class CartService {
         }
         cartDtoAndAmount.setTotalAmount(countTotalAmount);
         cartDtoAndAmount.setCartDtoList(cartDtoList);
+        System.out.println("Select all cart from user login");
         return cartDtoAndAmount;
     }
     @Transactional(rollbackOn = Exception.class)
-    public String addToCart(Long userId, Long productId, Long quantity, Float priceCoefficient) throws NotFoundException {
-        Optional<Product> productOptional = productRepository.findById(productId);
-        if (productOptional.isPresent() && productOptional.get().getQuantity() >= quantity) {
+    public String addToCart(Long userId, CartInput cartInput) throws NotFoundException {
+        Optional<Product> productOptional = productRepository.findById(cartInput.getProductId());
+        if (productOptional.isPresent() && productOptional.get().getQuantity() >= cartInput.getQuantity()) {
             Cart cart = new Cart();
             cart.setUserId(userId);
             cart.setCreatedAt(new Date());
             cart.setModifiedAt(new Date());
             cartRepository.save(cart);
             CartDetail cartDetail = new CartDetail();
-            cartDetail.setProductId(productId);
+            cartDetail.setProductId(cartInput.getProductId());
             cartDetail.setCartId(cart.getId());
-            cartDetail.setQuantity(quantity);
-            cartDetail.setPrice(productOptional.get().getPrice() * priceCoefficient);
+            cartDetail.setQuantity(cartInput.getQuantity());
+            cartDetail.setPrice(productOptional.get().getPrice() * cartInput.getPriceCoefficient());
             cartDetail.setCreatedAt(new Date());
             cartDetail.setModifiedAt(new Date());
             cartDetailRepository.save(cartDetail);
             Product product = productOptional.get();
-            product.setQuantity(productOptional.get().getQuantity() - quantity);
+            product.setQuantity(productOptional.get().getQuantity() - cartInput.getQuantity());
             productRepository.save(product);
             System.out.println("Add success fully cart " + productOptional.get().getName());
             return RESPONSE_ADD_TO_CART_SUCCESS;
