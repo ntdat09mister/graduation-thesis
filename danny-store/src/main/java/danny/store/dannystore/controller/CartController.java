@@ -23,14 +23,6 @@ public class CartController extends BaseController{
     public ResponseEntity<?> findAllCarts(@UserInfo User user) {
         return successResponse(cartService.getListCartsUser(user.getId()));
     }
-
-    //    @GetMapping("/add")
-//    public ResponseEntity<?> addToCart(@UserInfo User user,
-//                                       @RequestParam Long productId,
-//                                       @RequestParam(required = false) Long quantity,
-//                                       @RequestParam Float priceCoefficient) throws NotFoundException {
-//        return successResponseCreated(cartService.addToCart(user.getId(), productId, quantity, priceCoefficient), null, HttpStatus.CREATED);
-//    }
     @PostMapping("/add")
     public ResponseEntity<?> addToCart(@UserInfo User user, @RequestBody CartInput cartInput) throws NotFoundException {
         return successResponseCreated(cartService.addToCart(user.getId(), cartInput), null, HttpStatus.CREATED);

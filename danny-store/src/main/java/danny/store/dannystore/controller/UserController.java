@@ -25,4 +25,8 @@ public class UserController extends BaseController{
     public ResponseEntity<?> findByUserName(@RequestParam String userName) throws NotFoundException {
         return successResponse(userService.findByUserName(userName));
     }
+    @GetMapping("/info")
+    public ResponseEntity<?> getInforUser(@UserInfo User user) throws NotFoundException {
+        return successResponse(userService.findByUserId(user.getId()));
+    }
 }

@@ -18,6 +18,7 @@ import IconInformationMySelf from './icons/IconInformationMySelf.vue';
 import { useSearchStore } from '@/stores/search';
 import { authStore } from '@/stores/auth';
 import { mapActions, mapState } from 'pinia';
+import { useUserStore } from '@/stores/user' 
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -42,6 +43,9 @@ export default defineComponent({
     computed: {
         ...mapState(authStore, {
             authenticated: 'authenticated'
+        }),
+        ...mapState(useUserStore, {
+            userInfo:'userInfo'
         })
     },
     data() {
@@ -61,6 +65,7 @@ export default defineComponent({
             console.log("123")
         },
         ...mapActions(useSearchStore, ['getListSearch']),
+        ...mapActions(useUserStore, ['getInforUser']),
         handleSearch() {
             const keyword = this.searchKeyword;
             sessionStorage.setItem("searchKeyword", keyword)
@@ -85,6 +90,11 @@ export default defineComponent({
                 localStorage.removeItem("authenticated")
                 router.push({ name: 'home' })
         }
+    },
+    mounted() {
+        this.getInforUser(),
+        console.log(12345);
+        console.log(this.userInfo)
     }
 
 })
@@ -138,7 +148,8 @@ export default defineComponent({
                         <template v-if="authenticated">
                             <div class="flex flex-col justify-center items-center">
                                 <IconInformationMySelf class="w-[30px]" />
-                                <span class="text-[12px]">Xem thông tin bản thân</span>
+                                <!-- <span class="text-[12px]" v-if="user">{{ userInfo.username }}</span> -->
+                                <span class="text-[12px]" v-if="userInfo">{{ userInfo.username }}</span>
                             </div>
                             <div class="flex flex-col justify-center items-center cursor-pointer">
                                 <a href="" @click="logout()">

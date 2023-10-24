@@ -3,8 +3,7 @@ package danny.store.dannystore.domain.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +17,6 @@ public class UserOutput {
     private String phone;
     private String role;
     private String avatar;
-    private Integer active;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Date createdAt;
+    private Date modifiedAt;
 }

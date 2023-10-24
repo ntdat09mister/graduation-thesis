@@ -38,18 +38,26 @@ export default defineComponent({
             <IconBack class="w-[25px] h-[25px]" />
             <p class="text-[25px] font-semibold ml-[160px]">Giỏ hàng của bạn</p>
         </div>
+        <div class="w-[550px] flex flex-row justify-between mt-[20px]">
+            <span>Sản phẩm</span>
+            <span>Tên sản phẩm</span>
+            <span>Giá</span>
+            <span>Số lượng</span>
+        </div>
         <div class="w-[600px] flex flex-col justify-between items-center" v-for="cartItem in listCart">
             <div class="w-[580px] j-[100px] flex flex-row justify-between items-center mt-[15px]">
                 <div class="w-[121px] h-[81px] flex justify-center items-center">
-                    <img class="w-[81px] h-[81px]"
-                        :src="cartItem.src"
-                        alt="img_product">
+                    <img class="w-[81px] h-[81px]" :src="cartItem.src" alt="img_product">
                 </div>
-                <div class="w-[435px] h-[55px]">
-                    <p>{{ cartItem.nameProduct }}</p>
-                    <p>{{ cartItem.price }}</p>
+                <div class="w-[435px] h-[55px] flex flex-row justify-around">
+                    <div class="w-[130px]">
+                        <p>{{ cartItem.nameProduct }}</p>
+                    </div>
+                    <div class="mr-[40px]">
+                        <p>{{ cartItem.price }}</p>
+                    </div>
                 </div>
-                <div class="w-[100px] h-[30px] flex justify-between items-center flex-row">
+                <div class="w-[100px] h-[30px] flex justify-between items-center flex-row mb-[25px]">
                     <div
                         class="w-[30px] h-[30px] flex justify-center items-center bg-gray-200 rounded-md cursor-pointer h-8 select-none w-8">
                         <span>-</span>
