@@ -100,9 +100,9 @@ export const useCartStore = defineStore('cart', () => {
       const headers = { Authorization: `Bearer ${token}`, };
       const response = await axios.post(apiUrl, requestData, { headers });
       console.log(response);
-      // router.push({ name: 'order' }).then(() => {
-      //   location.reload();
-      // });
+      router.push({ name: 'order' }).then(() => {
+        location.reload();
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
