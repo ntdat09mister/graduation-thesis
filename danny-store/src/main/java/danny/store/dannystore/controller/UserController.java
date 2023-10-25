@@ -1,7 +1,6 @@
 package danny.store.dannystore.controller;
 
 import danny.store.dannystore.domain.entity.User;
-import danny.store.dannystore.repository.UserRepository;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.UserService;
 import javassist.NotFoundException;

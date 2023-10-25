@@ -27,7 +27,7 @@ export default defineComponent({
         }
     },
     methods: {
-        ...mapActions(useCartStore, ['getListCart', 'removeCartItem']),
+        ...mapActions(useCartStore, ['getListCart', 'removeCartItem','createOrderFromCart']),
         handleClick(id: number) {
             router.push({ name: 'productDetail', params: { id: Number(id) } })
         }
@@ -91,7 +91,7 @@ export default defineComponent({
                     <span>đ</span>
                 </div>
             </div>
-            <div class="w-[140px] h-[50px] bg-[red] flex justify-center items-center rounded-xl ml-[500px]">
+            <div class="w-[140px] h-[50px] bg-[red] flex justify-center items-center rounded-xl ml-[500px] cursor-pointer" @click="createOrderFromCart">
                 <p class="text-neutral-50">Thanh toán</p>
             </div>
         </div>

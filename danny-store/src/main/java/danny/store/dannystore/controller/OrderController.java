@@ -17,11 +17,11 @@ public class OrderController extends BaseController{
     @Autowired
     private CartService cartService;
     @PostMapping("/add")
-    public ResponseEntity<?> createOrderFromCart(@UserInfo User user) {
+    public ResponseEntity<?> createOrderFromCart(@UserInfo User user) throws NotFoundException {
         return successResponseCreated(orderService.createOrderFromCart(user.getId()), null, HttpStatus.CREATED);
     }
     @GetMapping("/all")
-    public ResponseEntity<?> getAllOrders(@UserInfo User user) {
+    public ResponseEntity<?> getAllOrders(@UserInfo User user) throws NotFoundException {
         return successResponse(orderService.getAllOrders(user.getId()));
     }
     @GetMapping("/detail")

@@ -23,7 +23,7 @@ export const useCartStore = defineStore('cart', () => {
       }
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
       };
       const response = await axios.get(`http://localhost:8080/cart/all`, config);
@@ -59,12 +59,12 @@ export const useCartStore = defineStore('cart', () => {
         quantity: quantity,
         priceCoefficient: priceCoefficient
       }
-      const headers = { Authorization: `Bearer ${token}`, };
+      const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.post(apiUrl, requestData, { headers });
       console.log(response);
       router.push({ name: 'cart' }).then(() => {
         location.reload();
-    });
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -78,12 +78,31 @@ export const useCartStore = defineStore('cart', () => {
       }
       const apiUrl = 'http://localhost:8080/cart/delete';
       const params = { cartId: cartId };
-      const headers = { Authorization: `Bearer ${token}`, };
+      const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.delete(apiUrl, { headers, params });
       console.log(response);
       router.push({ name: 'cart' }).then(() => {
         location.reload();
-    });
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  async function createOrderFromCart() {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error('Access token not found in localStorage');
+        return;
+      }
+      const apiUrl = 'http://localhost:8080/order/add';
+      const requestData = {}
+      const headers = { Authorization: `Bearer ${token}`, };
+      const response = await axios.post(apiUrl, requestData, { headers });
+      console.log(response);
+      // router.push({ name: 'order' }).then(() => {
+      //   location.reload();
+      // });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -93,6 +112,7 @@ export const useCartStore = defineStore('cart', () => {
     listCart,
     totalAmountRef,
     addToCart,
-    removeCartItem
+    removeCartItem,
+    createOrderFromCart
   }
 })

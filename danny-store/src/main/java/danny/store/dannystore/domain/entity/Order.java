@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private Long totalAmount;
+    private Float totalAmount;
     private Long statusId;
     private Date createdAt;
     private Date modifiedAt;
