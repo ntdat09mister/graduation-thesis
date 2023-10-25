@@ -11,6 +11,7 @@ import danny.store.dannystore.repository.CartRepository;
 import danny.store.dannystore.repository.ProductRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,9 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartDetailRepository cartDetailRepository;
+
+    @Autowired
+    private PublicFunction publicFunction;
     public CartDtoAndAmount getListCartsUser(Long userId) {
         CartDtoAndAmount cartDtoAndAmount = new CartDtoAndAmount();
         List<CartDto> cartDtoList = new ArrayList<>();
@@ -41,7 +45,10 @@ public class CartService {
                 Product product = productOptional.get();
                 cartDto.setSrc(product.getSrc());
                 cartDto.setNameProduct(product.getName());
+                cartDto.setProductId(product.getId());
+                cartDto.setCreatedAt(publicFunction.formatTime(cart.getCreatedAt()));
             }
+            cartDto.setCartId(cart.getId());
             cartDto.setPrice(cartDetail.getPrice());
             cartDto.setQuantity(cartDetail.getQuantity());
             cartDtoList.add(cartDto);
@@ -78,6 +85,16 @@ public class CartService {
             System.out.println(RESPONSE_ADD_TO_CART_FAIL);
             throw new NotFoundException(RESPONSE_ADD_TO_CART_FAIL);
         }
+    }
 
+    public String deleteCartWithId(Long userId, Long cartId) throws NotFoundException {
+        Cart cart = cartRepository.findByUserIdAndId(userId, cartId);
+        if (cart != null) {
+            cartRepository.deleteById(cartId);
+            cartDetailRepository.deleteById(cartId);
+            return "Delete success!";
+        } else {
+            throw new NotFoundException(RESPONSE_ADD_TO_CART_FAIL);
+        }
     }
 }

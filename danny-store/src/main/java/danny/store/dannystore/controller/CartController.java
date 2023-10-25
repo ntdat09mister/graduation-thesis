@@ -28,6 +28,11 @@ public class CartController extends BaseController{
         return successResponseCreated(cartService.addToCart(user.getId(), cartInput), null, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteCartWithId(@UserInfo User user,@RequestParam Long cartId) throws NotFoundException {
+        return successResponse(cartService.deleteCartWithId(user.getId(), cartId));
+    }
+
     @PreAuthorize("hasAnyAuthority('admin')")
     @GetMapping("/admin")
     public String testAuthAdmin() {

@@ -26,6 +26,7 @@ public class BaseController {
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 
+
     public <T> ResponseEntity<?> successResponse(String message, T data) {
         return successResponse(message, null, data);
     }

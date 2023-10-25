@@ -1,13 +1,16 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import router from '@/router'
 export const useCartStore = defineStore('cart', () => {
   interface Cart {
-    id: number,
+    cartId: number,
+    productId: number,
     src: string,
     nameProduct: string,
     price: string,
-    quantity: number
+    quantity: number,
+    createdAt: string
   }
   const listCart = ref<Cart[]>([]);
   const totalAmountRef = ref<number>(0);
@@ -44,26 +47,52 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   async function addToCart(productId: number, quantity: number, priceCoefficient: number) {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      console.error('Access token not found in localStorage');
-      return;
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error('Access token not found in localStorage');
+        return;
+      }
+      const apiUrl = 'http://localhost:8080/cart/add';
+      const requestData = {
+        productId: productId,
+        quantity: quantity,
+        priceCoefficient: priceCoefficient
+      }
+      const headers = { Authorization: `Bearer ${token}`, };
+      const response = await axios.post(apiUrl, requestData, { headers });
+      console.log(response);
+      router.push({ name: 'cart' }).then(() => {
+        location.reload();
+    });
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    const apiUrl = 'http://localhost:8080/cart/add';
-    const requestData = {
-      productId: productId,
-      quantity: quantity,
-      priceCoefficient: priceCoefficient
+  }
+  async function removeCartItem(cartId: number) {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error('Access token not found in localStorage');
+        return;
+      }
+      const apiUrl = 'http://localhost:8080/cart/delete';
+      const params = { cartId: cartId };
+      const headers = { Authorization: `Bearer ${token}`, };
+      const response = await axios.delete(apiUrl, { headers, params });
+      console.log(response);
+      router.push({ name: 'cart' }).then(() => {
+        location.reload();
+    });
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    const headers = { Authorization: `Bearer ${token}`, };
-    console.log('dat dz 123')
-    const response = await axios.post(apiUrl, requestData, { headers });
-    console.log(response);
   }
   return {
     getListCart,
     listCart,
     totalAmountRef,
-    addToCart
+    addToCart,
+    removeCartItem
   }
 })
