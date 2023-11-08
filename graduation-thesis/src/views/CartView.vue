@@ -30,6 +30,9 @@ export default defineComponent({
         ...mapActions(useCartStore, ['getListCart', 'removeCartItem','createOrderFromCart']),
         handleClick(id: number) {
             router.push({ name: 'productDetail', params: { id: Number(id) } })
+        },
+        routerOrderPage() {
+            router.push({ name: 'order' })
         }
     },
     mounted() {

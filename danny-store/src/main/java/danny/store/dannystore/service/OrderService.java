@@ -1,8 +1,6 @@
 package danny.store.dannystore.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import danny.store.dannystore.domain.dto.OrderDetailDto;
-import danny.store.dannystore.domain.dto.OrderDto;
-import danny.store.dannystore.domain.dto.OrderItemDto;
+import danny.store.dannystore.domain.dto.*;
 import danny.store.dannystore.domain.entity.*;
 import danny.store.dannystore.repository.*;
 import javassist.NotFoundException;
@@ -26,7 +24,9 @@ public class OrderService {
     private final CartDetailRepository cartDetailRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
     private final StatusOrderRepository statusOrderRepository;
+    private final UserRepository userRepository;
     @Autowired
     private PublicFunction publicFunction;
     @Autowired
@@ -37,7 +37,7 @@ public class OrderService {
         Float countTotalAmount = 0F;
         List<Cart> cartList = cartRepository.findByUserId(userId);
         if (!cartList.isEmpty() && cartList != null) {
-            order.setUserId(userId);
+            order.setCustomerId(userId);
             order.setStatusId(1L);
             orderRepository.save(order);
             for (Cart cart: cartList) {
@@ -55,6 +55,7 @@ public class OrderService {
             }
             order.setCreatedAt(new Date());
             order.setTotalAmount(countTotalAmount);
+            order.setSaleStaffId(1L);
             orderRepository.save(order);
             System.out.println(RESPONSE_ADD_ORDER_SUCCESS);
             return RESPONSE_ADD_ORDER_SUCCESS;
@@ -66,7 +67,7 @@ public class OrderService {
 
     public List<OrderDto> getAllOrders(Long userId) throws NotFoundException {
         List<OrderDto> orderDtoList = new ArrayList<>();
-        List<Order> orderList = orderRepository.findByUserId(userId);
+        List<Order> orderList = orderRepository.findByCustomerId(userId);
         for (Order order: orderList) {
             OrderDto orderDto = objectMapper.convertValue(order, OrderDto.class);
             orderDto.setCreatedAt(publicFunction.formatTime(order.getCreatedAt()));
@@ -85,29 +86,90 @@ public class OrderService {
         }
     }
     public OrderDetailDto getOrderDetail(Long userId, Long orderId) throws NotFoundException {
-        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(orderId, userId);
+        Optional<User> userOptional = userRepository.findById(userId);
         if (orderOptional.isPresent()) {
             List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
             List<OrderItemDto> orderItemDtoList = orderItemList.stream().map(orderItem -> {
+                Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
                 OrderItemDto orderItemDto = new OrderItemDto();
-                orderItemDto.setId(orderItem.getId());
-                orderItemDto.setOrderId(orderItem.getOrderId());
-                orderItemDto.setProductId(orderItem.getProductId());
+                orderItemDto.setOrderId(orderItem.getId());
+                orderItemDto.setProductName(productOptional.get().getName());
                 orderItemDto.setPrice(orderItem.getPrice());
                 orderItemDto.setQuantity(orderItem.getQuantity());
-                orderItemDto.setCreatedAt(publicFunction.formatTime(orderItem.getCreatedAt()));
                 return orderItemDto;
             }).collect(Collectors.toList());
             OrderDetailDto orderDetailDto = new OrderDetailDto();
             orderDetailDto.setOrderItemList(orderItemDtoList);
             orderDetailDto.setOrderId(orderId);
             orderDetailDto.setUserId(userId);
+            orderDetailDto.setTotalAmount(orderOptional.get().getTotalAmount());
             orderDetailDto.setCreatedAt(publicFunction.formatTime(orderOptional.get().getCreatedAt()));
+            orderDetailDto.setNameCustomer(userOptional.get().getName());
+            orderDetailDto.setAddress(userOptional.get().getAddress());
+            orderDetailDto.setPhoneNumber(userOptional.get().getPhone());
             System.out.println(RESPONSE_LIST_ORDER_DETAIL);
             return orderDetailDto;
         } else {
             System.out.println(RESPONSE_NOT_FOUND_ORDER);
             throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+        }
+    }
+    private List<ReportItemDto> mappingReportItemDtos(List<Order> orderList) throws NotFoundException {
+        List<ReportItemDto> reportItemDtoList = new ArrayList<>();
+        for (Order order: orderList) {
+            Optional<User> customerOptional = userRepository.findById(order.getCustomerId());
+            Optional<User> saleStaffOptional = userRepository.findById(order.getSaleStaffId());
+            ReportItemDto reportItemDto = new ReportItemDto();
+            reportItemDto.setOrderId(order.getId());
+            if (customerOptional.isPresent()) {
+                reportItemDto.setCustomerName(customerOptional.get().getName());
+            }
+            if (saleStaffOptional.isPresent()) {
+                reportItemDto.setSaleStaffName(saleStaffOptional.get().getName());
+            }
+            reportItemDto.setTotalAmount(order.getTotalAmount());
+            reportItemDto.setStatus(publicFunction.getStatus(order.getStatusId()));
+            reportItemDto.setCreatedAt(publicFunction.formatTime(order.getCreatedAt()));
+            reportItemDtoList.add(reportItemDto);
+        }
+        return reportItemDtoList;
+    }
+
+    private FilterReport getFilterReport(List<Order> orderList, Float totalAmountReport) throws NotFoundException {
+        FilterReport filterReport = new FilterReport();
+        List<ReportItemDto> reportItemDtoList = new ArrayList<>();
+        reportItemDtoList = mappingReportItemDtos(orderList);
+        filterReport.setReportDtoList(reportItemDtoList);
+        filterReport.setTotalAmount(totalAmountReport);
+        return filterReport;
+    }
+
+    public FilterReport filterReport(Long byDay, Long byMonth, Long byYear) throws NotFoundException {
+        Date dateNow = new Date();
+        String filterTime = "";
+        Float totalAmountReport = 0F;
+        List<Order> orderList = new ArrayList<>();
+        List<ReportItemDto> reportItemDtoList = new ArrayList<>();
+        if (byDay != null && byMonth == null && byYear == null) {
+            filterTime = publicFunction.getYear(dateNow) + "-" + publicFunction.getMonth(dateNow) + "-" + byDay;
+            orderList = orderRepository.filterByDay(filterTime);
+            totalAmountReport = orderRepository.totalAmountByDay(filterTime);
+            return getFilterReport(orderList, totalAmountReport);
+        } else if (byDay == null && byMonth !=null && byYear == null) {
+            orderList = orderRepository.filterByMonth(publicFunction.getYear(new Date()), byMonth);
+            totalAmountReport = orderRepository.totalAmountByMonth(publicFunction.getYear(new Date()), byMonth);
+            return getFilterReport(orderList, totalAmountReport);
+        } else if (byDay != null && byMonth != null && byYear == null) {
+            return null;
+        } else if (byDay == null && byMonth != null && byYear != null) {
+            return null;
+        } else if (byDay == null && byMonth == null && byYear != null) {
+            orderList = orderRepository.filterByYear(byYear.toString());
+            totalAmountReport = orderRepository.totalAmountByYear(byYear.toString());
+            return getFilterReport(orderList, totalAmountReport);
+        } else {
+            throw new NotFoundException(RESPONSE_FAIL_REPORT);
         }
     }
 }

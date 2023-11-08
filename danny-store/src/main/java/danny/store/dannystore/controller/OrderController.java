@@ -28,5 +28,4 @@ public class OrderController extends BaseController{
     public ResponseEntity<?> getOrderDetail(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
         return successResponse(orderService.getOrderDetail(user.getId(), orderId));
     }
-
 }

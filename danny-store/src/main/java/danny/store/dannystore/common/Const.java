@@ -10,4 +10,5 @@ public class Const {
     public static final String RESPONSE_LIST_ORDERS = "Danh sách các đơn hàng của người dùng!";
     public static final String RESPONSE_LIST_ORDER_DETAIL = "Đơn hàng chi tiết!";
     public static final String RESPONSE_NOT_FOUND = "Không thấy giá trị tương ứng!";
+    public static final String RESPONSE_FAIL_REPORT = "Không tìm thấy báo cáo tương ứng!";
 }

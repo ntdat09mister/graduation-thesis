@@ -27,9 +27,38 @@ export const useOrderStore = defineStore('order', () => {
             const responseData = response.data;
             if (responseData && responseData.data) {
                 const data = responseData.data;
-                
+
                 if (data && Array.isArray(data)) {
-                    listOrders.value = data;                    
+                    listOrders.value = data;
+                } else {
+                    console.error('Invalid data received from the API:', data);
+                }
+            } else {
+                console.error('No data received from the API');
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getOrderDetail(orderId: number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            };
+            const response = await axios.get(`http://localhost:8080/order/detail?orderId=${orderId}`, config);
+            const responseData = response.data;
+            if (responseData && responseData.data) {
+                const data = responseData.data;
+
+                if (data && Array.isArray(data)) {
+                    listOrders.value = data;
                 } else {
                     console.error('Invalid data received from the API:', data);
                 }
@@ -42,6 +71,7 @@ export const useOrderStore = defineStore('order', () => {
     }
     return {
         getAllOrders,
-        listOrders
+        listOrders,
+        getOrderDetail
     }
 })

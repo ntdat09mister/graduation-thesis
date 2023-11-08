@@ -16,7 +16,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
+    private Long saleStaffId;
+    private Long customerId;
     private Float totalAmount;
     private Long statusId;
     private Date createdAt;

@@ -18,7 +18,7 @@ import IconInformationMySelf from './icons/IconInformationMySelf.vue';
 import { useSearchStore } from '@/stores/search';
 import { authStore } from '@/stores/auth';
 import { mapActions, mapState } from 'pinia';
-import { useUserStore } from '@/stores/user' 
+import { useUserStore } from '@/stores/user'
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -45,7 +45,7 @@ export default defineComponent({
             authenticated: 'authenticated'
         }),
         ...mapState(useUserStore, {
-            userInfo:'userInfo'
+            userInfo: 'userInfo'
         })
     },
     data() {
@@ -82,18 +82,18 @@ export default defineComponent({
             router.push({ name: 'search' });
             this.setVModelInput()
         },
-        routerLogin() {
-            router.push({ name: 'login' })
+        routerLogin(routerName: string) {
+            router.push({ name: routerName })
         },
         logout() {
             localStorage.removeItem("accessToken"),
                 localStorage.removeItem("authenticated")
-                router.push({ name: 'home' })
+            router.push({ name: 'home' })
         }
     },
     mounted() {
         this.getInforUser(),
-        console.log(12345);
+            console.log(12345);
         console.log(this.userInfo)
     }
 
@@ -134,7 +134,7 @@ export default defineComponent({
                         <IconCall class="w-[30px]" />
                         <span class="text-[12px]">Liên hệ</span>
                     </div>
-                    <div class="flex flex-col justify-center items-center">
+                    <div class="flex flex-col justify-center items-center cursor-pointer" @click="routerLogin('order')">
                         <IconOrderLookUp class="w-[30px]" />
                         <span class="text-[12px]">Tra cứu đơn hàng</span>
                     </div>
@@ -160,7 +160,7 @@ export default defineComponent({
                         </template>
                         <template v-else>
                             <div class="flex flex-col justify-center items-center">
-                                <a href="" @click="routerLogin()">
+                                <a href="" @click="routerLogin('login')">
                                     <IconLogin class="w-[30px]" />
                                 </a>
                                 <span class="text-[12px]">Đăng nhập</span>

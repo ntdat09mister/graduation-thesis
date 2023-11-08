@@ -15,10 +15,10 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getAllOrders'])
+        ...mapActions(useOrderStore, ['getOrderDetail'])
     },
     mounted() {
-        this.getAllOrders()
+        this.getOrderDetail(11)
     }
 })
 </script>
