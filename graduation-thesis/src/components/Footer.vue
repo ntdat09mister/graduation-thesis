@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col justify-center items-center">
+    <div class="flex flex-col justify-center items-center mt-[50px]">
         <div class="w-[1200px] mt-[40px] flex flex-row justify-between">
             <div>
                 <div>
@@ -79,9 +79,11 @@
                     <img class="w-[44px] h-[32px]"
                         src="https://cdn2.cellphones.com.vn/44x,webp/media/logo/social/cellphones-youtube.png"
                         alt="youtube">
-                    <img class="w-[44px] h-[32px]"
-                        src="https://cdn2.cellphones.com.vn/44x,webp/media/logo/social/cellphones-facebook.png"
-                        alt="facebook">
+                    <a href="https://www.facebook.com/ntdat09mister/">
+                        <img class="w-[44px] h-[32px]"
+                            src="https://cdn2.cellphones.com.vn/44x,webp/media/logo/social/cellphones-facebook.png"
+                            alt="facebook">
+                    </a>
                     <img class="w-[44px] h-[32px]"
                         src="https://cdn2.cellphones.com.vn/44x,webp/media/logo/social/cellphones-instagram.png"
                         alt="instagram">
@@ -112,12 +114,16 @@
                 </div>
             </div>
             <div>
-                <span class="text-[10px] bg-black bg-opacity-50">Công ty TNHH Thương Mại và Dịch Vụ Kỹ Thuật DIỆU PHÚC - GPĐKKD: 0316172372 cấp tại Sở KH & ĐT TP. HCM. Địa chỉ văn phòng: 350-352 Võ Văn Kiệt, Phường Cô Giang, Quận 1, Thành phố Hồ Chí Minh, Việt Nam. Điện thoại: 028.7108.9666.</span>
+                <span class="text-[10px] bg-black bg-opacity-50">Công ty TNHH Thương Mại và Dịch Vụ Kỹ Thuật DIỆU PHÚC -
+                    GPĐKKD: 0316172372 cấp tại Sở KH & ĐT TP. HCM. Địa chỉ văn phòng: 350-352 Võ Văn Kiệt, Phường Cô Giang,
+                    Quận 1, Thành phố Hồ Chí Minh, Việt Nam. Điện thoại: 028.7108.9666.</span>
             </div>
             <div class="flex flex-row justify-center items-center">
-                <img class="w-[80px] h-[38px]" src="https://cdn2.cellphones.com.vn/80x,webp/media/logo/logoSaleNoti.png" alt="">
-                <img class="w-[96] h-[20px]" src="https://images.dmca.com/Badges/dmca_copyright_protected150c.png?ID=158f5667-cce3-4a18-b2d1-826225e6b022" alt="">
-            </div>
+                <img class="w-[80px] h-[38px]" src="https://cdn2.cellphones.com.vn/80x,webp/media/logo/logoSaleNoti.png"
+                    alt="">
+                <img class="w-[96] h-[20px]"
+                    src="https://images.dmca.com/Badges/dmca_copyright_protected150c.png?ID=158f5667-cce3-4a18-b2d1-826225e6b022"
+                    alt="">
         </div>
     </div>
-</template>
+</div></template>

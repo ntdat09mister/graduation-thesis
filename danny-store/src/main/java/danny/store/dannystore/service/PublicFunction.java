@@ -18,7 +18,16 @@ public class PublicFunction {
     private final StatusOrderRepository statusOrderRepository;
     public String formatTime(Date dateInput) {
         if (dateInput != null) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            System.out.println("Convert value Date to String");
+            return simpleDateFormat.format(dateInput);
+        } else {
+            return "";
+        }
+    }
+    public String formatTimeDetail(Date dateInput) {
+        if (dateInput != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             System.out.println("Convert value Date to String");
             return simpleDateFormat.format(dateInput);
         } else {

@@ -5,7 +5,7 @@ import router from '@/router'
 export const useOrderStore = defineStore('order', () => {
     interface Order {
         id: number,
-        userId: number,
+        listProducts: string,
         totalAmount: number,
         status: string,
         createdAt: string,

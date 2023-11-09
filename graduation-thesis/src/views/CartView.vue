@@ -47,17 +47,17 @@ export default defineComponent({
             <IconBack class="w-[25px] h-[25px]" />
             <p class="text-[25px] font-semibold ml-[160px]">Giỏ hàng của bạn</p>
         </div>
-        <div class="w-[780px] flex flex-row justify-between mt-[20px]">
+        <div class="w-[780px] flex flex-row justify-between mt-[20px] p-2 border bg-gray-200 border border-gray-400">
             <span class="w-[121px] flex justify-center">Sản phẩm</span>
             <span class="w-[130px]">Tên sản phẩm</span>
             <span class="w-[100px]">Số lượng</span>
-            <span class="w-[200px]">Thời gian mua</span>
-            <span class="w-[100px]">Giá</span>
-            <span>Xóa</span>
+            <span class="w-[150px]">Thời gian mua</span>
+            <span class="w-[50px]">Giá</span>
+            <span class="w-[50px]">Xóa</span>
         </div>
-        <div class="w-[780px] flex flex-col justify-between items-center" v-for="cartItem in listCart">
+        <div class="w-[780px] flex flex-col justify-between items-center border border-gray-400" v-for="cartItem in listCart">
             <div class="w-[780px] flex flex-row justify-between items-center mt-[10px]">
-                <div class="w-[121px] h-[81px] flex justify-center items-center">
+                <div class="w-[121px] h-[100px] flex justify-center items-center">
                     <a href="" @click="handleClick(Number(cartItem.productId))"><img class="w-[81px] h-[81px]"
                             :src="cartItem.src" alt="img_product"></a>
                 </div>
@@ -75,13 +75,13 @@ export default defineComponent({
                         <span>+</span>
                     </div>
                 </div>
-                <div class="w-[200px] mb-[30px] ml-[20px] mt-[30px]">
+                <div class=" w-[150px] mb-[30px] ml-[20px] mt-[30px]">
                     <p>{{ cartItem.createdAt }}</p>
                 </div>
-                <div class="w-[100px]">
+                <div class="w-[50px]">
                     <p>{{ cartItem.price }}</p>
                 </div>
-                <div class="w-[30px] mb-[10px] flex justify-center cursor-pointer" @click="removeCartItem(cartItem.cartId)">
+                <div class="w-[50px] mb-[10px] flex justify-center cursor-pointer mr-[20px]" @click="removeCartItem(cartItem.cartId)">
                     <IconRemove class="w-[20px]" />
                 </div>
             </div>

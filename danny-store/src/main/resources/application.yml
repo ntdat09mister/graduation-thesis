@@ -10,7 +10,7 @@ spring:
       ddlAuto: update
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/danny-store-db
+    url: jdbc:mysql://localhost:3306/danny-store-db?useUnicode=true&characterEncoding=utf8
     username: root
     password: ENC(AdxkT8pIWxe+6B83WYzUdLm9qShfSy1+)
 server:

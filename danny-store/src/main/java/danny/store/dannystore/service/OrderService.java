@@ -68,10 +68,25 @@ public class OrderService {
     public List<OrderDto> getAllOrders(Long userId) throws NotFoundException {
         List<OrderDto> orderDtoList = new ArrayList<>();
         List<Order> orderList = orderRepository.findByCustomerId(userId);
+
         for (Order order: orderList) {
-            OrderDto orderDto = objectMapper.convertValue(order, OrderDto.class);
+            List<OrderItem> orderItemList = new ArrayList<>();
+            orderItemList = orderItemRepository.findByOrderId(order.getId());
+            StringBuilder productLists = new StringBuilder();
+            for (int i = 0; i < orderItemList.size(); i++) {
+                OrderItem orderItem = orderItemList.get(i);
+                Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
+                productLists.append(productOptional.get().getName());
+                if (i < orderItemList.size() - 1) {
+                    productLists.append(", ");
+                }
+            }
+            OrderDto orderDto = new OrderDto();
+            orderDto.setId(order.getId());
+            orderDto.setTotalAmount(order.getTotalAmount());
             orderDto.setCreatedAt(publicFunction.formatTime(order.getCreatedAt()));
             orderDto.setStatus(getStatusOrder(order.getStatusId()));
+            orderDto.setListProducts(productLists.toString());
             orderDtoList.add(orderDto);
         }
         System.out.println(RESPONSE_LIST_ORDERS);
@@ -104,7 +119,7 @@ public class OrderService {
             orderDetailDto.setOrderId(orderId);
             orderDetailDto.setUserId(userId);
             orderDetailDto.setTotalAmount(orderOptional.get().getTotalAmount());
-            orderDetailDto.setCreatedAt(publicFunction.formatTime(orderOptional.get().getCreatedAt()));
+            orderDetailDto.setCreatedAt(publicFunction.formatTimeDetail(orderOptional.get().getCreatedAt()));
             orderDetailDto.setNameCustomer(userOptional.get().getName());
             orderDetailDto.setAddress(userOptional.get().getAddress());
             orderDetailDto.setPhoneNumber(userOptional.get().getPhone());

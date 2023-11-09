@@ -3,7 +3,7 @@ import lombok.Data;
 @Data
 public class OrderDto {
     private Long id;
-    private Long userId;
+    private String listProducts;
     private Float totalAmount;
     private String status;
     private String createdAt;

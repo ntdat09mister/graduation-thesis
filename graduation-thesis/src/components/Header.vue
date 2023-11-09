@@ -101,7 +101,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="w-[100%] flex flex-col justify-center items-center">
+    <div class="w-[100%] flex flex-col justify-center items-center mb-[20px]">
         <div class="w-[100%] h-[40px] flex flex-row justify-center item-center bg-[#e9efff]">
             <img src="https://cdn2.cellphones.com.vn/x30,webp,q100/https://dashboard.cellphones.com.vn/storage/top-banner-chinh-sach-bao-hanh-doi-tra.png"
                 alt="">
@@ -111,7 +111,7 @@ export default defineComponent({
                 alt="">
         </div>
         <div class="w-[100%] flex justify-center items-center bg-[#e9efff]">
-            <div class="w-[1200px] flex flex-row justify-between items-center mt-[10px]">
+            <div class="w-[1300px] flex flex-row justify-between items-center mt-[10px]">
                 <div class="mr-[30px] ml-[30px]">
                     <a href="" @click="handleClick()">
                         <LogoDannyStore class="w-[120px] h-[70px]" />
@@ -155,7 +155,7 @@ export default defineComponent({
                                 <a href="" @click="logout()">
                                     <IconLogout class="w-[30px]" />
                                 </a>
-                                <span class="text-[12px]">Đăng xuất</span>
+                                <span class="text-[12px]">Logout</span>
                             </div>
                         </template>
                         <template v-else>
@@ -163,7 +163,7 @@ export default defineComponent({
                                 <a href="" @click="routerLogin('login')">
                                     <IconLogin class="w-[30px]" />
                                 </a>
-                                <span class="text-[12px]">Đăng nhập</span>
+                                <span class="text-[12px]">Login</span>
                             </div>
                         </template>
                     </div>
