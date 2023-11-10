@@ -52,7 +52,7 @@ export default defineComponent({
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.id }}</span>
             </div>
-            <div class="w-[300px] flex flex-row items-center">
+            <div class="w-[300px] flex justify-center flex-row items-center">
                 <span>{{ orderItem.listProducts }}</span>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
@@ -61,7 +61,7 @@ export default defineComponent({
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.createdAt }}</span>
             </div>
-            <div class="w-[150px] flex flex-row items-center">
+            <div class="w-[150px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.status }}</span>
             </div>
         </div>

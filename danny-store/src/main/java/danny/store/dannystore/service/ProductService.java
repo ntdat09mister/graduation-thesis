@@ -28,13 +28,13 @@ public class ProductService {
         List<ProductDto> productDtos = new ArrayList<>();
         List<Product> products = new ArrayList<>();
         if (productType != null && manufacturerId != null && manufacturerId != 0L) {
-            products = productRepository.getProductsByProductTypeAndManufacturerId(productType, manufacturerId);
+            products = productRepository.getProductsByProductTypeAndManufacturerId(productType, manufacturerId, true);
         } else if (productType != null & manufacturerId == null){
-            products = productRepository.getProductsByProductType(productType);
+            products = productRepository.getProductsByProductType(productType, true);
         } else if (manufacturerId == null){
-            products = productRepository.findAll();
+            products = productRepository.findAllProducts(true);
         } else {
-            products = productRepository.findAll();
+            products = productRepository.findAllProducts(true);
         }
         for (Product product : products) {
             ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);

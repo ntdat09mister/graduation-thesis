@@ -26,6 +26,7 @@ public class Product {
     private Long manufacturerId;
     private Long promotionId;
     private Long quantity;
+    private Boolean status;
     private Date createdAt;
     private Date modifiedAt;
 }

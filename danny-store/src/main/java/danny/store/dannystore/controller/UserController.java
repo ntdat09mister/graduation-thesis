@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -27,5 +24,20 @@ public class UserController extends BaseController{
     @GetMapping("/info")
     public ResponseEntity<?> getInforUser(@UserInfo User user) throws NotFoundException {
         return successResponse(userService.findByUserId(user.getId()));
+    }
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @GetMapping("/admin/all")
+    public ResponseEntity<?> findAllUsers(@UserInfo User user) throws NotFoundException {
+        return successResponse(userService.findAllUsers(user.getId()));
+    }
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @PutMapping("/admin/updateRole")
+    public ResponseEntity<?> updateRole(@UserInfo User user, @RequestParam Long userId, @RequestParam Long roleId) throws NotFoundException {
+        return successResponse(userService.updateRole(user.getId(), userId, roleId));
+    }
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @DeleteMapping("/admin/delete")
+    public ResponseEntity<?> deleteUser(@UserInfo User user, @RequestParam Long userId) throws NotFoundException {
+        return successResponse(userService.deleteUser(user.getId(), userId));
     }
 }

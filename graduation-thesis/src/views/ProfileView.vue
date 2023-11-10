@@ -4,7 +4,7 @@ import Footer from '@/components/Footer.vue'
 import IconHome from '@/components/icons/IconHome.vue'
 import { defineComponent } from 'vue'
 import { useProfileStore } from '@/stores/profile'
-import { mapActions, mapState } from 'pinia'
+import { mapState } from 'pinia'
 import IconGift from '@/components/icons/IconGift.vue'
 export default defineComponent({
     components: {

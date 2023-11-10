@@ -24,4 +24,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdAndCustomerId(Long orderId, Long userId);
     @Query(value = "SELECT SUM(o.total_amount) FROM `order` o WHERE YEAR(o.created_at) = ?1", nativeQuery = true)
     Float totalAmountByYear(String filterTime);
+    @Query(value = "select * from `order` o where o.customer_id = ?1", nativeQuery = true)
+    Long countOrders(Long id);
+    @Query(value = "select SUM(o.total_amount)  from `order` o where o.customer_id = ?1", nativeQuery = true)
+    Long getTotalAmount(Long id);
 }
