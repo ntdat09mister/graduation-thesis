@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Host:                         localhost
+-- Host:                         127.0.0.1
 -- Server version:               5.7.41 - MySQL Community Server (GPL)
 -- Server OS:                    Linux
--- HeidiSQL Version:             12.1.0.6537
+-- HeidiSQL Version:             12.6.0.6765
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,15 +15,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for table danny-store-db.cart
+DROP TABLE IF EXISTS `cart`;
 CREATE TABLE IF NOT EXISTS `cart` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `created_at` datetime DEFAULT NULL,
     `modified_at` datetime DEFAULT NULL,
     `user_id` bigint(20) DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.cart: ~16 rows (approximately)
+-- Dumping data for table danny-store-db.cart: ~14 rows (approximately)
 REPLACE INTO `cart` (`id`, `created_at`, `modified_at`, `user_id`) VALUES
 	(2, NULL, NULL, 5),
 	(3, NULL, NULL, 5),
@@ -38,11 +39,10 @@ REPLACE INTO `cart` (`id`, `created_at`, `modified_at`, `user_id`) VALUES
 	(12, '2023-10-21 04:06:17', '2023-10-21 04:06:17', 5),
 	(13, '2023-10-21 04:06:48', '2023-10-21 04:06:48', 5),
 	(14, '2023-10-23 15:42:25', '2023-10-23 15:42:25', 5),
-	(15, '2023-10-23 15:43:10', '2023-10-23 15:43:10', 5),
-	(27, '2023-11-09 16:33:59', '2023-11-09 16:33:59', 6),
-	(28, '2023-11-09 16:34:05', '2023-11-09 16:34:05', 6);
+	(15, '2023-10-23 15:43:10', '2023-10-23 15:43:10', 5);
 
 -- Dumping structure for table danny-store-db.cart_detail
+DROP TABLE IF EXISTS `cart_detail`;
 CREATE TABLE IF NOT EXISTS `cart_detail` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `cart_id` bigint(20) DEFAULT NULL,
@@ -53,9 +53,9 @@ CREATE TABLE IF NOT EXISTS `cart_detail` (
     `quantity` bigint(20) DEFAULT NULL,
     `total_amount` bigint(20) DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.cart_detail: ~16 rows (approximately)
+-- Dumping data for table danny-store-db.cart_detail: ~14 rows (approximately)
 REPLACE INTO `cart_detail` (`id`, `cart_id`, `created_at`, `modified_at`, `price`, `product_id`, `quantity`, `total_amount`) VALUES
 	(2, 2, NULL, NULL, 600, 2, 3, 1800),
 	(3, 3, NULL, NULL, 800, 4, 3, 2400),
@@ -70,11 +70,10 @@ REPLACE INTO `cart_detail` (`id`, `cart_id`, `created_at`, `modified_at`, `price
 	(12, 12, '2023-10-21 04:06:17', '2023-10-21 04:06:17', 1100, 1, 1, NULL),
 	(13, 13, '2023-10-21 04:06:48', '2023-10-21 04:06:48', 1100, 1, 1, NULL),
 	(14, 14, '2023-10-23 15:42:25', '2023-10-23 15:42:25', 2777500, 1, 1, NULL),
-	(15, 15, '2023-10-23 15:43:10', '2023-10-23 15:43:10', 2777500, 1, 1, NULL),
-	(27, 27, '2023-11-09 16:33:59', '2023-11-09 16:33:59', 3125, 1, 1, NULL),
-	(28, 28, '2023-11-09 16:34:05', '2023-11-09 16:34:05', 3750, 2, 1, NULL);
+	(15, 15, '2023-10-23 15:43:10', '2023-10-23 15:43:10', 2777500, 1, 1, NULL);
 
 -- Dumping structure for table danny-store-db.evaluate
+DROP TABLE IF EXISTS `evaluate`;
 CREATE TABLE IF NOT EXISTS `evaluate` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `created_at` datetime DEFAULT NULL,
@@ -87,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `evaluate` (
 -- Dumping data for table danny-store-db.evaluate: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.hibernate_sequence
+DROP TABLE IF EXISTS `hibernate_sequence`;
 CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
     `next_val` bigint(20) DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -101,6 +101,7 @@ REPLACE INTO `hibernate_sequence` (`next_val`) VALUES
 	(4);
 
 -- Dumping structure for table danny-store-db.order
+DROP TABLE IF EXISTS `order`;
 CREATE TABLE IF NOT EXISTS `order` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `created_at` datetime DEFAULT NULL,
@@ -110,9 +111,9 @@ CREATE TABLE IF NOT EXISTS `order` (
     `status_id` bigint(20) DEFAULT NULL,
     `total_amount` float DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.order: ~9 rows (approximately)
+-- Dumping data for table danny-store-db.order: ~11 rows (approximately)
 REPLACE INTO `order` (`id`, `created_at`, `customer_id`, `modified_at`, `sale_staff_id`, `status_id`, `total_amount`) VALUES
 	(1, '2023-11-06 15:53:02', 6, NULL, 2, 1, 3990),
 	(2, '2023-11-07 15:53:19', 6, NULL, 2, 2, 3000),
@@ -122,9 +123,12 @@ REPLACE INTO `order` (`id`, `created_at`, `customer_id`, `modified_at`, `sale_st
 	(8, '2023-11-09 13:48:39', 4, NULL, 1, 2, 3750),
 	(9, '2023-11-09 13:52:37', 7, NULL, 1, 1, 1168),
 	(10, '2023-11-09 15:49:31', 6, NULL, 1, 1, 8535),
-	(11, '2023-11-09 15:54:45', 6, NULL, 1, 1, 6469);
+	(11, '2023-11-09 15:54:45', 6, NULL, 1, 1, 6469),
+	(12, '2023-11-10 16:46:12', 6, NULL, 1, 1, 12287),
+	(13, '2023-11-10 16:50:08', 8, NULL, 1, 1, 3125);
 
 -- Dumping structure for table danny-store-db.order_item
+DROP TABLE IF EXISTS `order_item`;
 CREATE TABLE IF NOT EXISTS `order_item` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `created_at` datetime DEFAULT NULL,
@@ -134,9 +138,9 @@ CREATE TABLE IF NOT EXISTS `order_item` (
     `quantity` bigint(20) DEFAULT NULL,
     `price` float DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.order_item: ~14 rows (approximately)
+-- Dumping data for table danny-store-db.order_item: ~18 rows (approximately)
 REPLACE INTO `order_item` (`id`, `created_at`, `modified_at`, `order_id`, `product_id`, `quantity`, `price`) VALUES
 	(22, '2023-11-08 15:53:02', NULL, 1, 5, 1, 3990),
 	(23, '2023-11-08 15:53:19', NULL, 2, 2, 1, 3000),
@@ -151,9 +155,14 @@ REPLACE INTO `order_item` (`id`, `created_at`, `modified_at`, `order_id`, `produ
 	(32, '2023-11-09 15:49:31', NULL, 10, 11, 1, 3123),
 	(33, '2023-11-09 15:54:45', NULL, 11, 20, 1, 1789),
 	(34, '2023-11-09 15:54:45', NULL, 11, 21, 1, 2313),
-	(35, '2023-11-09 15:54:45', NULL, 11, 22, 1, 2367);
+	(35, '2023-11-09 15:54:45', NULL, 11, 22, 1, 2367),
+	(36, '2023-11-10 16:46:12', NULL, 12, 1, 1, 3125),
+	(37, '2023-11-10 16:46:12', NULL, 12, 2, 1, 3750),
+	(38, '2023-11-10 16:46:12', NULL, 12, 10, 1, 5412),
+	(39, '2023-11-10 16:50:08', NULL, 13, 1, 1, 3125);
 
 -- Dumping structure for table danny-store-db.product
+DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
     `id` bigint(20) NOT NULL,
     `created_at` datetime DEFAULT NULL,
@@ -168,49 +177,51 @@ CREATE TABLE IF NOT EXISTS `product` (
     `create_time` varchar(50) DEFAULT NULL,
     `modified_time` varchar(50) DEFAULT NULL,
     `quantity` bigint(20) DEFAULT NULL,
+    `status` bit(1) DEFAULT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table danny-store-db.product: ~36 rows (approximately)
-REPLACE INTO `product` (`id`, `created_at`, `description`, `manufacturer_id`, `modified_at`, `name`, `price`, `product_type`, `promotion_id`, `src`, `create_time`, `modified_time`, `quantity`) VALUES
-	(1, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 1, NULL, 'Iphone 11 promax', '2500.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/3/_/3_225.jpg', '', '', 9994),
-	(2, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 1, NULL, 'iPhone 12 promax', '3000.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_18.png', '', '', 0),
-	(3, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 1, NULL, 'iPhone 13 promax', '3568.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/2/_/2_241_2.jpg', '', '', 5),
-	(4, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 1, NULL, 'iPhone 14 promax', '4715', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/3/_/3_51_1_3.jpg', '', '', 10),
-	(5, NULL, 'HÃ ng sáº¯p vá»? hÃ£y Ä‘áº·t hÃ ng trÆ°á»›c', 2, NULL, 'Samsung Galaxy Z Fold5', '3990.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/b/4/b48cd136-7366-4d01-8d58-8ee3d5dc93b7_1.jpg', '', '', 6),
-	(6, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 2, NULL, 'Samsung Galaxy S23 Ultra', '4550', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/d/4/d4a672c5-4709-4056-9f7f-72d6d70c2c1d_1.jpg', '', '', 10),
-	(7, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 2, NULL, 'Samsung Galaxy Z Flip4', '3412.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/a/samsung-galaxy-20-fe_4_.jpg', '', '', 9),
-	(8, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 2, NULL, 'Samsung Galaxy S22 Ultra', '3141', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/m/sm-s908_galaxys22ultra_front_phantomblack_211119_2.jpg', '', '', 10),
-	(9, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 3, NULL, 'Xiaomi Redmi Note 12', '4123', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/_/7/_76666_7__3-3.jpg', '', '', 10),
-	(10, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 3, NULL, 'Xiaomi Redmi Note 12 4G', '5412.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/t/gtt_7766_3__1.jpg', '', '', 8),
-	(11, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 3, NULL, 'Xiaomi Redmi Note 12 Pro', '3123.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/x/i/xiaomi-12t-den_1.jpg', '', '', 9),
-	(12, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 3, NULL, 'Xiaomi 12T 8GB 128GB', '2314', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/redmi-note-12-pro-4g-1-den.jpg', '', '', 10),
-	(13, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 4, NULL, 'OPPO Reno10 5G 8GB 256GB', '2214', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/reno10_5g_-_combo_product_-_blue.png', '', '', 10),
-	(14, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 4, NULL, 'OPPO A78 4G (8GB 256GB)', '2200', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/c/o/combo_a78_-_black_-_rgb.jpg', '', '', 10),
-	(15, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 4, NULL, 'OPPO Find N2 Flip', '1387', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/n/2/n2_flip_-_combo_product_-_black.png', '', '', 10),
-	(16, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 4, NULL, 'OPPO Reno8 T 5G (8GB - 128GB)', '4321', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/v/i/vivo-y02t.png', '', '', 10),
-	(17, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 5, NULL, 'Vivo V27e 8GB 256GB', '1143', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_i_xu_ng_23__4_6.png', '', '', 10),
-	(18, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 5, NULL, 'Vivo Y02t 4GB 64GB', '1500', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/v/i/vivo-y02t.png', '', '', 10),
-	(19, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 5, NULL, 'Vivo Y36', '1256', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/v/i/vivo-y36_2.jpg', '', '', 10),
-	(20, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 5, NULL, 'vivo V23e', '1789.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/c/9/c91ba5bf721d5b2d4eae4f821b8e4ced.png', '', '', 8),
-	(21, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 6, NULL, 'realme 11 8GB 128GB', '2313.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/realme-11-vang-1.jpg', '', '', 9),
-	(22, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 6, NULL, 'realme 10 8GB 256GB', '2367.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/w/h/white-7e6a0f537b.png', '', '', 9),
-	(23, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 6, NULL, 'realme 9 Pro Plus', '1890', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/9/_/9_ro_plus.png', '', '', 10),
-	(24, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 6, NULL, 'realme C30s 2GB 32GB', '1900', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/realme-c30s-den-glr--009.jpg', '', '', 10),
-	(25, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 7, NULL, 'Nokia G22 4GB 128GB', '578', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/d/g/dgtyi8899_.jpg', '', '', 10),
-	(26, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 7, NULL, 'Nokia C32 4GB 128GB', '987', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/n/o/nokia-c32_3_.png', '', '', 10),
-	(27, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 7, NULL, 'Nokia C31 4GB 128GB', '1100', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/_/1_250_1.jpg', '', '', 10),
-	(28, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 7, NULL, 'Nokia 5710 XpressAudio', '980', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/n/o/nokia-5701.jpg', '', '', 10),
-	(29, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 8, NULL, 'ASUS ROG Phone 7 Ultimate', '3367', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/_/1_365.jpg', '', '', 10),
-	(30, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 8, NULL, 'ASUS ROG Phone 7 16GB 512GB', '3341', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/_/1_366.jpg', '', '', 10),
-	(31, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 8, NULL, 'ASUS ROG Phone 6 16GB 512GB ', '3678', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/s/asus-rog-phone-6-12gb-256gb_2.png', '', '', 10),
-	(32, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 8, NULL, 'ASUS ROG Phone 5', '4000', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/s/asus-rog-phone-5_0002_gsmarena_001.jpg', '', '', 10),
-	(33, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 9, NULL, 'Tecno POVA 5 8GB 128GB', '567', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-pova-5_2_.png', '', '', 10),
-	(34, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 9, NULL, 'Tecno POVA 5 8GB 256GB', '478', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-pova-5_2__1.png', '', '', 10),
-	(35, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 9, NULL, 'Tecno Camon 20 Pro', '689', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-camon-20-1_2.png', '', '', 10),
-	(36, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 9, NULL, 'Tecno Spark 10 8GB 128GB', '934.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-spark-10_5_.png', '', '', 9);
+REPLACE INTO `product` (`id`, `created_at`, `description`, `manufacturer_id`, `modified_at`, `name`, `price`, `product_type`, `promotion_id`, `src`, `create_time`, `modified_time`, `quantity`, `status`) VALUES
+	(1, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 1, NULL, 'Iphone 11 promax', '2500.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/3/_/3_225.jpg', '', '', 9993, b'1'),
+	(2, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 1, NULL, 'iPhone 12 promax', '3000.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_18.png', '', '', 0, b'1'),
+	(3, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 1, NULL, 'iPhone 13 promax', '3568.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/2/_/2_241_2.jpg', '', '', 5, b'1'),
+	(4, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 1, NULL, 'iPhone 14 promax', '4715', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/3/_/3_51_1_3.jpg', '', '', 10, b'1'),
+	(5, NULL, 'HÃ ng sáº¯p vá»? hÃ£y Ä‘áº·t hÃ ng trÆ°á»›c', 2, NULL, 'Samsung Galaxy Z Fold5', '3990.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/b/4/b48cd136-7366-4d01-8d58-8ee3d5dc93b7_1.jpg', '', '', 6, b'1'),
+	(6, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 2, NULL, 'Samsung Galaxy S23 Ultra', '4550', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/d/4/d4a672c5-4709-4056-9f7f-72d6d70c2c1d_1.jpg', '', '', 10, b'1'),
+	(7, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 2, NULL, 'Samsung Galaxy Z Flip4', '3412.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/a/samsung-galaxy-20-fe_4_.jpg', '', '', 9, b'1'),
+	(8, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 2, NULL, 'Samsung Galaxy S22 Ultra', '3141', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/m/sm-s908_galaxys22ultra_front_phantomblack_211119_2.jpg', '', '', 10, b'1'),
+	(9, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 3, NULL, 'Xiaomi Redmi Note 12', '4123', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/_/7/_76666_7__3-3.jpg', '', '', 10, b'1'),
+	(10, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 3, NULL, 'Xiaomi Redmi Note 12 4G', '5412.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/t/gtt_7766_3__1.jpg', '', '', 7, b'1'),
+	(11, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 3, NULL, 'Xiaomi Redmi Note 12 Pro', '3123.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/x/i/xiaomi-12t-den_1.jpg', '', '', 9, b'1'),
+	(12, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 3, NULL, 'Xiaomi 12T 8GB 128GB', '2314', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/redmi-note-12-pro-4g-1-den.jpg', '', '', 10, b'1'),
+	(13, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 4, NULL, 'OPPO Reno10 5G 8GB 256GB', '2214', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/reno10_5g_-_combo_product_-_blue.png', '', '', 10, b'1'),
+	(14, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 4, NULL, 'OPPO A78 4G (8GB 256GB)', '2200', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/c/o/combo_a78_-_black_-_rgb.jpg', '', '', 10, b'1'),
+	(15, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 4, NULL, 'OPPO Find N2 Flip', '1387', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/n/2/n2_flip_-_combo_product_-_black.png', '', '', 10, b'1'),
+	(16, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 4, NULL, 'OPPO Reno8 T 5G (8GB - 128GB)', '4321', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/v/i/vivo-y02t.png', '', '', 10, b'1'),
+	(17, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 5, NULL, 'Vivo V27e 8GB 256GB', '1143', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_i_xu_ng_23__4_6.png', '', '', 10, b'1'),
+	(18, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 5, NULL, 'Vivo Y02t 4GB 64GB', '1500', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/v/i/vivo-y02t.png', '', '', 10, b'1'),
+	(19, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 5, NULL, 'Vivo Y36', '1256', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/v/i/vivo-y36_2.jpg', '', '', 10, b'1'),
+	(20, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 5, NULL, 'vivo V23e', '1789.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/c/9/c91ba5bf721d5b2d4eae4f821b8e4ced.png', '', '', 8, b'1'),
+	(21, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 6, NULL, 'realme 11 8GB 128GB', '2313.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/realme-11-vang-1.jpg', '', '', 9, b'1'),
+	(22, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 6, NULL, 'realme 10 8GB 256GB', '2367.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/w/h/white-7e6a0f537b.png', '', '', 9, b'1'),
+	(23, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 6, NULL, 'realme 9 Pro Plus', '1890', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/9/_/9_ro_plus.png', '', '', 10, b'1'),
+	(24, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 6, NULL, 'realme C30s 2GB 32GB', '1900', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/r/e/realme-c30s-den-glr--009.jpg', '', '', 10, b'1'),
+	(25, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 7, NULL, 'Nokia G22 4GB 128GB', '578', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/d/g/dgtyi8899_.jpg', '', '', 10, b'1'),
+	(26, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 7, NULL, 'Nokia C32 4GB 128GB', '987', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/n/o/nokia-c32_3_.png', '', '', 10, b'1'),
+	(27, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 7, NULL, 'Nokia C31 4GB 128GB', '1100', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/_/1_250_1.jpg', '', '', 10, b'1'),
+	(28, NULL, 'Giáº£m 1 triá»‡u vá»›i khÃ¡ch hÃ ng vip', 7, NULL, 'Nokia 5710 XpressAudio', '980', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/n/o/nokia-5701.jpg', '', '', 10, b'1'),
+	(29, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 8, NULL, 'ASUS ROG Phone 7 Ultimate', '3367', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/_/1_365.jpg', '', '', 10, b'1'),
+	(30, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 8, NULL, 'ASUS ROG Phone 7 16GB 512GB', '3341', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/_/1_366.jpg', '', '', 10, b'1'),
+	(31, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 8, NULL, 'ASUS ROG Phone 6 16GB 512GB ', '3678', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/s/asus-rog-phone-6-12gb-256gb_2.png', '', '', 10, b'1'),
+	(32, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 8, NULL, 'ASUS ROG Phone 5', '4000', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/s/asus-rog-phone-5_0002_gsmarena_001.jpg', '', '', 10, b'1'),
+	(33, NULL, 'Táº·ng cá»§ sáº¡c vÃ airpod pro', 9, NULL, 'Tecno POVA 5 8GB 128GB', '567', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-pova-5_2_.png', '', '', 10, b'1'),
+	(34, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 9, NULL, 'Tecno POVA 5 8GB 256GB', '478', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-pova-5_2__1.png', '', '', 10, b'1'),
+	(35, NULL, 'Giáº£m 20% vá»›i hÃ³a Ä‘Æ¡n trÃªn 50 triá»‡u', 9, NULL, 'Tecno Camon 20 Pro', '689', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-camon-20-1_2.png', '', '', 10, b'1'),
+	(36, NULL, 'Táº·ng sáº¡c dá»± phÃ²ng vÃ balo Danny shop', 9, NULL, 'Tecno Spark 10 8GB 128GB', '934.0', 1, NULL, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-spark-10_5_.png', '', '', 9, b'1');
 
 -- Dumping structure for table danny-store-db.product_detail
+DROP TABLE IF EXISTS `product_detail`;
 CREATE TABLE IF NOT EXISTS `product_detail` (
     `id` bigint(20) NOT NULL,
     `created_at` datetime DEFAULT NULL,
@@ -368,6 +379,7 @@ REPLACE INTO `product_detail` (`id`, `created_at`, `image_src`, `modified_at`, `
 	(144, NULL, 'https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/tecno-spark-10_6_.png', NULL, 36);
 
 -- Dumping structure for table danny-store-db.product_manufacturer
+DROP TABLE IF EXISTS `product_manufacturer`;
 CREATE TABLE IF NOT EXISTS `product_manufacturer` (
     `id` bigint(20) NOT NULL,
     `created_at` datetime DEFAULT NULL,
@@ -380,6 +392,7 @@ CREATE TABLE IF NOT EXISTS `product_manufacturer` (
 -- Dumping data for table danny-store-db.product_manufacturer: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.product_type
+DROP TABLE IF EXISTS `product_type`;
 CREATE TABLE IF NOT EXISTS `product_type` (
     `id` bigint(20) NOT NULL,
     `created_at` datetime DEFAULT NULL,
@@ -391,6 +404,7 @@ CREATE TABLE IF NOT EXISTS `product_type` (
 -- Dumping data for table danny-store-db.product_type: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.promotion
+DROP TABLE IF EXISTS `promotion`;
 CREATE TABLE IF NOT EXISTS `promotion` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `end_day_promotion` datetime DEFAULT NULL,
@@ -402,6 +416,7 @@ CREATE TABLE IF NOT EXISTS `promotion` (
 -- Dumping data for table danny-store-db.promotion: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.receipt_import
+DROP TABLE IF EXISTS `receipt_import`;
 CREATE TABLE IF NOT EXISTS `receipt_import` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `created_at` datetime DEFAULT NULL,
@@ -414,6 +429,7 @@ CREATE TABLE IF NOT EXISTS `receipt_import` (
 -- Dumping data for table danny-store-db.receipt_import: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.receipt_import_detail
+DROP TABLE IF EXISTS `receipt_import_detail`;
 CREATE TABLE IF NOT EXISTS `receipt_import_detail` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `price` bigint(20) DEFAULT NULL,
@@ -427,15 +443,22 @@ CREATE TABLE IF NOT EXISTS `receipt_import_detail` (
 -- Dumping data for table danny-store-db.receipt_import_detail: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.role
+DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `role_name` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.role: ~0 rows (approximately)
+-- Dumping data for table danny-store-db.role: ~4 rows (approximately)
+REPLACE INTO `role` (`id`, `role_name`) VALUES
+	(1, 'admin'),
+	(2, 'warehouse'),
+	(3, 'sales'),
+	(4, 'customer');
 
 -- Dumping structure for table danny-store-db.status
+DROP TABLE IF EXISTS `status`;
 CREATE TABLE IF NOT EXISTS `status` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `status_name` varchar(255) DEFAULT NULL,
@@ -445,6 +468,7 @@ CREATE TABLE IF NOT EXISTS `status` (
 -- Dumping data for table danny-store-db.status: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.status_order
+DROP TABLE IF EXISTS `status_order`;
 CREATE TABLE IF NOT EXISTS `status_order` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `status_name` varchar(255) DEFAULT NULL,
@@ -460,6 +484,7 @@ REPLACE INTO `status_order` (`id`, `status_name`) VALUES
 	(5, 'Hủy đơn');
 
 -- Dumping structure for table danny-store-db.user
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `active` bit(1) DEFAULT NULL,
@@ -476,9 +501,9 @@ CREATE TABLE IF NOT EXISTS `user` (
     `role` varchar(255) DEFAULT NULL,
     `username` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.user: ~5 rows (approximately)
+-- Dumping data for table danny-store-db.user: ~7 rows (approximately)
 REPLACE INTO `user` (`id`, `active`, `address`, `avatar`, `created_at`, `gender`, `modified_at`, `name`, `password`, `password_reset_token`, `password_reset_token_expiry_date`, `phone`, `role`, `username`) VALUES
 	(1, b'1', 'Nam Dinh', 'None', '2023-10-11 13:41:14', '', NULL, 'Long', '$2a$10$.mHniwHnIa0QrR.UXC4Y4.c2gAA6/mFmCbJg3to28SGxJaJbb1HPm', NULL, NULL, '1234567890', 'admin', 'admin@gmail.com'),
 	(2, b'1', 'Ha noi', 'None', '2023-10-11 13:42:21', '', NULL, 'Nam', '$2a$10$L1ivD7VswYqLXaP7bUM3NOvQFFxQNnuyOztsxbS5vYnsYTd8TpMYC', NULL, NULL, '1234567890', 'warehouse', 'warehouse@gmail.com'),
