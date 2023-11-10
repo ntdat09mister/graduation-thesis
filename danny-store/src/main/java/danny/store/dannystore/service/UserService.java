@@ -24,6 +24,8 @@ public class UserService {
     private final UserRepository userRepository;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private PublicFunction publicFunction;
     private final PasswordEncoder passwordEncoder;
     public String register(UserInput userInput) throws NotFoundException {
         if (existsByUsername(userInput.getUsername()))
@@ -54,6 +56,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             UserOutput userOutput = objectMapper.convertValue(userOptional.get(), UserOutput.class);
+            userOutput.setCreatedAt(publicFunction.formatTime(userOptional.get().getCreatedAt()));
             return userOutput;
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND_USER);

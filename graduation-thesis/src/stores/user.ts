@@ -1,30 +1,20 @@
 import axios from 'axios'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-interface User {
-    id: number,
-    username: string,
-    name: string,
-    gender: string,
-    address: string,
-    phone: string,
-    role: string,
-    avatar: string,
-    createdAt: string,
-    modifiedAt: string
-}
 export const useUserStore = defineStore('user', () => {
-    let userInfo: User = {
-        id: 1,
-        username: "username",
-        name: "string",
-        gender: "string",
-        address: "string",
-        phone: "string",
-        role: "string",
-        avatar: "string",
-        createdAt: "string",
-        modifiedAt: "string"
-    };
+    interface User {
+        id: number,
+        username: string,
+        name: string,
+        gender: string,
+        address: string,
+        phone: string,
+        role: string,
+        avatar: string,
+        createdAt: string,
+        modifiedAt: string
+    }
+    const user = ref<User | null>(null);
     async function getInforUser() {
         try {
             const token = localStorage.getItem("accessToken");
@@ -34,31 +24,25 @@ export const useUserStore = defineStore('user', () => {
             }
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`
                 },
             };
             const response = await axios.get(`http://localhost:8080/user/info`, config);
             const responseData = response.data;
-            const user: User = {
-                id: responseData.data.id,
-                username: responseData.data.username,
-                name: responseData.data.name,
-                gender: responseData.data.gender,
-                address: responseData.data.address,
-                phone: responseData.data.phone,
-                role: responseData.data.role,
-                avatar: responseData.data.avatar,
-                createdAt: responseData.data.createdAt,
-                modifiedAt: responseData.data.modifiedAt
-            };
-            userInfo = user;
-            console.log(userInfo)
+            if (responseData && responseData.data) {
+                const data = responseData.data;
+                if (data) { user.value = data; console.log(user.value); } else {
+                    console.error('Invalid data received from the API:', data);
+                }
+            } else {
+                console.error('No data received from the API');
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
     return {
         getInforUser,
-        userInfo
+        user
     }
 })

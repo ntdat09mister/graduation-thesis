@@ -17,6 +17,6 @@ public class UserOutput {
     private String phone;
     private String role;
     private String avatar;
-    private Date createdAt;
-    private Date modifiedAt;
+    private String createdAt;
+    private String modifiedAt;
 }

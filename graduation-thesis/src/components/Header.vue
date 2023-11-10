@@ -45,7 +45,7 @@ export default defineComponent({
             authenticated: 'authenticated'
         }),
         ...mapState(useUserStore, {
-            userInfo: 'userInfo'
+            user: 'user'
         })
     },
     data() {
@@ -69,6 +69,7 @@ export default defineComponent({
         handleSearch() {
             const keyword = this.searchKeyword;
             sessionStorage.setItem("searchKeyword", keyword)
+            window.location.reload()
             this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
             console.log(this.searchKeyword)
             router.push({ name: 'search' })
@@ -82,7 +83,7 @@ export default defineComponent({
             router.push({ name: 'search' });
             this.setVModelInput()
         },
-        routerLogin(routerName: string) {
+        routerPage(routerName: string) {
             router.push({ name: routerName })
         },
         logout() {
@@ -92,9 +93,7 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.getInforUser(),
-            console.log(12345);
-        console.log(this.userInfo)
+        this.getInforUser()
     }
 
 })
@@ -134,7 +133,7 @@ export default defineComponent({
                         <IconCall class="w-[30px]" />
                         <span class="text-[12px]">Liên hệ</span>
                     </div>
-                    <div class="flex flex-col justify-center items-center cursor-pointer" @click="routerLogin('order')">
+                    <div class="flex flex-col justify-center items-center cursor-pointer" @click="routerPage('order')">
                         <IconOrderLookUp class="w-[30px]" />
                         <span class="text-[12px]">Tra cứu đơn hàng</span>
                     </div>
@@ -146,10 +145,9 @@ export default defineComponent({
                     </div>
                     <div class="flex flex-row justify-center items-center">
                         <template v-if="authenticated">
-                            <div class="flex flex-col justify-center items-center">
-                                <IconInformationMySelf class="w-[30px]" />
-                                <!-- <span class="text-[12px]" v-if="user">{{ userInfo.username }}</span> -->
-                                <span class="text-[12px]" v-if="userInfo">{{ userInfo.username }}</span>
+                            <div class="w-[90px] flex flex-col justify-center items-center">
+                                <IconInformationMySelf class="w-[30px] cursor-pointer" @click="routerPage('userInfor')" />
+                                <span class="text-[12px]">{{ user?.name }}</span>
                             </div>
                             <div class="flex flex-col justify-center items-center cursor-pointer">
                                 <a href="" @click="logout()">
@@ -160,7 +158,7 @@ export default defineComponent({
                         </template>
                         <template v-else>
                             <div class="flex flex-col justify-center items-center">
-                                <a href="" @click="routerLogin('login')">
+                                <a href="" @click="routerPage('login')">
                                     <IconLogin class="w-[30px]" />
                                 </a>
                                 <span class="text-[12px]">Login</span>
