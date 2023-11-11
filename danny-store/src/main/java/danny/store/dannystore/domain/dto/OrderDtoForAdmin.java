@@ -10,6 +10,7 @@ public class OrderDtoForAdmin {
     private Float totalAmount;
     private String username;
     private String nameCustomer;
+    private String phoneNumber;
     private String address;
     private String status;
     private String createdAt;

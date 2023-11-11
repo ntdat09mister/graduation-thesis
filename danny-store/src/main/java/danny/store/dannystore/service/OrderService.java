@@ -191,14 +191,31 @@ public class OrderService {
         }
     }
 
-    public List<OrderDtoForAdmin> getAllOrdersAdmin(Long userId) throws NotFoundException {
+    public List<OrderDtoForAdmin> getAllOrdersAdmin(Long userId, Long filterId) throws NotFoundException {
         List<OrderDtoForAdmin> orderDtoList = new ArrayList<>();
+        List<Order> orderList = new ArrayList<>();
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.get().getRole().equals("admin")) {
-            List<Order> orderList = orderRepository.findAll();
+            if (filterId == 1) {
+                // All products
+                orderList = orderRepository.findAll();
+            } else if (filterId == 2) {
+                // Orders by day
+                orderList = orderRepository.getAllOrderByDay(publicFunction.getDay(new Date()));
+                System.out.println(publicFunction.getDay(new Date()));
+            } else if (filterId == 3) {
+                // Orders by Month
+                orderList = orderRepository.getAllOrderByMonth(publicFunction.getMonth(new Date()));
+            } else if (filterId == 4) {
+                // Orders by Years
+                orderList = orderRepository.getAllOrderByYear(publicFunction.getYear(new Date()));
+            }
             for (Order order: orderList) {
                 List<OrderItem> orderItemList = new ArrayList<>();
                 orderItemList = orderItemRepository.findByOrderId(order.getId());
+                if (orderList.isEmpty()) {
+                    throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+                }
                 StringBuilder productLists = new StringBuilder();
                 for (int i = 0; i < orderItemList.size(); i++) {
                     OrderItem orderItem = orderItemList.get(i);
@@ -220,10 +237,30 @@ public class OrderService {
                 orderDtoForAdmin.setUsername(optionalUser.get().getUsername());
                 orderDtoForAdmin.setAddress(optionalUser.get().getAddress());
                 orderDtoForAdmin.setNameCustomer(optionalUser.get().getName());
+                orderDtoForAdmin.setPhoneNumber(optionalUser.get().getPhone());
                 orderDtoList.add(orderDtoForAdmin);
             }
             System.out.println(RESPONSE_LIST_ORDERS);
             return orderDtoList;
+        } else {
+            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+        }
+    }
+
+    public String updateStatusOrder(Long id, Long orderId) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
+            Optional<Order> orderOptional = orderRepository.findById(orderId);
+            if (orderOptional.isPresent()) {
+                Order order = orderOptional.get();
+                if (order.getStatusId() < 5) {
+                    order.setStatusId(order.getStatusId() + 1);
+                }
+                orderRepository.save(order);
+                return "Update successfully";
+            } else {
+                return "Update fail";
+            }
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
         }

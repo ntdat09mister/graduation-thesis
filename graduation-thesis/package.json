@@ -15,7 +15,7 @@
   "dependencies": {
     "axios": "^1.4.0",
     "cors": "^2.8.5",
-    "element-plus": "^2.3.9",
+    "element-plus": "^2.4.2",
     "pinia": "^2.1.4",
     "vue": "^3.3.4",
     "vue-pagination": "^0.3.3",

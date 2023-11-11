@@ -28,4 +28,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Long countOrders(Long id);
     @Query(value = "select SUM(o.total_amount)  from `order` o where o.customer_id = ?1", nativeQuery = true)
     Long getTotalAmount(Long id);
+    @Query(value = "SELECT * FROM `order` o WHERE DATE(o.created_at) = ?1", nativeQuery = true)
+    List<Order> getAllOrderByDay(String timeFilter);
+    @Query(value = "SELECT * FROM `order` o WHERE DAY(o.created_at) = ?1", nativeQuery = true)
+    List<Order> getAllOrderByDay(Long dayValue);
+    @Query(value = "SELECT * FROM `order` o WHERE MONTH(o.created_at) = ?1", nativeQuery = true)
+    List<Order> getAllOrderByMonth(Long monthValue);
+    @Query(value = "SELECT * FROM `order` o WHERE YEAR(o.created_at) = ?1", nativeQuery = true)
+    List<Order> getAllOrderByYear(Long yearValue);
 }

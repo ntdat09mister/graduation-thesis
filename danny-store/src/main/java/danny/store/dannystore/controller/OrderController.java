@@ -7,6 +7,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,12 @@ public class OrderController extends BaseController{
         return successResponse(orderService.getOrderDetail(user.getId(), orderId));
     }
     @GetMapping("/admin/all")
-    public ResponseEntity<?> getAllOrdersAdmin(@UserInfo User user) throws NotFoundException {
-        return successResponse(orderService.getAllOrdersAdmin(user.getId()));
+    public ResponseEntity<?> getAllOrdersAdmin(@UserInfo User user, @RequestParam (required = false) Long filterId) throws NotFoundException {
+        return successResponse(orderService.getAllOrdersAdmin(user.getId(), filterId));
+    }
+    @PreAuthorize("hasAnyAuthority('sales','admin')")
+    @PutMapping("admin/updateStatusOrder")
+    public ResponseEntity<?> updateStatusOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
+        return successResponse(orderService.updateStatusOrder(user.getId(), orderId));
     }
 }

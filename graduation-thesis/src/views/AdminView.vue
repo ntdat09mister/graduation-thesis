@@ -1,50 +1,58 @@
 <script lang="ts">
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
 import IconShowNaviDB from '@/components/icons/IconShowNaviDB.vue';
-import { defineComponent } from 'vue'
+import IconRevenue from '@/components/icons/IconRevenue.vue';
+import IconCheckListOrder from '@/components/icons/IconCheckListOrder.vue';
+import IconUpdateStatusOrder from '@/components/icons/IconUpdateStatusOrder.vue'
+import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { useOrderStore } from '@/stores/order';
 import { useAdminStore } from '@/stores/admin';
+
 export default defineComponent({
     components: {
         Header,
         Footer,
-        IconShowNaviDB
+        IconShowNaviDB,
+        IconRevenue,
+        IconCheckListOrder,
+        IconUpdateStatusOrder
+    },
+    data() {
+        return {
+            pageSize: 8,
+            currentPage: 1,
+            listUnderDashBoard: [
+                { name: 'Số đơn hàng hôm nay', value: '50' },
+                { name: 'Doanh thu', value: '50000000' }
+            ],
+            selected: 2
+        };
     },
     computed: {
         ...mapState(useOrderStore, {
             listOrders: 'listOrders'
         }),
         ...mapState(useAdminStore, {
-            listOrdersAdmin: 'listOrdersAdmin'
+            listOrdersAdmin: 'listOrdersAdmin',
+            listDisplayOrderAdmin: 'listDisplayOrderAdmin'
         })
     },
     methods: {
-        ...mapActions(useAdminStore, ['getInforUser','getAllOrdersAdmin'])
-    },
-    data() {
-        return {
-            listUnderDashBoard: [
-                { name: 'New Sales', value: '1.345', icon: '<IconShowNaviDB />' },
-                { name: 'New leads', value: '2.890' },
-                { name: 'Income per lead', value: '$1.870' },
-                { name: 'Conversion rate', value: '5.10%' }
-            ],
-            listStatistical: [
-                { name: 'Day' },
-                { name: 'Week' },
-                { name: 'Month' },
-            ],
-            pages: [
-                { number: 1 }, { number: 2 }, { number: 3 }, { number: 4 }, { number: 5 }
-            ]
+        ...mapActions(useAdminStore, ['getInforUser', 'getAllOrdersAdmin', 'setPage', 'updateStatusOrder']),
+        handlePageChange(newPage: number) {
+            this.currentPage = newPage;
+        },
+        changeBackground(value: number) {
+            this.selected = value;
+            this.getAllOrdersAdmin(this.selected)
         }
     },
     mounted() {
-        this.getAllOrdersAdmin()
+        this.getAllOrdersAdmin(this.selected);
     }
-})
+});
 </script>
 <template>
     <div class="flex flex-col justify-center items-center">
@@ -64,111 +72,126 @@ export default defineComponent({
             </div>
             <div class="w-[1438px] h-[98px] flex flex-row justify-around">
                 <div v-for="item in listUnderDashBoard"
-                    class="w-[324px] h-[98px] flex flex-row justify-between rounded-[10px] bg-[#FFFFFF]">
-                    <div class="flex flex-col justify-center ml-[18px]">
-                        <span
-                            style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #8181A5;">{{
-                                item.name }}</span>
-                        <span
-                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
-                                item.value }}</span>
-                    </div>
-                    <div class="flex items-center mr-[24px]">
-                        <IconNewSales />
+                    class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
+                    <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
+                        <div>
+                            <IconRevenue class="w-[60px] h-[60px]"/>
+                        </div>
+                        <div class="flex flex-col justify-center items-center ml-[300px]">
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">{{
+                                    item.name }}</span>
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
+                                    item.value }}</span>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            <div class="w-[1152px] h-[86px] flex flex-row rounded-[12px]">
+            <div class="w-[1438px] h-[86px] flex flex-row rounded-[12px]">
                 <div class="w-[1381px] h-[66px] flex flex-row justify-between items-center ml-[24px]">
                     <span
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 27px;color: #1C1D21;">Latest
                         sales</span>
                     <div class="flex flex-row">
-                        <div class="w-[62px] h-[40px]" v-for="item in listStatistical">
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 17px;text-align: center;color: #1C1D21;">
-                                {{ item.name }}
-                            </span>
-                        </div>
+                        <template
+                            v-for="(value, index) in [ { label: 'Day', key: 2 }, { label: 'Month', key: 3 }, { label: 'Year', key: 4 }, { label: 'Tất cả', key: 1 } ]">
+                            <div @click="changeBackground(value.key)" :class="{ 'w-[62px] h-[40px] flex justify-center items-center cursor-pointer': selected !== value.key, 'w-[62px] h-[40px] flex justify-center items-center cursor-pointer border bg-red-100 border-solid border-red-600 rounded-xl': selected === value.key }">
+                                <span
+                                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 17px;text-align: center;color: #1C1D21;">{{
+                                        value.label }}</span>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
             <div class="w-[1381px] h-[48px] flex flex-row justify-between items-center">
-                <span class="ml-[26px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #8181A5;">Product</span>
-                <span class="ml-[189px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #8181A5;">Customer</span>
-                <span class="ml-[176px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #8181A5;">Delivery</span>
-                <span class="ml-[372px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #8181A5;">Subtotal</span>
-                <span class="ml-[40px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #8181A5;">Shipping</span>
-                <span class="ml-[61px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #8181A5;">Total</span>
+                <div class="w-[80px] h-[80px] flex justify-center items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Sản
+                        phẩm</span>
+                </div>
+                <div class="w-[160px] h-[80px] flex justify-center items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tên
+                        sản phẩm</span>
+                </div>
+                <div class="w-[160px] h-[80px] flex flex-col justify-center items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Khách
+                        hàng</span>
+                </div>
+                <div class="w-[160px] h-[80px] flex justify-center items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Địa
+                        chỉ</span>
+                </div>
+                <div class="w-[130px] h-[80px] flex justify-center items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Ngày
+                        tạo đơn</span>
+                </div>
+                <div class="w-[130px] h-[80px] flex justify-center items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Số tiền</span>
+                </div>
+                <div class="w-[130px] h-[80px] flex items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Trạng
+                        thái</span>
+                </div>
             </div>
             <div class="w-[1381px] h-[649px]">
-                <div v-for="item in listOrdersAdmin" class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
-                    <img class="w-[52px] h-[52px] ml-[25px]" :src="item.src" alt="product-img">
-                    <div class="flex flex-col ml-[16px]">
+                <div v-for="item in listDisplayOrderAdmin"
+                    class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
+                    <div class="w-[80px] h-[80px] flex justify-center items-center">
+                        <img class="w-[52px] h-[52px] ml-[25px]" :src="item.src" alt="product-img">
+                    </div>
+                    <div class="w-[160px] h-[80px] flex items-center">
                         <span
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.listProducts }}
                         </span>
                     </div>
-                    <div class="flex flex-col ml-[72px]">
+                    <div class="w-[160px] h-[80px] flex flex-col justify-center items-center">
                         <span
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.username }}
                         </span>
                         <span
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                            {{ item.nameCustomer }}
+                            {{ item.phoneNumber }}
                         </span>
                     </div>
-                    <div class="flex flex-col ml-[73px]">
+                    <div class="w-[160px] h-[80px] flex justify-center items-center">
                         <span
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.address }}
                         </span>
                     </div>
-                    <div class="w-[98px] h-[36px] flex justify-center items-center ml-[53px]">
+                    <span class="w-[130px] h-[80px] flex justify-center items-center"
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                        {{ item.createdAt }}
+                    </span>
+                    <span class="w-[130px] h-[80px] flex justify-center items-center"
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                        {{ item.totalAmount }}
+                    </span>
+                    <div class="w-[130px] h-[80px] flex flex-row justify-between items-center">
                         <span
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 17px;text-align: center;color: #1B51E5;">
                             {{ item.status }}
                         </span>
-                    </div>
-                    <span class="ml-[50px]"
-                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                        {{ item.totalAmount }}
-                    </span>
-                    <span class="mr-[39px]"
-                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                        {{ item.createdAt }}
-                    </span>
-                    <span class="mr-[23px]"
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                    {{ item.totalAmount }}
-                </span>
-            </div>
-            <div class="flex flex-row justify-between items-center">
-                <IconPrevPage class="cursor-pointer" />
-                <div class="w-[212px] flex flex-row justify-between">
-                    <div v-for="item in pages" class="flex flex-row">
-                        <div
-                            class="w-[50px] h-[50px] flex justify-center items-center hover:border-b-[2px] border-[#5E81F4]">
-                            <div
-                                class="w-[36px] h-[36px] flex justify-center items-center cursor-pointer bg-[#5E81F41A] hover:bg-[#3648831a]">
-                                <span>
-                                    {{ item.number }}
-                                </span>
-                            </div>
-                        </div>
+                        <IconUpdateStatusOrder class="w-[30px] cursor-pointer" @click="updateStatusOrder(item.id)"/>
                     </div>
                 </div>
-                <IconNextPage class="cursor-pointer" />
             </div>
+        </div>
+        <div class="flex justify-center items-center mt-[30px]">
+            <el-pagination :page-size="pageSize" :total="listOrdersAdmin.length" :current-page.sync="currentPage"
+                @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
         </div>
     </div>
     <Footer />
-</div></template>
+</template>

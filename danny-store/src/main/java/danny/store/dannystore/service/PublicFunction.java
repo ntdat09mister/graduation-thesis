@@ -34,6 +34,16 @@ public class PublicFunction {
             return "";
         }
     }
+    public Long getDay(Date dateInput) {
+        if (dateInput != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd");
+            Long value = Long.valueOf(simpleDateFormat.format(dateInput));
+            System.out.println("getMonth from value" + dateInput);
+            return value;
+        } else {
+            throw new RuntimeException(RESPONSE_NOT_FOUND);
+        }
+    }
     public Long getMonth(Date dateInput) {
         if (dateInput != null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
@@ -60,6 +70,15 @@ public class PublicFunction {
             return statusOrderOptional.get().getStatusName();
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND);
+        }
+    }
+    public String getTimeFilter(Date dateInput) {
+        if (dateInput != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("Convert value Date to String");
+            return simpleDateFormat.format(dateInput);
+        } else {
+            return "";
         }
     }
 }

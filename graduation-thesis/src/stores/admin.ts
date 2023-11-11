@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 export const useAdminStore = defineStore('admin', () => {
     interface User {
@@ -22,6 +22,7 @@ export const useAdminStore = defineStore('admin', () => {
         totalAmount: number,
         username: string,
         nameCustomer: string,
+        phoneNumber: string,
         address: string,
         status: string,
         createdAt: string,
@@ -57,7 +58,7 @@ export const useAdminStore = defineStore('admin', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function getAllOrdersAdmin() {
+    async function getAllOrdersAdmin(filterId: number) {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
@@ -69,11 +70,11 @@ export const useAdminStore = defineStore('admin', () => {
                     Authorization: `Bearer ${token}`
                 },
             };
-            const response = await axios.get(`http://localhost:8080/order/admin/all`, config);
+            const response = await axios.get(`http://localhost:8080/order/admin/all?filterId=${filterId}`, config);
             const responseData = response.data;
             if (responseData && responseData.data) {
                 const data = responseData.data;
-
+                console.log(data)
                 if (data && Array.isArray(data)) {
                     listOrdersAdmin.value = data;
                     console.log(listOrdersAdmin)
@@ -87,10 +88,40 @@ export const useAdminStore = defineStore('admin', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function updateStatusOrder(orderId: number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = `http://localhost:8080/order/admin/updateStatusOrder?orderId=${orderId}`;
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, null, { headers });
+            const responseData = response.data;
+            console.log(responseData);
+            
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    const page = ref(1)
+    function setPage(value: number) { page.value = value }
+    const limit = ref(8)
+    const listDisplayOrderAdmin = computed(() => {
+        const fromOrder = (page.value - 1) * limit.value
+        const toOrder = page.value * limit.value - 1
+        return listOrdersAdmin.value.filter((baby, index) => {
+            return index >= fromOrder && index <= toOrder
+        })
+    })
     return {
         getInforUser,
         user,
         listOrdersAdmin,
-        getAllOrdersAdmin
+        getAllOrdersAdmin,
+        setPage,
+        listDisplayOrderAdmin,
+        updateStatusOrder
     }
 })
