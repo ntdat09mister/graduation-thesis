@@ -28,4 +28,8 @@ public class OrderController extends BaseController{
     public ResponseEntity<?> getOrderDetail(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
         return successResponse(orderService.getOrderDetail(user.getId(), orderId));
     }
+    @GetMapping("/admin/all")
+    public ResponseEntity<?> getAllOrdersAdmin(@UserInfo User user) throws NotFoundException {
+        return successResponse(orderService.getAllOrdersAdmin(user.getId()));
+    }
 }

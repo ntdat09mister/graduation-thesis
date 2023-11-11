@@ -81,7 +81,10 @@ public class OrderService {
                     productLists.append(", ");
                 }
             }
+
             OrderDto orderDto = new OrderDto();
+            Optional<Product> productOptional = productRepository.findById(orderItemList.get(0).getProductId());
+            orderDto.setSrc(productOptional.get().getSrc());
             orderDto.setId(order.getId());
             orderDto.setTotalAmount(order.getTotalAmount());
             orderDto.setCreatedAt(publicFunction.formatTime(order.getCreatedAt()));
@@ -185,6 +188,44 @@ public class OrderService {
             return getFilterReport(orderList, totalAmountReport);
         } else {
             throw new NotFoundException(RESPONSE_FAIL_REPORT);
+        }
+    }
+
+    public List<OrderDtoForAdmin> getAllOrdersAdmin(Long userId) throws NotFoundException {
+        List<OrderDtoForAdmin> orderDtoList = new ArrayList<>();
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.get().getRole().equals("admin")) {
+            List<Order> orderList = orderRepository.findAll();
+            for (Order order: orderList) {
+                List<OrderItem> orderItemList = new ArrayList<>();
+                orderItemList = orderItemRepository.findByOrderId(order.getId());
+                StringBuilder productLists = new StringBuilder();
+                for (int i = 0; i < orderItemList.size(); i++) {
+                    OrderItem orderItem = orderItemList.get(i);
+                    Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
+                    productLists.append(productOptional.get().getName());
+                    if (i < orderItemList.size() - 1) {
+                        productLists.append(", ");
+                    }
+                }
+                Optional<User> optionalUser = userRepository.findById(order.getCustomerId());
+                OrderDtoForAdmin orderDtoForAdmin = new OrderDtoForAdmin();
+                Optional<Product> productOptional = productRepository.findById(orderItemList.get(0).getProductId());
+                orderDtoForAdmin.setSrc(productOptional.get().getSrc());
+                orderDtoForAdmin.setId(order.getId());
+                orderDtoForAdmin.setTotalAmount(order.getTotalAmount());
+                orderDtoForAdmin.setCreatedAt(publicFunction.formatTime(order.getCreatedAt()));
+                orderDtoForAdmin.setStatus(getStatusOrder(order.getStatusId()));
+                orderDtoForAdmin.setListProducts(productLists.toString());
+                orderDtoForAdmin.setUsername(optionalUser.get().getUsername());
+                orderDtoForAdmin.setAddress(optionalUser.get().getAddress());
+                orderDtoForAdmin.setNameCustomer(optionalUser.get().getName());
+                orderDtoList.add(orderDtoForAdmin);
+            }
+            System.out.println(RESPONSE_LIST_ORDERS);
+            return orderDtoList;
+        } else {
+            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
         }
     }
 }
