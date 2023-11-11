@@ -1,13 +1,16 @@
 <script lang="ts">
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import IconRightArrow from '@/components/icons/IconRightArrow.vue';
 import { defineComponent } from 'vue'
 import { mapActions, mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
+import router from '@/router';
 export default defineComponent({
     components: {
         Header,
-        Footer
+        Footer,
+        IconRightArrow
     },
     computed: {
         ...mapState(useUserStore, {
@@ -21,7 +24,10 @@ export default defineComponent({
         }
     },
     methods: {
-        ...mapActions(useUserStore, ['getInforUser'])
+        ...mapActions(useUserStore, ['getInforUser']),
+        routerPage(routerName: string) {
+            router.push({ name: routerName })
+        }
     },
     mounted() {
         this.getInforUser()
@@ -84,6 +90,12 @@ export default defineComponent({
                     <span class="text-[20px]">{{ user?.createdAt }}</span>
                 </div>
             </div>
+        </div>
+        <div class="w-[300px] flex flex-row mt-[30px] justify-between items-center">
+            <span class="text-[20px]">Di chuyển tới trang admin</span>
+            <a href="" @click="routerPage('adminView')">
+            <IconRightArrow class="w-[50px]" />
+        </a>
         </div>
         <Footer />
     </div>

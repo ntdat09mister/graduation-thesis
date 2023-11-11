@@ -10,6 +10,7 @@ import RegisterView from '../views/RegisterView.vue'
 import UserInforView from '../views/UserInformation.vue'
 import OrderView from '../views/OrderView.vue'
 import OrderDetailView from '../views/OrderDetailView.vue'
+import AdminView from '../views/AdminView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,11 @@ const router = createRouter({
       path: '/orderDetail',
       name: 'orderDetail',
       component: OrderDetailView
+    },
+    {
+      path: '/adminView',
+      name: 'adminView',
+      component: AdminView
     }
   ]
 })
