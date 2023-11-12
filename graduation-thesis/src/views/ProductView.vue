@@ -33,7 +33,6 @@ export default defineComponent({
     <div class="flex flex-col">
         <h1>Show full Products</h1>
         <div v-for="item in listProducts" class="flex flex-row justify-around">
-
         <div class="flex flex-col">
             <span>ID</span>
             <span>{{ item.id }}</span>
@@ -58,9 +57,6 @@ export default defineComponent({
             <span>Don vi tinh</span>
             <span>{{ item.unitCount }}</span>
         </div>
-        <!-- <div class="cangiua2">
-            <button @click="changeProduct(id, name, description, qty, price, unitCount)">Save</button>
-        </div> -->
     </div>
     <div>
         <h1>Thay doi gia tri</h1>

@@ -158,8 +158,8 @@ export default defineComponent({
                             {{ item.quantity }}
                         </span>
                     </div>
-                    <div :class="{ 'bg-green-100 border-green-500': item.statusProduct }"
-                        class="w-[80px] h-[40px] flex justify-center items-center cursor-pointer border bg-red-100 border-solid border-red-600 rounded-xl"
+                    <div :class="{ 'bg-green-100 border-green-500': item.statusProduct, 'bg-red-100 border-red-600 rounded-xl': !item.statusProduct }"
+                        class="w-[80px] h-[40px] flex justify-center items-center cursor-pointer border rounded-xl"
                         @click="updateStatusProduct(item.id)">
                         <span class="text-[13px]">{{ item.statusProduct ? 'Đang bán' : 'Ngừng bán' }}</span>
                     </div>

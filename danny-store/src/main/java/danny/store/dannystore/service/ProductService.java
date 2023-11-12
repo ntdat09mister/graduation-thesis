@@ -46,6 +46,11 @@ public class ProductService {
             }
             for (Product product : products) {
                 ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);
+                String[] fullString = product.getDescription().split("\\n");
+                if (fullString.length > 0) {
+                    fullString[0] = fullString[0].substring(1);
+                }
+                productDto.setDescription(fullString[0]);
                 productDtos.add(productDto);
             }
             return productDtos;
@@ -73,6 +78,9 @@ public class ProductService {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             ProductDto productDto = objectMapper.convertValue(productOptional, ProductDto.class);
+            String cleanText = productDto.getDescription().replaceAll("\\n\\n", "\n");
+            String cleanedText = cleanText.replaceFirst("^[^\n]*\n", "");
+            productDto.setDescription(cleanedText);
             return productDto;
         } else {
             throw new ClassNotFoundException();
@@ -97,6 +105,11 @@ public class ProductService {
             for (Product product: products) {
                 ProductDtoForAdmin productDtoForAdmin = objectMapper.convertValue(product, ProductDtoForAdmin.class);
                 productDtoForAdmin.setStatusProduct(product.getStatus());
+                String[] fullString = product.getDescription().split("\\n");
+                if (fullString.length > 0) {
+                    fullString[0] = fullString[0].substring(1);
+                }
+                productDtoForAdmin.setDescription(fullString[0]);
                 productDtoForAdminList.add(productDtoForAdmin);
             }
             return productDtoForAdminList;

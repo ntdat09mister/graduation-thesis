@@ -7,7 +7,9 @@ import IconCheckListOrder from '@/components/icons/IconCheckListOrder.vue'
 import IconUpdateStatusOrder from '@/components/icons/IconUpdateStatusOrder.vue'
 import IconRightArrow from '@/components/icons/IconRightArrow.vue'
 import IconLeftArrow from '@/components/icons/IconLeftArrow.vue'
-import { defineComponent } from 'vue'
+import IconModifiy from '@/components/icons/IconModifiy.vue'
+import PopupModifiyUser from '@/components/PopupModifiyUser.vue'
+import { defineComponent, ref } from 'vue'
 import { mapActions, mapState } from 'pinia'
 import { useOrderStore } from '@/stores/order'
 import { useUserStore } from '@/stores/user'
@@ -22,7 +24,26 @@ export default defineComponent({
         IconCheckListOrder,
         IconUpdateStatusOrder,
         IconRightArrow,
-        IconLeftArrow
+        IconLeftArrow,
+        IconModifiy,
+        PopupModifiyUser
+    },
+    setup() {
+        const isPopupVisible = ref(false);
+
+        const showPopup = () => {
+            isPopupVisible.value = true;
+        };
+
+        const hidePopup = () => {
+            isPopupVisible.value = false;
+        };
+
+        return {
+            isPopupVisible,
+            showPopup,
+            hidePopup,
+        };
     },
     data() {
         return {
@@ -32,7 +53,9 @@ export default defineComponent({
                 { name: 'Số đơn hàng hôm nay', value: '50' },
                 { name: 'Doanh thu', value: '50000000' }
             ],
-            selected: 2
+            selected: 2,
+            showPopup: false,
+            notificationMessage: "Đạt đẹp trai",
         };
     },
     computed: {
@@ -178,6 +201,15 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                         {{ item.role }}
                     </span>
+                    <div>
+                        <button @click="showPopup">Hiển thị Popup</button>
+                        <div class="popup" v-show="isPopupVisible">
+                            <div class="popup-content">
+                                <p>Show Popup</p>
+                                <button @click="hidePopup">Đóng Popup</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -202,3 +234,5 @@ export default defineComponent({
     </div>
     <Footer />
 </template>
+<style>
+</style>
