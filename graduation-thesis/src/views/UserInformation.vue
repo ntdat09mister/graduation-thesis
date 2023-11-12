@@ -35,7 +35,7 @@ export default defineComponent({
 })
 </script>
 <template>
-    <div class="w-[1000ox] flex flex-col justify-center items-center">
+    <div class="flex flex-col justify-center items-center">
         <Header />
         <div class="flex items-start mb-[20px]">
             <span class="text-[25px] font-semibold">
@@ -91,11 +91,25 @@ export default defineComponent({
                 </div>
             </div>
         </div>
-        <div class="w-[300px] flex flex-row mt-[30px] justify-between items-center">
-            <span class="text-[20px]">Di chuyển tới trang admin</span>
-            <a href="" @click="routerPage('adminView')">
-            <IconRightArrow class="w-[50px]" />
-        </a>
+        <div>
+            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] justify-between items-center">
+                <span class="text-[20px]">Di chuyển tới trang quản lý đơn hàng</span>
+                <a href="" @click="routerPage('adminOrderView')">
+                    <IconRightArrow class="w-[50px]" />
+                </a>
+            </div>
+            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] justify-between items-center">
+                <span class="text-[20px]">Di chuyển tới trang quản lý sản phẩm</span>
+                <a href="" @click="routerPage('adminProductView')">
+                    <IconRightArrow class="w-[50px]" />
+                </a>
+            </div>
+            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] justify-between items-center">
+                <span class="text-[20px]">Di chuyển tới trang quản lý người dùng</span>
+                <a href="" @click="routerPage('adminUserView')">
+                    <IconRightArrow class="w-[50px]" />
+                </a>
+            </div>
         </div>
         <Footer />
     </div>

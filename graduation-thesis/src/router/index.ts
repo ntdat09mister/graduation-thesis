@@ -10,8 +10,9 @@ import RegisterView from '../views/RegisterView.vue'
 import UserInforView from '../views/UserInformation.vue'
 import OrderView from '../views/OrderView.vue'
 import OrderDetailView from '../views/OrderDetailView.vue'
-import AdminView from '../views/AdminView.vue'
-
+import AdminOrderView from '../views/AdminOrderView.vue'
+import AdminProductView from '../views/AdminProductView.vue'
+import AdminUserView from '../views/AdminUserView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -71,9 +72,19 @@ const router = createRouter({
       component: OrderDetailView
     },
     {
-      path: '/adminView',
-      name: 'adminView',
-      component: AdminView
+      path: '/adminOrderView',
+      name: 'adminOrderView',
+      component: AdminOrderView
+    },
+    {
+      path: '/adminProductView',
+      name: 'adminProductView',
+      component: AdminProductView
+    },
+    {
+      path: '/adminUserView',
+      name: 'adminUserView',
+      component: AdminUserView
     }
   ]
 })

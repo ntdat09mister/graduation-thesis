@@ -69,7 +69,9 @@ export default defineComponent({
         handleSearch() {
             const keyword = this.searchKeyword;
             sessionStorage.setItem("searchKeyword", keyword)
-            window.location.reload()
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
             this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
             console.log(this.searchKeyword)
             router.push({ name: 'search' })

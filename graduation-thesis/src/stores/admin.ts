@@ -100,7 +100,9 @@ export const useAdminStore = defineStore('admin', () => {
             const response = await axios.put(apiUrl, null, { headers });
             const responseData = response.data;
             console.log(responseData);
-            
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
         } catch (error) {
             console.error('Error fetching data:', error);
         }

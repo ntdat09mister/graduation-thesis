@@ -195,7 +195,7 @@ public class OrderService {
         List<OrderDtoForAdmin> orderDtoList = new ArrayList<>();
         List<Order> orderList = new ArrayList<>();
         Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.get().getRole().equals("admin")) {
+        if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
             if (filterId == 1) {
                 // All products
                 orderList = orderRepository.findAll();

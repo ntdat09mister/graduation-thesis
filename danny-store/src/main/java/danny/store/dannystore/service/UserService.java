@@ -3,6 +3,7 @@ package danny.store.dannystore.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.common.RoleType;
 import danny.store.dannystore.common.StatusType;
+import danny.store.dannystore.domain.dto.UserAdminDto;
 import danny.store.dannystore.domain.entity.Role;
 import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.domain.model.UserInput;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static danny.store.dannystore.common.Const.RESPONSE_NOT_FOUND;
 import static danny.store.dannystore.common.Const.RESPONSE_NOT_FOUND_USER;
 
 @Service
@@ -74,25 +76,22 @@ public class UserService {
         }
     }
 
-    public List<UserOutput> findAllUsers(Long id) throws NotFoundException {
+    public List<UserAdminDto> findAllUsers(Long id) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.get().getRole().equals("admin")) {
-            List<User> userList = userRepository.findAll();
-            List<UserOutput> userOutputs = new ArrayList<>();
-            for ( User user: userList ) {
-                UserOutput userOutput = new UserOutput();
-                userOutput.setId(user.getId());
-                userOutput.setUsername(user.getUsername());
-                userOutput.setName(user.getName());
-                userOutput.setGender(user.getGender());
-                userOutput.setAddress(user.getAddress());
-                userOutput.setPhone(user.getPhone());
-                userOutput.setRole(user.getRole());
-                userOutput.setCreatedAt(userOutput.getCreatedAt());
-                userOutputs.add(userOutput);
+        try {
+            if (userOptional.get().getRole().equals("admin")) {
+                List<User> userList = userRepository.findAll();
+                List<UserAdminDto> userAdminDtoList = new ArrayList<>();
+                for ( User user: userList ) {
+                    UserAdminDto userAdminDto = objectMapper.convertValue(user, UserAdminDto.class);
+                    userAdminDto.setCreatedAt(publicFunction.formatTime(user.getCreatedAt()));
+                    userAdminDtoList.add(userAdminDto);
+                }
+                return userAdminDtoList;
+            } else {
+                throw new NotFoundException(RESPONSE_NOT_FOUND);
             }
-            return userOutputs;
-        } else {
+        } catch (Exception e) {
             throw new NotFoundException(RESPONSE_NOT_FOUND_USER);
         }
     }

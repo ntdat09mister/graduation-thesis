@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController extends BaseController{
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private CartService cartService;
     @PostMapping("/add")
     public ResponseEntity<?> createOrderFromCart(@UserInfo User user) throws NotFoundException {
         return successResponseCreated(orderService.createOrderFromCart(user.getId()), null, HttpStatus.CREATED);
@@ -29,6 +27,7 @@ public class OrderController extends BaseController{
     public ResponseEntity<?> getOrderDetail(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
         return successResponse(orderService.getOrderDetail(user.getId(), orderId));
     }
+    @PreAuthorize("hasAnyAuthority('sales','admin')")
     @GetMapping("/admin/all")
     public ResponseEntity<?> getAllOrdersAdmin(@UserInfo User user, @RequestParam (required = false) Long filterId) throws NotFoundException {
         return successResponse(orderService.getAllOrdersAdmin(user.getId(), filterId));
