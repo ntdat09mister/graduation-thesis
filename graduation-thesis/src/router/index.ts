@@ -13,6 +13,7 @@ import OrderDetailView from '../views/OrderDetailView.vue'
 import AdminOrderView from '../views/AdminOrderView.vue'
 import AdminProductView from '../views/AdminProductView.vue'
 import AdminUserView from '../views/AdminUserView.vue'
+import TestPopup from '../views/TestPopup.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -85,7 +86,12 @@ const router = createRouter({
       path: '/adminUserView',
       name: 'adminUserView',
       component: AdminUserView
-    }
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: TestPopup
+    },
   ]
 })
 
