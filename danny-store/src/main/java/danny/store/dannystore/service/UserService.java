@@ -128,4 +128,24 @@ public class UserService {
             throw new NotFoundException(RESPONSE_NOT_FOUND_USER);
         }
     }
+
+    public String updateUser(Long id, UserAdminDto userAdminDto) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> optionalUserUpdate = userRepository.findById(userAdminDto.getId());
+        Optional<Role> roleOptional = roleRepository.findByRoleName(userAdminDto.getRole());
+        if (userOptional.get().getRole().equals("admin") && roleOptional.isPresent() && optionalUserUpdate.isPresent()) {
+            User user = optionalUserUpdate.get();
+            user.setUsername(userAdminDto.getUsername());
+            user.setName(userAdminDto.getName());
+            user.setGender(userAdminDto.getGender());
+            user.setAddress(userAdminDto.getAddress());
+            user.setPhone(userAdminDto.getPhone());
+            user.setRole(roleOptional.get().getRoleName());
+            user.setCreatedAt(new Date());
+            userRepository.save(user);
+            return "Update success user" + optionalUserUpdate.get().getUsername();
+        } else {
+            throw new NotFoundException(RESPONSE_NOT_FOUND_USER);
+        }
+    }
 }

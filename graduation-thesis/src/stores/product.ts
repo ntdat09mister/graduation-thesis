@@ -112,6 +112,31 @@ export const useProductStore = defineStore('product', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function updateProduct(nameInput: string, priceInput: string, descriptionInput: string, quantityInput: string, statusInput: string) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+              console.error('Access token not found in localStorage');
+              return;
+            }
+            const apiUrl = 'http://localhost:8080/user/admin/updateProduct';
+            const requestData = {
+                name: nameInput,
+                price: priceInput,
+                description: descriptionInput,
+                quantity: quantityInput,
+                status: statusInput
+            }
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, requestData, { headers });
+            console.log(response)
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+    }
     return {
         getProducts,
         listProducts,
@@ -120,6 +145,7 @@ export const useProductStore = defineStore('product', () => {
         listDisplayProductAdmin,
         setPage,
         listProductsAdmin,
-        updateStatusProduct
+        updateStatusProduct,
+        updateProduct
     }
 })

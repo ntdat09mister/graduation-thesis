@@ -53,7 +53,19 @@ export default defineComponent({
             showPopup: false,
             notificationMessage: "Đạt đẹp trai",
             showModify: false,
-            valueId: 1
+            valueId: 1,
+            valueUsername: "none",
+            valueName: "none",
+            valueAddress: "none",
+            valuePhone: "none",
+            valueRole: "none",
+            seletedRole: "none",
+            usernameInput: "",
+            nameInput: "",
+            genderInput: "",
+            addressInput: "",
+            phoneInput: "",
+            seletedGender: "none"
         };
     },
     computed: {
@@ -66,17 +78,22 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useUserStore, ['getProductsAdmin', 'setPage']),
+        ...mapActions(useUserStore, ['getProductsAdmin', 'setPage', 'updateUser']),
         handlePageChange(newPage: number) {
             this.currentPage = newPage;
         },
         routerPage(routerName: string) {
             router.push({ name: routerName })
         },
-        modifyUser(value: number) {
-            console.log(value)
-            this.valueId = value;
-            this.showModify = true;
+        modifyUser(id: number, username: string, name: string, gender: string, address: string, phone: string, role: string) {
+            this.valueId = id;
+            this.valueUsername = username,
+                this.valueName = name,
+                this.seletedGender = gender,
+                this.valueAddress = address,
+                this.valuePhone = phone,
+                this.seletedRole = role,
+                this.showModify = true
         },
         saveUser() {
             this.showModify = false;
@@ -178,42 +195,48 @@ export default defineComponent({
                             </span>
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input
+                            <input v-model="usernameInput"
                                 class="w-[150px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" placeholder="Nhập username.....">
+                                type="text" :placeholder="`${valueUsername}`">
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input
-                                class="w-[150px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" placeholder="Nhập tên người dùng.....">
+                            <input v-model="nameInput"
+                                class="w-[200px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
+                                type="text" :placeholder="`${valueName}`">
                         </div>
                         <div class="w-[100px] h-[80px] flex justify-center items-center">
-                            <input
-                                class="w-[80px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" placeholder="Nhập giới tính.....">
+                            <select
+                                class="w-[50px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
+                                v-model="seletedGender">
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                                <option value="none">N/A</option>
+                            </select>
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input
+                            <input v-model="addressInput"
                                 class="w-[200px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" placeholder="Nhập địa chỉ.....">
+                                type="text" :placeholder="`${valueAddress}`">
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input
+                            <input v-model="phoneInput"
                                 class="w-[150px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" placeholder="Nhập sđt.....">
+                                type="text" :placeholder="`${valuePhone}`">
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center ">
                             <select
                                 class="w-[140px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
-                                name="" id="">
+                                v-model="seletedRole">
                                 <option value="customer">Khách hàng</option>
-                                <option value="salesman">Nhân viên bán hàng</option>
-                                <option value="warehouseman">Nhân viên kho</option>
+                                <option value="sales">Nhân viên bán hàng</option>
+                                <option value="warehouse">Nhân viên kho</option>
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
                         <div class="w-[80px] h-[80px] flex justify-center items-center">
-                            <button @click="saveUser()" class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
+                            <button
+                                @click="updateUser(valueId, usernameInput, nameInput, seletedGender, addressInput, phoneInput, seletedRole)"
+                                class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
                         </div>
                     </div>
                     <div v-for="item in listDisplayUsersAdmin" class="w-[1381px] h-[48px] flex flex-row items-center">
@@ -261,7 +284,9 @@ export default defineComponent({
                             </span>
                         </div>
                         <div class=" flex justify-center items-center ">
-                            <button @click="modifyUser(item.id)" class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
+                            <button
+                                @click="modifyUser(item.id, item.username, item.name, item.gender, item.address, item.phone, item.role)"
+                                class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
                         </div>
                     </div>
                 </div>

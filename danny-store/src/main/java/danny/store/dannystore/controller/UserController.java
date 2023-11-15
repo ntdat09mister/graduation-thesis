@@ -1,5 +1,6 @@
 package danny.store.dannystore.controller;
 
+import danny.store.dannystore.domain.dto.UserAdminDto;
 import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.UserService;
@@ -39,5 +40,10 @@ public class UserController extends BaseController{
     @DeleteMapping("/admin/delete")
     public ResponseEntity<?> deleteUser(@UserInfo User user, @RequestParam Long userId) throws NotFoundException {
         return successResponse(userService.deleteUser(user.getId(), userId));
+    }
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @PutMapping("/admin/updateUser")
+    public ResponseEntity<?> updateUser(@UserInfo User user, @RequestBody UserAdminDto userAdminDto ) throws NotFoundException {
+        return successResponse(userService.updateUser(user.getId(), userAdminDto));
     }
 }

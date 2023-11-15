@@ -91,6 +91,34 @@ export const useUserStore = defineStore('user', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function updateUser(idInput: number, usernameInput: string, nameInput: string, genderInput: string, addressInput: string, phoneInput: string, roleInput: string) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+              console.error('Access token not found in localStorage');
+              return;
+            }
+            const apiUrl = 'http://localhost:8080/user/admin/updateUser';
+            const requestData = {
+                id: idInput,
+                username: usernameInput,
+                name: nameInput,
+                gender: genderInput,
+                address: addressInput,
+                phone: phoneInput,
+                role: roleInput
+            }
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, requestData, { headers });
+            console.log(response)
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+    }
+
     const page = ref(1)
     function setPage(value: number) { page.value = value }
     const limit = ref(8)
@@ -107,6 +135,7 @@ export const useUserStore = defineStore('user', () => {
         setPage,
         listDisplayUsersAdmin,
         getProductsAdmin,
-        listUsersAdmin
+        listUsersAdmin,
+        updateUser
     }
 })
