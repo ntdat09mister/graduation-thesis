@@ -1,5 +1,7 @@
 package danny.store.dannystore.controller;
 
+import danny.store.dannystore.domain.dto.ProductDto;
+import danny.store.dannystore.domain.dto.ProductDtoForAdmin;
 import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.ProductService;
@@ -51,5 +53,10 @@ public class ProductController extends BaseController {
     @PutMapping("admin/updateStatus")
     public ResponseEntity<?> updateStatusProduct(@UserInfo User user, @RequestParam Long productId) throws NotFoundException {
         return successResponse(productService.updateStatusProduct(user.getId(), productId));
+    }
+    @PreAuthorize("hasAnyAuthority('warehouse','admin')")
+    @PutMapping("admin/updateProduct")
+    public ResponseEntity<?> updateProduct(@UserInfo User user, @RequestBody ProductDtoForAdmin productDtoForAdmin) throws NotFoundException {
+        return successResponse(productService.updateProduct(user.getId(), productDtoForAdmin));
     }
 }

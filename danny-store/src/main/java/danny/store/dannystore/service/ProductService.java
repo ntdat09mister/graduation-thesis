@@ -137,4 +137,27 @@ public class ProductService {
             throw new NotFoundException(RESPONSE_NOT_FOUND_PRODUCT);
         }
     }
+
+    public String updateProduct(Long userId, ProductDtoForAdmin productDtoForAdmin) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(userId);
+        try {
+            if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("warehouse")) {
+                Optional<Product> productOptional = productRepository.findById(productDtoForAdmin.getId());
+                if (productOptional.isPresent()) {
+                    Product product = productOptional.get();
+                    product.setName(productDtoForAdmin.getName());
+                    product.setPrice(Float.parseFloat(productDtoForAdmin.getPrice()));
+                    product.setDescription(productDtoForAdmin.getDescription());
+                    product.setQuantity(productDtoForAdmin.getQuantity());
+                    product.setStatus(productDtoForAdmin.getStatusProduct());
+                    productRepository.save(product);
+                }
+                return RESPONSE_UPDATE_SUCCESS;
+            } else {
+                throw new NotFoundException(RESPONSE_NOT_FOUND_PRODUCT);
+            }
+        } catch (Exception e) {
+            throw new NotFoundException(RESPONSE_NOT_FOUND_PRODUCT);
+        }
+    }
 }

@@ -26,7 +26,7 @@ export default defineComponent({
     data() {
         return {
             pageSize: 8,
-            currentPage: 1,
+            currentPage: Number(sessionStorage.getItem("changePageProductAdmin")),
             listUnderDashBoard: [
                 { name: 'Số sản phẩm trong kho', value: '50' },
                 { name: 'Sản phẩm tồn kho', value: '50000000' }
@@ -38,7 +38,8 @@ export default defineComponent({
             priceOutput: "",
             descriptionOutput: "",
             quantityOutput: "",
-            seletedStatus: "1"
+            seletedStatus: true,
+            idValue: 1
         };
     },
     computed: {
@@ -51,12 +52,14 @@ export default defineComponent({
         ...mapActions(useProductStore, ['getProductsAdmin', 'setPage', 'updateStatusProduct', 'updateProduct']),
         handlePageChange(newPage: number) {
             this.currentPage = newPage;
+            sessionStorage.setItem("changePageProductAdmin", String(newPage));
         },
         routerPage(routerName: string) {
             router.push({ name: routerName })
         },
-        modifyProduct(src: string, name: string, price: string, description: string, quantity: string) {
-            this.srcOutput = src,
+        modifyProduct(id: number, src: string, name: string, price: string, description: string, quantity: string) {
+            this.idValue = id,
+                this.srcOutput = src,
                 this.nameOutput = name,
                 this.priceOutput = price,
                 this.descriptionOutput = description,
@@ -65,7 +68,8 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.getProductsAdmin();
+        this.getProductsAdmin(),
+            this.setPage(Number(sessionStorage.getItem("changePageProductAdmin")))
     }
 });
 </script>
@@ -112,8 +116,13 @@ export default defineComponent({
                 </div>
             </div>
             <div class="w-[1381px] h-[48px] flex flex-row justify-between items-center">
+                <div class="w-[70px] h-[80px] flex items-center">
+                    <span class="w-[70px] h-[80px] flex justify-center items-center"
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Mã
+                        SP</span>
+                </div>
                 <div class="w-[110px] h-[80px] flex justify-center items-center">
-                    <span class="w-[80px] h-[80px] flex justify-center items-center"
+                    <span class="w-[110px] h-[80px] flex justify-center items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Sản
                         phẩm</span>
                 </div>
@@ -127,8 +136,8 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Đơn
                         giá</span>
                 </div>
-                <div class="w-[200px] h-[80px] flex justify-center items-center">
-                    <span class="w-[200px] h-[80px] flex justify-center items-center"
+                <div class="w-[250px] h-[80px] flex justify-center items-center">
+                    <span class="w-[250px] h-[80px] flex justify-center items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Mô
                         tả</span>
                 </div>
@@ -148,9 +157,15 @@ export default defineComponent({
                 </div>
             </div>
             <div v-if="showModify" class="w-[1381px] h-[48px] flex flex-row justify-between items-center">
+                <div class="w-[70px] h-[80px] flex items-center">
+                    <span class="w-[70px] h-[80px] flex justify-center items-center"
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                        {{ idValue }}
+                    </span>
+                </div>
                 <div class="w-[110px] h-[80px] flex justify-center items-center">
-                    <div class="w-[80px] h-[80px] flex justify-center items-center">
-                        <img class="w-[52px] h-[52px] ml-[25px]" :src="srcOutput" alt="product-img">
+                    <div class="w-[110px] h-[80px] flex justify-center items-center">
+                        <img class="w-[52px] h-[52px] flex justify-center items-center" :src="srcOutput" alt="product-img">
                     </div>
                 </div>
                 <div class="w-[160px] h-[80px] flex justify-center items-center">
@@ -176,21 +191,27 @@ export default defineComponent({
                 <div class="w-[100px] h-[80px] flex justify-center items-center">
                     <select class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
                         v-model="seletedStatus">
-                        <option value="1">Đang bán</option>
-                        <option value="0">Ngừng bán</option>
+                        <option :value=true>Đang bán</option>
+                        <option :value=false>Ngừng bán</option>
                     </select>
                 </div>
                 <div class="w-[50px] h-[80px] flex justify-center items-center">
                     <button
-                        @click="updateProduct(nameOutput, priceOutput, descriptionOutput, quantityOutput, seletedStatus)"
+                        @click="updateProduct(idValue, nameOutput, priceOutput, descriptionOutput, quantityOutput, seletedStatus)"
                         class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
                 </div>
             </div>
             <div class="w-[1381px] h-[649px] flex flex-col">
                 <div v-for="(item, index ) in listDisplayProductAdmin" :key="index"
                     class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
+                    <div class="w-[70px] h-[80px] flex items-center">
+                        <span class="w-[70px] h-[80px] flex justify-center items-center"
+                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                            {{ item.id }}
+                        </span>
+                    </div>
                     <div class="w-[110px] h-[80px] flex justify-center items-center">
-                        <img class="w-[52px] h-[52px] ml-[25px]" :src="item.src" alt="product-img">
+                        <img class="w-[52px] h-[52px] flex justify-center items-center" :src="item.src" alt="product-img">
                     </div>
                     <div class="w-[160px] h-[80px] flex items-center">
                         <span class="w-[160px] h-[80px] flex justify-center items-center"
@@ -204,8 +225,8 @@ export default defineComponent({
                             {{ item.price }}
                         </span>
                     </div>
-                    <div class="w-[200px] h-[80px] flex justify-center items-center">
-                        <span class="w-[200px] h-[80px] flex justify-center items-center"
+                    <div class="w-[250px] h-[80px] flex justify-center items-center">
+                        <span class="w-[250px] h-[80px] flex justify-center items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.description }}
                         </span>
@@ -222,7 +243,8 @@ export default defineComponent({
                         <span class="text-[13px]">{{ item.statusProduct ? 'Đang bán' : 'Ngừng bán' }}</span>
                     </div>
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
-                        <button @click="modifyProduct(item.src, item.name, item.price, item.description, item.quantity)"
+                        <button
+                            @click="modifyProduct(item.id, item.src, item.name, item.price, item.description, item.quantity)"
                             class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
                     </div>
                 </div>

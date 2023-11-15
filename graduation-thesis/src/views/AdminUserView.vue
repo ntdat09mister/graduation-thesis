@@ -44,7 +44,7 @@ export default defineComponent({
     data() {
         return {
             pageSize: 8,
-            currentPage: 1,
+            currentPage: Number(sessionStorage.getItem("changePageUserAdmin")),
             listUnderDashBoard: [
                 { name: 'Số đơn hàng hôm nay', value: '50' },
                 { name: 'Doanh thu', value: '50000000' }
@@ -54,17 +54,11 @@ export default defineComponent({
             notificationMessage: "Đạt đẹp trai",
             showModify: false,
             valueId: 1,
-            valueUsername: "none",
-            valueName: "none",
-            valueAddress: "none",
-            valuePhone: "none",
-            valueRole: "none",
             seletedRole: "none",
-            usernameInput: "",
-            nameInput: "",
-            genderInput: "",
-            addressInput: "",
-            phoneInput: "",
+            usernameOuput: "",
+            nameOuput: "",
+            addressOuput: "",
+            phoneOuput: "",
             seletedGender: "none"
         };
     },
@@ -81,17 +75,18 @@ export default defineComponent({
         ...mapActions(useUserStore, ['getProductsAdmin', 'setPage', 'updateUser']),
         handlePageChange(newPage: number) {
             this.currentPage = newPage;
+            sessionStorage.setItem("changePageUserAdmin", String(newPage));
         },
         routerPage(routerName: string) {
             router.push({ name: routerName })
         },
         modifyUser(id: number, username: string, name: string, gender: string, address: string, phone: string, role: string) {
             this.valueId = id;
-            this.valueUsername = username,
-                this.valueName = name,
+            this.usernameOuput = username,
+                this.nameOuput = name,
                 this.seletedGender = gender,
-                this.valueAddress = address,
-                this.valuePhone = phone,
+                this.addressOuput = address,
+                this.phoneOuput = phone,
                 this.seletedRole = role,
                 this.showModify = true
         },
@@ -100,7 +95,8 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.getProductsAdmin();
+        this.getProductsAdmin(),
+        this.setPage(Number(sessionStorage.getItem("changePageUserAdmin")))
     }
 });
 </script>
@@ -195,14 +191,14 @@ export default defineComponent({
                             </span>
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input v-model="usernameInput"
+                            <input v-model="usernameOuput"
                                 class="w-[150px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" :placeholder="`${valueUsername}`">
+                                type="text" :placeholder="`${usernameOuput}`">
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input v-model="nameInput"
+                            <input v-model="nameOuput"
                                 class="w-[200px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" :placeholder="`${valueName}`">
+                                type="text" :placeholder="`${nameOuput}`">
                         </div>
                         <div class="w-[100px] h-[80px] flex justify-center items-center">
                             <select
@@ -214,14 +210,14 @@ export default defineComponent({
                             </select>
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input v-model="addressInput"
+                            <input v-model="addressOuput"
                                 class="w-[200px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" :placeholder="`${valueAddress}`">
+                                type="text" :placeholder="`${addressOuput}`">
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <input v-model="phoneInput"
+                            <input v-model="phoneOuput"
                                 class="w-[150px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                                type="text" :placeholder="`${valuePhone}`">
+                                type="text" :placeholder="`${phoneOuput}`">
                         </div>
                         <div class="w-[200px] h-[80px] flex justify-center items-center ">
                             <select
@@ -235,7 +231,7 @@ export default defineComponent({
                         </div>
                         <div class="w-[80px] h-[80px] flex justify-center items-center">
                             <button
-                                @click="updateUser(valueId, usernameInput, nameInput, seletedGender, addressInput, phoneInput, seletedRole)"
+                                @click="updateUser(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole)"
                                 class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
                         </div>
                     </div>

@@ -148,7 +148,7 @@ export default defineComponent({
                     <div class="flex flex-row justify-center items-center">
                         <template v-if="authenticated">
                             <div class="w-[90px] flex flex-col justify-center items-center">
-                                <IconInformationMySelf class="w-[30px] cursor-pointer" @click="routerPage('userInfor')" />
+                                <IconInformationMySelf class="w-[30px] cursor-pointer" @click="routerPage('profile')" />
                                 <span class="text-[12px]">{{ user?.name }}</span>
                             </div>
                             <div class="flex flex-col justify-center items-center cursor-pointer">

@@ -119,6 +119,11 @@ export default defineComponent({
             <div class="w-[1381px] h-[48px] flex flex-row justify-between items-center">
                 <div class="w-[80px] h-[80px] flex justify-center items-center">
                     <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Mã
+                        đơn</span>
+                </div>
+                <div class="w-[80px] h-[80px] flex justify-center items-center">
+                    <span
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Sản
                         phẩm</span>
                 </div>
@@ -152,10 +157,17 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Trạng
                         thái</span>
                 </div>
+                <div class="w-[50px] h-[40px] flex justify-center items-center"></div>
             </div>
             <div class="w-[1381px] h-[649px]">
                 <div v-for="item in listDisplayOrderAdmin"
                     class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
+                    <div class="w-[80px] h-[80px] flex justify-center items-center">
+                        <span class="w-[80px] h-[80px] flex justify-center items-center"
+                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                            {{ item.id }}
+                        </span>
+                    </div>
                     <div class="w-[80px] h-[80px] flex justify-center items-center">
                         <img class="w-[52px] h-[52px] ml-[25px]" :src="item.src" alt="product-img">
                     </div>
@@ -194,9 +206,10 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 17px;text-align: center;color: #1B51E5;">
                             {{ item.status }}
                         </span>
-                        <div @click="updateStatusOrder(item.id)">
-                            <IconUpdateStatusOrder class="w-[30px] cursor-pointer" />
-                        </div>
+                    </div>
+                    <div class="w-[50px] h-[40px] flex justify-center items-center">
+                        <button @click="updateStatusOrder(item.id)"
+                            class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Update</button>
                     </div>
                 </div>
             </div>

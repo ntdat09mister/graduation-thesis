@@ -112,15 +112,16 @@ export const useProductStore = defineStore('product', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updateProduct(nameInput: string, priceInput: string, descriptionInput: string, quantityInput: string, statusInput: string) {
+    async function updateProduct(idInput: number, nameInput: string, priceInput: string, descriptionInput: string, quantityInput: string, statusInput: boolean) {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
               console.error('Access token not found in localStorage');
               return;
             }
-            const apiUrl = 'http://localhost:8080/user/admin/updateProduct';
+            const apiUrl = 'http://localhost:8080/product/admin/updateProduct';
             const requestData = {
+                id: idInput,
                 name: nameInput,
                 price: priceInput,
                 description: descriptionInput,
