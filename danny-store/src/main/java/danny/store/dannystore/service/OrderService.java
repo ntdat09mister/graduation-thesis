@@ -196,10 +196,12 @@ public class OrderService {
         }
     }
 
-    public List<OrderDtoForAdmin> getAllOrdersAdmin(Long userId, Long filterId) throws NotFoundException {
+    public AdminOrderSummary getAllOrdersAdmin(Long userId, Long filterId) throws NotFoundException {
+        AdminOrderSummary adminOrderSummary = new AdminOrderSummary();
         List<OrderDtoForAdmin> orderDtoList = new ArrayList<>();
         List<Order> orderList = new ArrayList<>();
         Optional<User> userOptional = userRepository.findById(userId);
+        Double totalAmount = 0D;
         if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
             if (filterId == 1) {
                 // All products
@@ -244,9 +246,17 @@ public class OrderService {
                 orderDtoForAdmin.setNameCustomer(optionalUser.get().getName());
                 orderDtoForAdmin.setPhoneNumber(optionalUser.get().getPhone());
                 orderDtoList.add(orderDtoForAdmin);
+                totalAmount +=  order.getTotalAmount();
             }
             System.out.println(RESPONSE_LIST_ORDERS);
-            return orderDtoList;
+            adminOrderSummary.setOrderDtoForAdminList(orderDtoList);
+            adminOrderSummary.setTotalOrders(Long.valueOf(orderList.size()));
+            Long successOrders = orderList.stream().filter(order -> order.getStatusId() == 4L).count();
+            adminOrderSummary.setSuccessOrders(successOrders);
+            Long receivedOrders = orderList.stream().filter(order -> order.getStatusId() == 1L).count();
+            adminOrderSummary.setOrdersReceived(receivedOrders);
+            adminOrderSummary.setTotalAmount(totalAmount);
+            return adminOrderSummary;
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
         }

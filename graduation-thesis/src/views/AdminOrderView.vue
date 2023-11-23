@@ -27,27 +27,32 @@ export default defineComponent({
     data() {
         return {
             pageSize: 8,
-            currentPage: 1,
             listUnderDashBoard: [
                 { component: IconCheckListOrder, name: 'Số đơn hàng', value: '50' },
                 { component: IconRevenue, name: 'Doanh thu', value: '50000000' }
             ],
-            selected: Number(localStorage.getItem("selectedFilter"))
+            selected: Number(localStorage.getItem("selectedFilter")),
+            currentPage: Number(sessionStorage.getItem("changePageOrderAdmin"))
         };
     },
     computed: {
         ...mapState(useOrderStore, {
-            listOrders: 'listOrders'
+            listOrders: 'listOrders',
         }),
         ...mapState(useAdminStore, {
             listOrdersAdmin: 'listOrdersAdmin',
-            listDisplayOrderAdmin: 'listDisplayOrderAdmin'
+            listDisplayOrderAdmin: 'listDisplayOrderAdmin',
+            totalAmount: 'totalAmount',
+            totalOrders: 'totalOrders',
+            successOrders: 'successOrders',
+            ordersReceived: 'ordersReceived'
         })
     },
     methods: {
         ...mapActions(useAdminStore, ['getInforUser', 'getAllOrdersAdmin', 'setPage', 'updateStatusOrder']),
         handlePageChange(newPage: number) {
             this.currentPage = newPage;
+            sessionStorage.setItem("changePageOrderAdmin", String(newPage));
         },
         changeBackground(value: number) {
             this.selected = value;
@@ -56,6 +61,11 @@ export default defineComponent({
         },
         routerPage(routerName: string) {
             router.push({ name: routerName })
+        },
+        checkNullSelected() {
+            if (this.selected == null) {
+                this.selected == 1;
+            }
         }
     },
     mounted() {
@@ -80,21 +90,49 @@ export default defineComponent({
                 </div>
             </div>
             <div class="w-[1438px] h-[98px] flex flex-row justify-around">
-                <div v-for="item in listUnderDashBoard"
-                    class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
+                <div class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
                     <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
                         <div>
-                            <component class="w-[60px] h-[60px]" :is="item.component" />
+                            <IconCheckListOrder class="w-[60px] h-[60px]" />
                         </div>
-                        <div class="flex flex-col justify-center items-center ml-[300px]">
+                        <div class="flex flex-col justify-center items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">{{
-                                    item.name }}</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Số
+                                đơn hàng</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
-                                    item.value }}</span>
+                                    totalOrders }}</span>
                         </div>
-
+                        <div class="flex flex-col justify-center items-center">
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Số đơn hàng chờ xác nhận</span>
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
+                                    ordersReceived }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
+                    <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
+                        <div>
+                            <IconRevenue class="w-[60px] h-[60px]" />
+                        </div>
+                        <div class="flex flex-col justify-center items-center">
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Số
+                                đơn hoàn thành</span>
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
+                                    successOrders }}</span>
+                        </div>
+                        <div class="flex flex-col justify-center items-center">
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Doanh
+                                thu</span>
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
+                                    totalAmount }}</span>
+                        </div>
                     </div>
                 </div>
             </div>

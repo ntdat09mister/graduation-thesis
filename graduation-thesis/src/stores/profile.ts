@@ -1,5 +1,4 @@
 import { defineStore } from "pinia"
-import { ref, computed } from 'vue'
 import IconHome from '@/components/icons/IconHome.vue'
 import IconCheckList from '@/components/icons/IconCheckList.vue'
 import IconWarranty from '@/components/icons/IconWarranty.vue'

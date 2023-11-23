@@ -58,6 +58,10 @@ export const useAdminStore = defineStore('admin', () => {
             console.error('Error fetching data:', error);
         }
     }
+    const totalAmount = ref<number>(0);
+    const totalOrders = ref<number>(0);
+    const successOrders = ref<number>(0);
+    const ordersReceived = ref<number>(0);
     async function getAllOrdersAdmin(filterId: number) {
         try {
             const token = localStorage.getItem("accessToken");
@@ -75,8 +79,19 @@ export const useAdminStore = defineStore('admin', () => {
             if (responseData && responseData.data) {
                 const data = responseData.data;
                 console.log(data)
-                if (data && Array.isArray(data)) {
-                    listOrdersAdmin.value = data;
+                if (
+                    Array.isArray(data.orderDtoForAdminList) &&
+                    typeof data.totalAmount === 'number' &&
+                    typeof data.totalOrders === 'number' &&
+                    typeof data.successOrders === 'number' &&
+                    typeof data.ordersReceived === 'number'
+                ) {
+                    listOrdersAdmin.value = data.orderDtoForAdminList;
+                    totalAmount.value = data.totalAmount;
+                    totalOrders.value = data.totalOrders;
+                    successOrders.value = data.successOrders;
+                    ordersReceived.value = data.ordersReceived;
+                    console.log('12345')
                     console.log(listOrdersAdmin)
                 } else {
                     console.error('Invalid data received from the API:', data);
@@ -124,6 +139,10 @@ export const useAdminStore = defineStore('admin', () => {
         getAllOrdersAdmin,
         setPage,
         listDisplayOrderAdmin,
-        updateStatusOrder
+        updateStatusOrder,
+        totalAmount,
+        totalOrders,
+        successOrders,
+        ordersReceived
     }
 })
