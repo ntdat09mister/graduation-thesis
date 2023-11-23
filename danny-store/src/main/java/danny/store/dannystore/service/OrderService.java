@@ -160,6 +160,11 @@ public class OrderService {
         reportItemDtoList = mappingReportItemDtos(orderList);
         filterReport.setReportDtoList(reportItemDtoList);
         filterReport.setTotalAmount(totalAmountReport);
+        filterReport.setTotalOrders(Long.valueOf(orderList.size()));
+        Long successOrders = orderList.stream().filter(order -> order.getStatusId() == 4L).count();
+        filterReport.setSuccessOrders(successOrders);
+        Long receivedOrders = orderList.stream().filter(order -> order.getStatusId() == 1L).count();
+        filterReport.setOrdersReceived(receivedOrders);
         return filterReport;
     }
 

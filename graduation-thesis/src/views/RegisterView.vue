@@ -24,7 +24,9 @@ export default defineComponent({
             retypePassword: '',
             name: '',
             phone: '',
-            valueRouter: ''
+            valueRouter: '',
+            address: '',
+            seletedGender: 'N/A'
         }
     },
     methods: {
@@ -46,12 +48,12 @@ export default defineComponent({
                 <LogoDannyStore class="w-[240px] h-[140px]" />
             </a>
         </div>
-        <div class="flex flex-col justify-around items-center h-[400px]">
+        <div class="flex flex-col justify-around items-center h-[500px]">
             <div class="flex flex-col mb-3">
                 <span>Username:</span>
                 <input v-model="username"
-                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
-                    type="text" placeholder="Nhập username.....">
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
+                    placeholder="Nhập username.....">
             </div>
             <div class="flex flex-col mb-3">
                 <span>Password:</span>
@@ -68,8 +70,23 @@ export default defineComponent({
             <div class="flex flex-col mb-3">
                 <span>Nhập tên của bạn:</span>
                 <input v-model="name"
-                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
-                    type="text" placeholder="Nhập tên của bạn.....">
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
+                    placeholder="Nhập tên của bạn.....">
+            </div>
+            <div class="flex flex-col mb-3">
+                <span>Giới tính:</span>
+                <select class="w-[590px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
+                    v-model="seletedGender">
+                    <option value="male">Nam</option>
+                    <option value="female">Nữ</option>
+                    <option value="none">N/A</option>
+                </select>
+            </div>
+            <div class="flex flex-col mb-3">
+                <span>Nhập địa chỉ:</span>
+                <input v-model="address"
+                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
+                    placeholder="Nhập số điện thoại.....">
             </div>
             <div class="flex flex-col mb-3">
                 <span>Nhập sđt:</span>
@@ -79,7 +96,7 @@ export default defineComponent({
             </div>
             <button
                 class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
-                @click="register(username, password, retypePassword, name, phone)">
+                @click="register(username, password, retypePassword, name, phone, address, seletedGender)">
                 Register
             </button>
             <div>

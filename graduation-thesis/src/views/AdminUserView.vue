@@ -2,8 +2,6 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import IconShowNaviDB from '@/components/icons/IconShowNaviDB.vue'
-import IconRevenue from '@/components/icons/IconRevenue.vue'
-import IconCheckListOrder from '@/components/icons/IconCheckListOrder.vue'
 import IconUpdateStatusOrder from '@/components/icons/IconUpdateStatusOrder.vue'
 import IconRightArrow from '@/components/icons/IconRightArrow.vue'
 import IconLeftArrow from '@/components/icons/IconLeftArrow.vue'
@@ -18,8 +16,6 @@ export default defineComponent({
         Header,
         Footer,
         IconShowNaviDB,
-        IconRevenue,
-        IconCheckListOrder,
         IconUpdateStatusOrder,
         IconRightArrow,
         IconLeftArrow,
@@ -45,10 +41,6 @@ export default defineComponent({
         return {
             pageSize: 8,
             currentPage: Number(sessionStorage.getItem("changePageUserAdmin")),
-            listUnderDashBoard: [
-                { name: 'Số đơn hàng hôm nay', value: '50' },
-                { name: 'Doanh thu', value: '50000000' }
-            ],
             selected: 2,
             showPopup: false,
             notificationMessage: "Đạt đẹp trai",
@@ -115,25 +107,6 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">
                             Quản lý người dùng
                         </span>
-                    </div>
-                </div>
-                <div class="w-[1438px] h-[98px] flex flex-row justify-around">
-                    <div v-for="item in listUnderDashBoard"
-                        class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
-                        <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
-                            <div>
-                                <IconRevenue class="w-[60px] h-[60px]" />
-                            </div>
-                            <div class="flex flex-col justify-center items-center ml-[300px]">
-                                <span
-                                    style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">{{
-                                        item.name }}</span>
-                                <span
-                                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
-                                        item.value }}</span>
-                            </div>
-
-                        </div>
                     </div>
                 </div>
                 <div class="w-[1438px] h-[86px] flex flex-row rounded-[12px]">
@@ -294,6 +267,7 @@ export default defineComponent({
                     @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
             </div>
         </div>
+        
         <!-- <div class="w-[1438px] flex flex-row justify-between items-center">
             <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
                 <a href="" @click="routerPage('adminProductView')">

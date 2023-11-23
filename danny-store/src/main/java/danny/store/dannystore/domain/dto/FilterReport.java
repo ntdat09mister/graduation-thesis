@@ -9,4 +9,7 @@ import java.util.List;
 public class FilterReport {
     private List<ReportItemDto> reportDtoList;
     private Float totalAmount;
+    private Long totalOrders;
+    private Long successOrders;
+    private Long ordersReceived;
 }

@@ -28,8 +28,8 @@ export default defineComponent({
             pageSize: 8,
             currentPage: Number(sessionStorage.getItem("changePageProductAdmin")),
             listUnderDashBoard: [
-                { name: 'Số sản phẩm trong kho', value: '50' },
-                { name: 'Sản phẩm tồn kho', value: '50000000' }
+                { component: IconRevenue, name: 'Số sản phẩm trong kho', value: '50' },
+                { component: IconCheckListOrder, name: 'Sản phẩm tồn kho', value: '50000000' }
             ],
             showModify: false,
             selected: 2,
@@ -94,7 +94,7 @@ export default defineComponent({
                     class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
                     <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
                         <div>
-                            <IconRevenue class="w-[60px] h-[60px]" />
+                            <component class="w-[60px] h-[60px]" :is="item.component" />
                         </div>
                         <div class="flex flex-col justify-center items-center ml-[300px]">
                             <span

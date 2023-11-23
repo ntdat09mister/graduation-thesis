@@ -29,8 +29,8 @@ export default defineComponent({
             pageSize: 8,
             currentPage: 1,
             listUnderDashBoard: [
-                { name: 'Số đơn hàng hôm nay', value: '50' },
-                { name: 'Doanh thu', value: '50000000' }
+                { component: IconCheckListOrder, name: 'Số đơn hàng', value: '50' },
+                { component: IconRevenue, name: 'Doanh thu', value: '50000000' }
             ],
             selected: Number(localStorage.getItem("selectedFilter"))
         };
@@ -84,7 +84,7 @@ export default defineComponent({
                     class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
                     <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
                         <div>
-                            <IconRevenue class="w-[60px] h-[60px]" />
+                            <component class="w-[60px] h-[60px]" :is="item.component" />
                         </div>
                         <div class="flex flex-col justify-center items-center ml-[300px]">
                             <span

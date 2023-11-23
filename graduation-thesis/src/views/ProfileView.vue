@@ -4,6 +4,7 @@ import Footer from '../components/Footer.vue'
 import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { mapActions, mapState } from 'pinia';
+import router from '@/router';
 export default defineComponent({
   name: 'profile',
   components: {
@@ -17,11 +18,18 @@ export default defineComponent({
   },
   created() {
   },
+  data() {
+    return {
+      checkRoleAdmin: false
+    };
+  },
   methods: {
-    ...mapActions(useUserStore, ['getInforUser'])
+    ...mapActions(useUserStore, ['getInforUser']),
+    routerPage(routerName: string) {
+      router.push({ name: routerName })
+    }
   },
   mounted() {
-
   }
 })
 </script>
@@ -55,6 +63,11 @@ export default defineComponent({
                     </div>
                     <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                   </div>
+                  <template v-if="user?.role === 'admin'">
+                      <button
+                        class="w-[200px] h-[50px] text-[12px] ml-[10px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
+                        @click="routerPage('adminUserView')">Di chuyển tới trang Admin</button>
+                    </template>
                 </div>
                 <div class="col-sm-8">
                   <div class="card-block">

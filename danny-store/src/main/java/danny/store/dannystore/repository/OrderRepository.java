@@ -36,4 +36,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> getAllOrderByMonth(Long monthValue);
     @Query(value = "SELECT * FROM `order` o WHERE YEAR(o.created_at) = ?1", nativeQuery = true)
     List<Order> getAllOrderByYear(Long yearValue);
+
 }

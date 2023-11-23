@@ -76,8 +76,8 @@ export default defineComponent({
                     </carousel>
                 </div>
                 <div class="w-[400px] flex flex-col">
-                    <span class="text-[14px]">Thông số kỹ thuật, mô tả sản phẩm</span>
-                    <span ref="productDescription" class="w-[400px] whitespace-pre-line text-[10px]"
+                    <span class="text-[20px]">Thông số kỹ thuật, mô tả sản phẩm</span>
+                    <span ref="productDescription" class="w-[400px] whitespace-pre-line text-[16px]"
                         :class="{ 'truncated': isTruncated }">{{ productDto?.description }}</span>
                     <button @click="toggleDescription">{{ isTruncated ? 'Xem thêm' : 'Ẩn bớt' }}</button>
                 </div>

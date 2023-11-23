@@ -40,7 +40,7 @@ export const authStore = defineStore('auth', () => {
                     console.log(response)
                 })
         },
-        async register(username: string, password: string, retypePassword: string, name: string, phone: string) {
+        async register(username: string, password: string, retypePassword: string, name: string, phone: string, address: string, seletedGender: string) {
             if (password !== retypePassword) {
                 alert('Passwords do not match. Please re-enter your password.');
                 return;
@@ -50,7 +50,9 @@ export const authStore = defineStore('auth', () => {
                 username: username,
                 password: password,
                 name: name,
-                phone: phone
+                phone: phone,
+                address: address,
+                seletedGender: seletedGender
             }
             const headers = { 'Content-Type': 'application/json', };
             const response = await axios.post(apiUrl, userInput, { headers });
