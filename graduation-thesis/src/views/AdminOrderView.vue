@@ -11,6 +11,7 @@ import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { useOrderStore } from '@/stores/order';
 import { useAdminStore } from '@/stores/admin';
+import { useUserStore } from '@/stores/user';
 import router from '@/router';
 
 export default defineComponent({
@@ -46,6 +47,9 @@ export default defineComponent({
             totalOrders: 'totalOrders',
             successOrders: 'successOrders',
             ordersReceived: 'ordersReceived'
+        }),
+        ...mapState(useUserStore, {
+            user: 'user'
         })
     },
     methods: {
@@ -105,7 +109,8 @@ export default defineComponent({
                         </div>
                         <div class="flex flex-col justify-center items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Số đơn hàng chờ xác nhận</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Số
+                                đơn hàng chờ xác nhận</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
                                     ordersReceived }}</span>
@@ -252,29 +257,28 @@ export default defineComponent({
                 </div>
             </div>
         </div>
-        <div class="w-[1438px] flex flex-row justify-between items-center">
-            <div>
-                <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                    <a href="" @click="routerPage('adminProductView')">
-                        <IconLeftArrow class="w-[50px]" />
-                    </a>
-                    <span class="text-[13px]">Di chuyển tới trang quản lý sản phẩm</span>
-                </div>
-            </div>
-            <div>
-                <div class="flex justify-center items-center mt-[30px]">
-                    <el-pagination :page-size="pageSize" :total="listOrdersAdmin.length" :current-page.sync="currentPage"
-                        @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
-                </div>
-            </div>
-            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                <span class="text-[13px]">Di chuyển tới trang quản lý người dùng</span>
-                <a href="" @click="routerPage('adminUserView')">
-                    <IconRightArrow class="w-[50px]" />
-                </a>
+        <div>
+            <div class="flex justify-center items-center mt-[30px]">
+                <el-pagination :page-size="pageSize" :total="listOrdersAdmin.length" :current-page.sync="currentPage"
+                    @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
             </div>
         </div>
-
+        <template v-if="user?.role === 'admin'">
+            <div class="w-[1438px] flex flex-row justify-between items-center">
+            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
+                <button @click="routerPage('adminProductView')"
+                    class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                    Left</button>
+                <span class="text-[13px] ml-[10px]">Di chuyển tới trang quản sản phẩm</span>
+            </div>
+            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
+                <span class="text-[13px] mr-[10px]">Di chuyển tới trang quản người dùng</span>
+                <button @click="routerPage('adminUserView')"
+                    class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                    right</button>
+            </div>
+        </div>
+        </template>
     </div>
     <Footer />
 </template>

@@ -77,9 +77,9 @@ export default defineComponent({
                 <span>Giới tính:</span>
                 <select class="w-[590px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
                     v-model="seletedGender">
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
-                    <option value="none">N/A</option>
+                    <option value="1">Nam</option>
+                    <option value="0">Nữ</option>
+                    <option value="">N/A</option>
                 </select>
             </div>
             <div class="flex flex-col mb-3">

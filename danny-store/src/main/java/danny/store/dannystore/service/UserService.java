@@ -44,6 +44,7 @@ public class UserService {
         user.setRole(RoleType.CUSTOMER);
         user.setActive(StatusType.ACTIVE);
         user.setCreatedAt(new Date());
+        user.setGender(userInput.getGender());
         userRepository.save(user);
         return "Created success account with username: " + userInput.getUsername();
     }
@@ -64,12 +65,14 @@ public class UserService {
     public UserOutput findByUserId(Long id) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
         Long totalOrders = orderRepository.countOrders(id);
+        Long totalOrdersSuccess = orderRepository.countOrdersSuccess(id);
         Long totalAmount = orderRepository.getTotalAmount(id);
         if (userOptional.isPresent()) {
             UserOutput userOutput = objectMapper.convertValue(userOptional.get(), UserOutput.class);
             userOutput.setCreatedAt(publicFunction.formatTime(userOptional.get().getCreatedAt()));
             userOutput.setQuantityOrders(totalOrders);
             userOutput.setTotalAmount(totalAmount);
+            userOutput.setQuantityOrdersSuccess(totalOrdersSuccess);
             return userOutput;
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND_USER);

@@ -10,6 +10,7 @@ import IconLeftArrow from '@/components/icons/IconLeftArrow.vue';
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { useProductStore } from '@/stores/product';
+import { useUserStore } from '@/stores/user';
 import router from '@/router';
 
 export default defineComponent({
@@ -49,6 +50,9 @@ export default defineComponent({
             countProductsAll: 'countProductsAll',
             countProductsTrue: 'countProductsTrue',
             countTotalProducts: 'countTotalProducts'
+        }),
+        ...mapState(useUserStore, {
+            user: 'user'
         })
     },
     methods: {
@@ -68,6 +72,9 @@ export default defineComponent({
                 this.descriptionOutput = description,
                 this.quantityOutput = quantity,
                 this.showModify = true;
+        },
+        handleClick(id: number) {
+            router.push({ name: 'productDetail', params: { id: Number(id) } })
         }
     },
     mounted() {
@@ -100,7 +107,8 @@ export default defineComponent({
                         </div>
                         <div class="flex flex-col justify-center items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Sản phẩm đang bán</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Sản
+                                phẩm đang bán</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
                                     countProductsTrue }}/{{ countProductsAll }}</span>
@@ -114,7 +122,8 @@ export default defineComponent({
                         </div>
                         <div class="flex flex-col justify-center items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Sản phẩm trong kho</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Sản
+                                phẩm trong kho</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
                                     countTotalProducts }}</span>
@@ -224,7 +233,8 @@ export default defineComponent({
                             {{ item.id }}
                         </span>
                     </div>
-                    <div class="w-[110px] h-[80px] flex justify-center items-center">
+                    <div @click="handleClick(item.id)"
+                        class="w-[110px] h-[80px] flex justify-center items-center cursor-pointer">
                         <img class="w-[52px] h-[52px] flex justify-center items-center" :src="item.src" alt="product-img">
                     </div>
                     <div class="w-[160px] h-[80px] flex items-center">
@@ -264,25 +274,28 @@ export default defineComponent({
                 </div>
             </div>
         </div>
-        <div class="w-[1438px] flex flex-row justify-between items-center">
-            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                <a href="" @click="routerPage('adminUserView')">
-                    <IconLeftArrow class="w-[50px]" />
-                </a>
-                <span class="text-[13px]">Di chuyển tới trang quản lý người dùng</span>
-            </div>
+        <div class="w-[1438px] flex flex-row justify-center items-center">
             <div class="flex justify-center items-center mt-[30px]">
                 <el-pagination :page-size="pageSize" :total="listProductsAdmin.length" :current-page.sync="currentPage"
                     @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
             </div>
-            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                <span class="text-[13px]">Di chuyển tới trang quản lý đơn hàng</span>
-                <a href="" @click="routerPage('adminOrderView')">
-                    <IconRightArrow class="w-[50px]" />
-                </a>
-            </div>
         </div>
-
+        <template v-if="user?.role === 'admin'">
+            <div class="w-[1438px] flex flex-row justify-between items-center">
+                <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
+                    <button @click="routerPage('adminUserView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                        Left</button>
+                    <span class="text-[13px] ml-[10px]">Di chuyển tới trang quản lý người dùng</span>
+                </div>
+                <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
+                    <span class="text-[13px] mr-[10px]">Di chuyển tới trang quản hóa đơn</span>
+                    <button @click="routerPage('adminOrderView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                        right</button>
+                </div>
+            </div>
+        </template>
     </div>
     <Footer />
 </template>

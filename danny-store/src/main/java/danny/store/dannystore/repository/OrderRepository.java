@@ -24,7 +24,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdAndCustomerId(Long orderId, Long userId);
     @Query(value = "SELECT SUM(o.total_amount) FROM `order` o WHERE YEAR(o.created_at) = ?1", nativeQuery = true)
     Float totalAmountByYear(String filterTime);
-    @Query(value = "select * from `order` o where o.customer_id = ?1", nativeQuery = true)
+    @Query(value = "select count(*) from `order` o where o.customer_id = ?1", nativeQuery = true)
     Long countOrders(Long id);
     @Query(value = "select SUM(o.total_amount)  from `order` o where o.customer_id = ?1", nativeQuery = true)
     Long getTotalAmount(Long id);
@@ -36,5 +36,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> getAllOrderByMonth(Long monthValue);
     @Query(value = "SELECT * FROM `order` o WHERE YEAR(o.created_at) = ?1", nativeQuery = true)
     List<Order> getAllOrderByYear(Long yearValue);
-
+    @Query(value = "select count(*) from `order` o where o.customer_id = ?1 and o.status_id = 4", nativeQuery = true)
+    Long countOrdersSuccess(Long id);
 }

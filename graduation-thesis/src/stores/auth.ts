@@ -52,7 +52,7 @@ export const authStore = defineStore('auth', () => {
                 name: name,
                 phone: phone,
                 address: address,
-                seletedGender: seletedGender
+                gender: seletedGender
             }
             const headers = { 'Content-Type': 'application/json', };
             const response = await axios.post(apiUrl, userInput, { headers });

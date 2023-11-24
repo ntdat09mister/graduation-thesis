@@ -93,6 +93,11 @@ public class ProductService {
         List<ProductDto> productDtos = new ArrayList<>();
         for (Product product : productList) {
             ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);
+            String[] fullString = product.getDescription().split("\\n");
+            if (fullString.length > 0) {
+                fullString[0] = fullString[0].substring(1);
+            }
+            productDto.setDescription(fullString[0]);
             productDtos.add(productDto);
         }
         return productDtos;

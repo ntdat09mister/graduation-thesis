@@ -19,5 +19,6 @@ public class UserOutput {
     private String createdAt;
     private String modifiedAt;
     private Long quantityOrders;
+    private Long quantityOrdersSuccess;
     private Long totalAmount;
 }

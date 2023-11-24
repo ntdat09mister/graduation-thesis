@@ -88,7 +88,7 @@ export default defineComponent({
     },
     mounted() {
         this.getProductsAdmin(),
-        this.setPage(Number(sessionStorage.getItem("changePageUserAdmin")))
+            this.setPage(Number(sessionStorage.getItem("changePageUserAdmin")))
     }
 });
 </script>
@@ -97,16 +97,18 @@ export default defineComponent({
         <Header />
         <div class="flex flex-col justify-center items-center">
             <div class="w-[1438px] h-[1020] flex flex-col bg-[#F2F2F2]">
-                <div class="w-[1438px] h-[84px] flex flex-row justify-between items-center">
+                <div class="w-[1438px] h-[120px] flex flex-row justify-between items-center">
                     <div class="flex flex-row">
                         <div
                             class="w-[36px] h-[36px] flex justify-center items-center rounded-[6px] ml-[28px] bg-[#5E81F41A] cursor-pointer">
                             <IconShowNaviDB />
                         </div>
-                        <span class="ml-[20px]"
-                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">
-                            Quản lý người dùng
-                        </span>
+                        <div class="flex flex-col">
+                            <span class="ml-[20px]"
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">
+                                Quản lý người dùng
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="w-[1438px] h-[86px] flex flex-row rounded-[12px]">
@@ -267,21 +269,24 @@ export default defineComponent({
                     @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
             </div>
         </div>
-        
-        <!-- <div class="w-[1438px] flex flex-row justify-between items-center">
+        <div class="w-[1438px] flex flex-row justify-between items-center">
             <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
                 <a href="" @click="routerPage('adminProductView')">
-                    <IconLeftArrow class="w-[50px]" />
+                    <button
+                        @click="routerPage('adminProductView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step - Left</button>
                 </a>
-                <span class="text-[13px]">Di chuyển tới trang quản lý sản phẩm</span>
+                <span class="text-[13px] ml-[10px]">Di chuyển tới trang quản lý sản phẩm</span>
             </div>
             <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                <span class="text-[13px]">Di chuyển tới trang quản lý đơn hàng</span>
+                <span class="text-[13px] mr-[10px]">Di chuyển tới trang quản lý đơn hàng</span>
                 <a href="" @click="routerPage('adminOrderView')">
-                    <IconRightArrow class="w-[50px]" />
+                    <button
+                        @click="routerPage('adminProductView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step - right</button>
                 </a>
             </div>
-        </div> -->
+        </div>
         <Footer />
     </div>
 </template>

@@ -12,7 +12,10 @@ export const useUserStore = defineStore('user', () => {
         role: string,
         avatar: string,
         createdAt: string,
-        modifiedAt: string
+        modifiedAt: string,
+        quantityOrders: string,
+        quantityOrdersSuccess: string,
+        totalAmount: string
     }
     const user = ref<User | null>(null);
     async function getInforUser() {
