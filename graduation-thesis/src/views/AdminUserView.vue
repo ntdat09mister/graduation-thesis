@@ -40,7 +40,6 @@ export default defineComponent({
     data() {
         return {
             pageSize: 8,
-            currentPage: Number(sessionStorage.getItem("changePageUserAdmin")),
             selected: 2,
             showPopup: false,
             notificationMessage: "Đạt đẹp trai",
@@ -51,7 +50,8 @@ export default defineComponent({
             nameOuput: "",
             addressOuput: "",
             phoneOuput: "",
-            seletedGender: "none"
+            seletedGender: "none",
+            currentPage: Number(sessionStorage.getItem("changePageUserAdmin"))
         };
     },
     computed: {
@@ -84,11 +84,19 @@ export default defineComponent({
         },
         saveUser() {
             this.showModify = false;
+        },
+        handlePageChangeMounted() {
+            if (sessionStorage.getItem("changePageUserAdmin")) {
+                this.setPage(Number(sessionStorage.getItem("changePageUserAdmin")))
+            } else {
+                this.setPage(1);
+            }
         }
     },
     mounted() {
         this.getProductsAdmin(),
-            this.setPage(Number(sessionStorage.getItem("changePageUserAdmin")))
+        this.handlePageChangeMounted()
+            
     }
 });
 </script>

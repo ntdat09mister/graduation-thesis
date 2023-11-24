@@ -70,10 +70,18 @@ export default defineComponent({
             if (this.selected == null) {
                 this.selected == 1;
             }
+        },
+        handlePageChangeMounted() {
+            if (sessionStorage.getItem("changePageOrderAdmin")) {
+                this.setPage(Number(sessionStorage.getItem("changePageOrderAdmin")))
+            } else {
+                this.setPage(1);
+            }
         }
     },
     mounted() {
-        this.getAllOrdersAdmin(this.selected);
+        this.getAllOrdersAdmin(this.selected),
+        this.handlePageChangeMounted()
     }
 });
 </script>

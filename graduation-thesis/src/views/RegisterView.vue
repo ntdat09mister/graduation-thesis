@@ -86,7 +86,7 @@ export default defineComponent({
                 <span>Nhập địa chỉ:</span>
                 <input v-model="address"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
-                    placeholder="Nhập số điện thoại.....">
+                    placeholder="Nhập địa chỉ.....">
             </div>
             <div class="flex flex-col mb-3">
                 <span>Nhập sđt:</span>

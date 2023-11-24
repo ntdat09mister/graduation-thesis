@@ -75,11 +75,18 @@ export default defineComponent({
         },
         handleClick(id: number) {
             router.push({ name: 'productDetail', params: { id: Number(id) } })
+        },
+        handlePageChangeMounted() {
+            if (sessionStorage.getItem("changePageProductAdmin")) {
+                this.setPage(Number(sessionStorage.getItem("changePageProductAdmin")))
+            } else {
+                this.setPage(1);
+            }
         }
     },
     mounted() {
         this.getProductsAdmin(),
-            this.setPage(Number(sessionStorage.getItem("changePageProductAdmin")))
+        this.handlePageChangeMounted()
     }
 });
 </script>
@@ -95,7 +102,7 @@ export default defineComponent({
                     </div>
                     <span class="ml-[20px]"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">
-                        Quản lý đơn hàng
+                        Quản lý sản phẩm
                     </span>
                 </div>
             </div>
