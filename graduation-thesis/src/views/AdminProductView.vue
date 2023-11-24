@@ -45,7 +45,10 @@ export default defineComponent({
     computed: {
         ...mapState(useProductStore, {
             listDisplayProductAdmin: 'listDisplayProductAdmin',
-            listProductsAdmin: 'listProductsAdmin'
+            listProductsAdmin: 'listProductsAdmin',
+            countProductsAll: 'countProductsAll',
+            countProductsTrue: 'countProductsTrue',
+            countTotalProducts: 'countTotalProducts'
         })
     },
     methods: {
@@ -90,21 +93,32 @@ export default defineComponent({
                 </div>
             </div>
             <div class="w-[1438px] h-[98px] flex flex-row justify-around">
-                <div v-for="item in listUnderDashBoard"
-                    class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
+                <div class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
                     <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
                         <div>
-                            <component class="w-[60px] h-[60px]" :is="item.component" />
+                            <IconCheckListOrder class="w-[60px] h-[60px]" />
                         </div>
-                        <div class="flex flex-col justify-center items-center ml-[300px]">
+                        <div class="flex flex-col justify-center items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">{{
-                                    item.name }}</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Sản phẩm đang bán</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
-                                    item.value }}</span>
+                                    countProductsTrue }}/{{ countProductsAll }}</span>
                         </div>
-
+                    </div>
+                </div>
+                <div class="w-[650px] h-[98px] flex flex-row rounded-[10px] bg-[#FFFFFF]">
+                    <div class="w-[650px] h-[98px] flex flex-row justify-around items-center">
+                        <div>
+                            <IconRevenue class="w-[60px] h-[60px]" />
+                        </div>
+                        <div class="flex flex-col justify-center items-center">
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 18px;line-height: 21px;color: #1B51E5;">Sản phẩm trong kho</span>
+                            <span
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
+                                    countTotalProducts }}</span>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -21,28 +21,31 @@ export const useProductStore = defineStore('product', () => {
     }
     function changeProduct(id: number, name: string, description: string, qty: number, price: number, unitCount: string) {
         axios.put(`http://localhost:8080/product?id=${id}&name=${name}&description=${description}&qty=${qty}&price=${price}&unitCount=${unitCount}`, {})
-        .then((response) => {
-            const { data } = response;
-            console.log(data);
-        })
+            .then((response) => {
+                const { data } = response;
+                console.log(data);
+            })
     }
     const listProducts = ref<Product[]>([]);
     function getProducts() {
         axios.get(`http://localhost:8080/product`, {})
-        .then((response) => {
-            const { data } = response;
-            const transformedData: Product[] = data.map((product: any) => ({
-              id: product.id,
-              name: product.name,
-              description: product.description,
-              qty: product.qty,
-              price: product.price,
-              unitCount: product.unitCount,
-            }));
-            listProducts.value = transformedData;
-            console.log(transformedData);
-        })
+            .then((response) => {
+                const { data } = response;
+                const transformedData: Product[] = data.map((product: any) => ({
+                    id: product.id,
+                    name: product.name,
+                    description: product.description,
+                    qty: product.qty,
+                    price: product.price,
+                    unitCount: product.unitCount,
+                }));
+                listProducts.value = transformedData;
+                console.log(transformedData);
+            })
     }
+    const countProductsTrue = ref<number>(0);
+    const countProductsAll = ref<number>(0);
+    const countTotalProducts = ref<number>(0);
     const listProductsAdmin = ref<ProductAdmin[]>([]);
     async function getProductsAdmin() {
         try {
@@ -61,8 +64,12 @@ export const useProductStore = defineStore('product', () => {
             if (responseData && responseData.data) {
                 const data = responseData.data;
 
-                if (data && Array.isArray(data)) {
-                    const transformedData: ProductAdmin[] = data.map((product: any) => ({
+                if (data && Array.isArray(data.productDtoForAdminList)
+                    && typeof data.countProductsTrue === 'number'
+                    && typeof data.countProductsAll === 'number'
+                    && typeof data.countTotalProducts === 'number'
+                ) {
+                    const transformedData: ProductAdmin[] = data.productDtoForAdminList.map((product: any) => ({
                         id: product.id,
                         name: product.name,
                         price: product.price,
@@ -70,8 +77,11 @@ export const useProductStore = defineStore('product', () => {
                         src: product.src,
                         quantity: product.quantity,
                         statusProduct: product.statusProduct,
-                      }));
+                    }));
                     listProductsAdmin.value = transformedData;
+                    countProductsTrue.value = data.countProductsTrue
+                    countProductsAll.value = data.countProductsAll
+                    countTotalProducts.value = data.countTotalProducts
                 } else {
                     console.error('Invalid data received from the API:', data);
                 }
@@ -101,7 +111,7 @@ export const useProductStore = defineStore('product', () => {
             }
             const apiUrl = `http://localhost:8080/product/admin/updateStatus?productId=${productId}`;
             const headers = { Authorization: `Bearer ${token}` };
-            
+
             const response = await axios.put(apiUrl, null, { headers });
             const responseData = response.data;
             console.log(responseData);
@@ -116,8 +126,8 @@ export const useProductStore = defineStore('product', () => {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
-              console.error('Access token not found in localStorage');
-              return;
+                console.error('Access token not found in localStorage');
+                return;
             }
             const apiUrl = 'http://localhost:8080/product/admin/updateProduct';
             const requestData = {
@@ -126,7 +136,7 @@ export const useProductStore = defineStore('product', () => {
                 price: priceInput,
                 description: descriptionInput,
                 quantity: quantityInput,
-                status: statusInput
+                statusProduct: statusInput
             }
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
@@ -136,7 +146,7 @@ export const useProductStore = defineStore('product', () => {
             window.scrollTo(0, scrollPosition);
         } catch (error) {
             console.error('Error fetching data:', error);
-          }
+        }
     }
     return {
         getProducts,
@@ -147,6 +157,9 @@ export const useProductStore = defineStore('product', () => {
         setPage,
         listProductsAdmin,
         updateStatusProduct,
-        updateProduct
+        updateProduct,
+        countProductsAll,
+        countTotalProducts,
+        countProductsTrue
     }
 })

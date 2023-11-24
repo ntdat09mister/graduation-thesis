@@ -1,6 +1,7 @@
 package danny.store.dannystore.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import danny.store.dannystore.domain.dto.AdminProductSummaryDto;
 import danny.store.dannystore.domain.dto.ProductDto;
 import danny.store.dannystore.domain.dto.ProductDtoForAdmin;
 import danny.store.dannystore.domain.entity.Product;
@@ -97,7 +98,8 @@ public class ProductService {
         return productDtos;
     }
 
-    public List<ProductDtoForAdmin> getListProductsAdmin(Long id) throws NotFoundException {
+    public AdminProductSummaryDto getListProductsAdmin(Long id) throws NotFoundException {
+        AdminProductSummaryDto adminProductSummaryDto = new AdminProductSummaryDto();
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("warehouse")) {
             List<ProductDtoForAdmin> productDtoForAdminList = new ArrayList<>();
@@ -112,7 +114,14 @@ public class ProductService {
                 productDtoForAdmin.setDescription(fullString[0]);
                 productDtoForAdminList.add(productDtoForAdmin);
             }
-            return productDtoForAdminList;
+            adminProductSummaryDto.setProductDtoForAdminList(productDtoForAdminList);
+            Long productsCountTrue = products.stream().filter(product -> product.getStatus() == true).count();
+            adminProductSummaryDto.setCountProductsTrue(productsCountTrue);
+            Long productCountAll = Long.valueOf(products.size());
+            adminProductSummaryDto.setCountProductsAll(productCountAll);
+            Long quantityProducts = products.stream().mapToLong(Product::getQuantity).sum();
+            adminProductSummaryDto.setCountTotalProducts(quantityProducts);
+            return adminProductSummaryDto;
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND_PRODUCT);
         }

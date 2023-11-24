@@ -268,7 +268,7 @@ public class OrderService {
             Optional<Order> orderOptional = orderRepository.findById(orderId);
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
-                if (order.getStatusId() < 5) {
+                if (order.getStatusId() < 4) {
                     order.setStatusId(order.getStatusId() + 1);
                 }
                 orderRepository.save(order);

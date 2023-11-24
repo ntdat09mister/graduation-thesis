@@ -65,7 +65,7 @@ export const useProductDetailStore = defineStore('productDetail', () => {
             quantity: productData.quantity
           };
           productDto.value = transformedData;
-          console.log(transformedData);
+          console.log(productDto.value.description);
         } else {
           console.error('No data received for ID:', id);
         }
