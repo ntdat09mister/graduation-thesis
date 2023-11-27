@@ -14,6 +14,7 @@ import AdminOrderView from '../views/AdminOrderView.vue'
 import AdminProductView from '../views/AdminProductView.vue'
 import AdminUserView from '../views/AdminUserView.vue'
 import TestPopup from '../views/TestPopup.vue'
+import PaymentView from '../views/PaymentView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -92,6 +93,11 @@ const router = createRouter({
       name: 'test',
       component: TestPopup
     },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: PaymentView
+    }
   ]
 })
 

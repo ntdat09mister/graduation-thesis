@@ -121,7 +121,7 @@ public class ProductService {
             }
             adminProductSummaryDto.setProductDtoForAdminList(productDtoForAdminList);
             Long productsCountTrue = products.stream().filter(product -> product.getStatus() == true).count();
-//            adminProductSummaryDto.setCountProductsTrue(productsCountTrue);
+            adminProductSummaryDto.setCountProductsTrue(productsCountTrue);
             Long productCountAll = Long.valueOf(products.size());
             adminProductSummaryDto.setCountProductsAll(productCountAll);
             Long quantityProducts = products.stream().mapToLong(Product::getQuantity).sum();

@@ -81,9 +81,9 @@ export const useCartStore = defineStore('cart', () => {
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.delete(apiUrl, { headers, params });
       console.log(response);
-      router.push({ name: 'cart' }).then(() => {
-        location.reload();
-      });
+      const scrollPosition = window.scrollY;
+      location.reload();
+      window.scrollTo(0, scrollPosition);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -107,12 +107,32 @@ export const useCartStore = defineStore('cart', () => {
       console.error('Error fetching data:', error);
     }
   }
+  async function updateCartQuantity(cartId: number, statusUpdate: boolean) {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.error('Access token not found in localStorage');
+        return;
+      }
+      const apiUrl = `http://localhost:8080/cart/updateQuantity?statusUpdate=${statusUpdate}&cartId=${cartId}`;
+      const headers = { Authorization: `Bearer ${token}`, };
+      const response = await axios.put(apiUrl, null, { headers });
+      const scrollPosition = window.scrollY;
+      location.reload();
+      window.scrollTo(0, scrollPosition);
+      console.log(response)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  
   return {
     getListCart,
     listCart,
     totalAmountRef,
     addToCart,
     removeCartItem,
-    createOrderFromCart
+    createOrderFromCart,
+    updateCartQuantity
   }
 })

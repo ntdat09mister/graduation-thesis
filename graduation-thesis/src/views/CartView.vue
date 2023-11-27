@@ -27,7 +27,7 @@ export default defineComponent({
         }
     },
     methods: {
-        ...mapActions(useCartStore, ['getListCart', 'removeCartItem','createOrderFromCart']),
+        ...mapActions(useCartStore, ['getListCart', 'removeCartItem','createOrderFromCart','updateCartQuantity']),
         handleClick(id: number) {
             router.push({ name: 'productDetail', params: { id: Number(id) } })
         },
@@ -65,14 +65,14 @@ export default defineComponent({
                     <p>{{ cartItem.nameProduct }}</p>
                 </div>
                 <div class="w-[100px] h-[30px] flex justify-between items-center flex-row ">
-                    <div
+                    <div @click="updateCartQuantity(cartItem.cartId, false)"
                         class="w-[30px] h-[30px] flex justify-center items-center bg-gray-200 rounded-md cursor-pointer h-8 select-none w-8">
-                        <span>-</span>
+                        <button>-</button>
                     </div>
                     <span>{{ cartItem.quantity }}</span>
-                    <div
+                    <div @click="updateCartQuantity(cartItem.cartId, true)"
                         class="w-[30px] h-[30px] flex justify-center items-center bg-gray-200 rounded-md cursor-pointer h-8 select-none w-8">
-                        <span>+</span>
+                        <button>+</button>
                     </div>
                 </div>
                 <div class=" w-[150px] mb-[30px] ml-[20px] mt-[30px]">

@@ -20,8 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static danny.store.dannystore.common.Const.RESPONSE_ADD_TO_CART_FAIL;
-import static danny.store.dannystore.common.Const.RESPONSE_ADD_TO_CART_SUCCESS;
+import static danny.store.dannystore.common.Const.*;
 
 @Service
 @RequiredArgsConstructor
@@ -97,5 +96,24 @@ public class CartService {
         } else {
             throw new NotFoundException(RESPONSE_ADD_TO_CART_FAIL);
         }
+    }
+
+    public String updateCartQuantity(Long userId, Boolean statusUpdate, Long cartId) {
+        List<Cart> cartList = cartRepository.findByUserId(userId);
+        Boolean checkCartExist = cartList.stream().anyMatch(cart -> cart.getId() == cartId);
+        if (checkCartExist) {
+            CartDetail cartDetail = cartDetailRepository.findByCartId(cartId);
+            if (statusUpdate) {
+                cartDetail.setQuantity(cartDetail.getQuantity() + 1);
+            } else {
+                cartDetail.setQuantity(cartDetail.getQuantity() - 1);
+                if (cartDetail.getQuantity() == 0) {
+                    cartRepository.deleteById(cartId);
+                    cartDetailRepository.deleteByCartId(cartId);
+                }
+            }
+            cartDetailRepository.save(cartDetail);
+        }
+        return RESPONSE_UPDATE_SUCCESS;
     }
 }

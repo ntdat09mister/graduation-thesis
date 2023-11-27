@@ -15,7 +15,7 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getAllOrders'])
+        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder'])
     },
     mounted() {
         this.getAllOrders()
@@ -30,27 +30,35 @@ export default defineComponent({
                 Danh sách các đơn hàng đã đặt:
             </span>
         </div>
-        <div class="w-[780px] flex flex-row justify-center items-center p-4 border bg-gray-200  border border-gray-400">
+        <div class="w-[1000px] flex flex-row justify-between items-center p-4 border bg-gray-200  border border-gray-400">
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span class="text-[20px] mx-auto text-2xl font-semibold">Mã đơn</span>
+            </div>
+            <div class="w-[150px] flex flex-row justify-center items-center">
+                <span class="text-[20px] mx-auto text-2xl font-semibold">Sản phẩm</span>
             </div>
             <div class="w-[300px] flex flex-row justify-center items-center">
                 <span class="text-[20px] mx-auto text-2xl font-semibold">Sản phẩm mua</span>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
-                <span class="text-[20px] mx-auto text-2xl font-semibold">Giá</span>
+                <span class="text-[20px] mx-auto text-2xl font-semibold">Số tiền</span>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span class="text-[20px] mx-auto text-2xl font-semibold">Ngày mua</span>
             </div>
-            <div class="w-[150px] flex flex-row justify-center items-center">
+            <div class="w-[170px] flex flex-row justify-center items-center">
                 <span class="text-[20px] mx-auto text-2xl font-semibold">Trạng thái</span>
             </div>
+            <div class="w-[70px] h-[50px] flex justify-center items-center"></div>
         </div>
 
-        <div class="w-[780px] flex flex-row justify-center items-center p-4 border border border-gray-400" v-for="orderItem in listOrders">
+        <div class="w-[1000px] flex flex-row justify-center items-center p-4 border border border-gray-400"
+            v-for="orderItem in listOrders">
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.id }}</span>
+            </div>
+            <div class="w-[150px] flex flex-row justify-center items-center">
+                <img class="w-[52px] h-[52px] ml-[25px]" :src="orderItem.src" alt="product-img">
             </div>
             <div class="w-[300px] flex justify-center flex-row items-center">
                 <span>{{ orderItem.listProducts }}</span>
@@ -61,9 +69,20 @@ export default defineComponent({
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.createdAt }}</span>
             </div>
-            <div class="w-[150px] flex flex-row justify-center items-center">
+            <div class="w-[170px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.status }}</span>
             </div>
+            <template
+                v-if="orderItem.status === 'Hủy đơn' || orderItem.status === 'Đã giao hàng' || orderItem.status === 'Đang giao hàng'">
+                <div class="w-[70px] h-[50px] flex justify-center items-center"></div>
+            </template>
+            <template v-else>
+                <div class="w-[70px] h-[50px] flex justify-center items-center">
+                    <button @click="cancelOrder(orderItem.id)"
+                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Hủy
+                        đơn</button>
+                </div>
+            </template>
         </div>
         <Footer />
     </div>

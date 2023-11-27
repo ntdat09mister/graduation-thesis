@@ -77,10 +77,17 @@ export default defineComponent({
             } else {
                 this.setPage(1);
             }
+        },
+        handleFilterSelected() {
+            if (localStorage.getItem("selectedFilter")) {
+                this.getAllOrdersAdmin(this.selected)
+            } else {
+                this.getAllOrdersAdmin(1)
+            }
         }
     },
     mounted() {
-        this.getAllOrdersAdmin(this.selected),
+        this.handleFilterSelected(),
         this.handlePageChangeMounted()
     }
 });

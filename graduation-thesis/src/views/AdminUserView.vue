@@ -105,7 +105,7 @@ export default defineComponent({
         <Header />
         <div class="flex flex-col justify-center items-center">
             <div class="w-[1438px] h-[1020] flex flex-col bg-[#F2F2F2]">
-                <div class="w-[1438px] h-[120px] flex flex-row justify-between items-center">
+                <div class="w-[1438px] h-[80px] flex flex-row justify-between items-center">
                     <div class="flex flex-row">
                         <div
                             class="w-[36px] h-[36px] flex justify-center items-center rounded-[6px] ml-[28px] bg-[#5E81F41A] cursor-pointer">

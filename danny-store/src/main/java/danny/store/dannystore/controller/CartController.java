@@ -32,6 +32,10 @@ public class CartController extends BaseController{
     public ResponseEntity<?> deleteCartWithId(@UserInfo User user,@RequestParam Long cartId) throws NotFoundException {
         return successResponse(cartService.deleteCartWithId(user.getId(), cartId));
     }
+    @PutMapping("/updateQuantity")
+    public ResponseEntity<?> updateCartQuantity(@UserInfo User user, @RequestParam Boolean statusUpdate, @RequestParam Long cartId) {
+        return successResponse(cartService.updateCartQuantity(user.getId(), statusUpdate, cartId));
+    }
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @GetMapping("/admin")

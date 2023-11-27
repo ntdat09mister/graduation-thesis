@@ -1,4 +1,5 @@
 package danny.store.dannystore.controller;
+import danny.store.dannystore.domain.dto.OrderDtoForAdmin;
 import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.CartService;
@@ -36,5 +37,9 @@ public class OrderController extends BaseController{
     @PutMapping("admin/updateStatusOrder")
     public ResponseEntity<?> updateStatusOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
         return successResponse(orderService.updateStatusOrder(user.getId(), orderId));
+    }
+    @PutMapping("/cancelOrder")
+    public ResponseEntity<?> cancelOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
+        return successResponse(orderService.cancelOrder(user.getId(), orderId));
     }
 }

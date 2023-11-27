@@ -5,6 +5,7 @@ import danny.store.dannystore.domain.entity.*;
 import danny.store.dannystore.repository.*;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,7 @@ public class OrderService {
                 orderItem.setCreatedAt(new Date());
                 orderItemRepository.save(orderItem);
                 cartRepository.deleteById(cart.getId());
-                cartDetailRepository.deleteById(cart.getId());
+                cartDetailRepository.deleteByCartId(cart.getId());
                 countTotalAmount += cartDetail.getPrice() * cartDetail.getQuantity();
             }
             order.setCreatedAt(new Date());
@@ -268,8 +269,17 @@ public class OrderService {
             Optional<Order> orderOptional = orderRepository.findById(orderId);
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
-                if (order.getStatusId() < 4) {
+                if (order.getStatusId() < 5) {
                     order.setStatusId(order.getStatusId() + 1);
+                    if (order.getStatusId() == 5) {
+                        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
+                        for (OrderItem orderItem : orderItemList) {
+                            Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
+                            Product product = productOptional.get();
+                            product.setQuantity(productOptional.get().getQuantity() + orderItem.getQuantity());
+                            productRepository.save(product);
+                        }
+                    }
                 }
                 orderRepository.save(order);
                 return "Update successfully";
@@ -280,4 +290,39 @@ public class OrderService {
             throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
         }
     }
+
+    public String cancelOrder(Long userId, Long orderId) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            if (orderOptional.get().getStatusId() > 0 && orderOptional.get().getStatusId() < 3) {
+                order.setStatusId(5L);
+                List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
+                for (OrderItem orderItem : orderItemList) {
+                    Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
+                    Product product = productOptional.get();
+                    product.setQuantity(productOptional.get().getQuantity() + orderItem.getQuantity());
+                    productRepository.save(product);
+                }
+            }
+        } else {
+            throw new NotFoundException("Không hủy đc đơn này!");
+        }
+        return null;
+    }
+
+//    public String updateOrderAdmin(Long userId, OrderDtoForAdmin orderDtoForAdmin) throws NotFoundException {
+//        Optional<User> userOptional = userRepository.findById(userId);
+//        try {
+//            if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
+//                Optional<Order> orderOptional = orderRepository.findById(orderDtoForAdmin.getId());
+//                if (orderOptional.isPresent()) {
+//                    Order order = orderOptional.get();
+//                    return null;
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+//        }
+//    }
 }

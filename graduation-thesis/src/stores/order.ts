@@ -57,7 +57,7 @@ export const useOrderStore = defineStore('order', () => {
             const responseData = response.data;
             if (responseData && responseData.data) {
                 const data = responseData.data;
-
+                console.log(data)
                 if (data && Array.isArray(data)) {
                     listOrders.value = data;
                 } else {
@@ -70,9 +70,29 @@ export const useOrderStore = defineStore('order', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function cancelOrder(orderId: number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = `http://localhost:8080/order/cancelOrder?orderId=${orderId}`;
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, null, { headers });
+            const responseData = response.data;
+            console.log(responseData);
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
     return {
         getAllOrders,
         listOrders,
-        getOrderDetail
+        getOrderDetail,
+        cancelOrder
     }
 })
