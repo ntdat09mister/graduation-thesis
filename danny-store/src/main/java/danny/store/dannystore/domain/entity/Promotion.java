@@ -16,7 +16,7 @@ public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String percentValue;
+    private Float percentValue;
     private Date startDayPromotion;
     private Date endDayPromotion;
 }

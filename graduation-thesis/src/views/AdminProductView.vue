@@ -40,7 +40,8 @@ export default defineComponent({
             descriptionOutput: "",
             quantityOutput: "",
             seletedStatus: true,
-            idValue: 1
+            idValue: 1,
+            promotionId: 1
         };
     },
     computed: {
@@ -49,14 +50,15 @@ export default defineComponent({
             listProductsAdmin: 'listProductsAdmin',
             countProductsAll: 'countProductsAll',
             countProductsTrue: 'countProductsTrue',
-            countTotalProducts: 'countTotalProducts'
+            countTotalProducts: 'countTotalProducts',
+            listPromotions: 'listPromotions'
         }),
         ...mapState(useUserStore, {
             user: 'user'
         })
     },
     methods: {
-        ...mapActions(useProductStore, ['getProductsAdmin', 'setPage', 'updateStatusProduct', 'updateProduct']),
+        ...mapActions(useProductStore, ['getProductsAdmin', 'setPage', 'updateStatusProduct', 'updateProduct', 'getAllPromotions']),
         handlePageChange(newPage: number) {
             this.currentPage = newPage;
             sessionStorage.setItem("changePageProductAdmin", String(newPage));
@@ -64,14 +66,15 @@ export default defineComponent({
         routerPage(routerName: string) {
             router.push({ name: routerName })
         },
-        modifyProduct(id: number, src: string, name: string, price: string, description: string, quantity: string) {
+        modifyProduct(id: number, src: string, name: string, price: string, description: string, quantity: string, promotionId: number) {
             this.idValue = id,
                 this.srcOutput = src,
                 this.nameOutput = name,
                 this.priceOutput = price,
                 this.descriptionOutput = description,
                 this.quantityOutput = quantity,
-                this.showModify = true;
+                this.showModify = true,
+                this.promotionId = promotionId
         },
         handleClick(id: number) {
             router.push({ name: 'productDetail', params: { id: Number(id) } })
@@ -86,7 +89,8 @@ export default defineComponent({
     },
     mounted() {
         this.getProductsAdmin(),
-        this.handlePageChangeMounted()
+            this.handlePageChangeMounted(),
+            this.getAllPromotions()
     }
 });
 </script>
@@ -181,6 +185,11 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tình
                         trạng</span>
                 </div>
+                <div class="w-[100px] h-[80px] flex justify-center items-center">
+                    <span class="w-[100px] h-[80px] flex justify-center items-center"
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Khuyến
+                        mại</span>
+                </div>
                 <div class="w-[50px] h-[38px] flex justify-center items-center ">
                     <span
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;"></span>
@@ -225,9 +234,15 @@ export default defineComponent({
                         <option :value=false>Ngừng bán</option>
                     </select>
                 </div>
+                <div class="w-[100px] h-[80px] flex justify-center items-center">
+                    <select v-model="promotionId"
+                        class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
+                        <option v-for="itemPromotion in listPromotions" :value=itemPromotion.id>{{ itemPromotion.percentValue }}</option>
+                    </select>
+                </div>
                 <div class="w-[50px] h-[80px] flex justify-center items-center">
                     <button
-                        @click="updateProduct(idValue, nameOutput, priceOutput, descriptionOutput, quantityOutput, seletedStatus)"
+                        @click="updateProduct(idValue, nameOutput, priceOutput, descriptionOutput, quantityOutput, seletedStatus, promotionId)"
                         class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
                 </div>
             </div>
@@ -273,9 +288,15 @@ export default defineComponent({
                         @click="updateStatusProduct(item.id)">
                         <span class="text-[13px]">{{ item.statusProduct ? 'Đang bán' : 'Ngừng bán' }}</span>
                     </div>
+                    <div class="w-[100px] h-[80px] flex justify-center items-center">
+                        <span class="w-[50px] h-[80px] flex justify-center items-center"
+                            style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                            {{ item.promotion }}
+                        </span>
+                    </div>
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
                         <button
-                            @click="modifyProduct(item.id, item.src, item.name, item.price, item.description, item.quantity)"
+                            @click="modifyProduct(item.id, item.src, item.name, item.price, item.description, item.quantity, item.promotionId)"
                             class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
                     </div>
                 </div>

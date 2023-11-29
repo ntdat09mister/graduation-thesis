@@ -11,4 +11,6 @@ public class ProductDtoForAdmin {
     private String src;
     private Long quantity;
     private Boolean statusProduct;
+    private Long promotionId;
+    private String promotion;
 }

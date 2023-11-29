@@ -101,7 +101,7 @@ export default defineComponent({
       <div class="flex justify-center items-center">
         <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="2500" :wrap-around="true">
           <slide v-for="item in listIphones" :key="item.id">
-            <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price"
+            <Product :src="item.src" :alt="item.name" :name="item.name" :selling-price="item.sellingPrice" :original-price="item.originalPrice"
               :description="item.description" :id="item.id" />
           </slide>
           <template #addons>
@@ -116,7 +116,7 @@ export default defineComponent({
       <div class="flex justify-center items-center">
         <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
           <slide v-for="item in listIphones" :key="item.id">
-            <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.price"
+            <Product :src="item.src" :alt="item.name" :name="item.name" :price="item.sellingPrice" :original-price="item.originalPrice"
               :description="item.description" :id="item.id" />
           </slide>
           <template #addons>

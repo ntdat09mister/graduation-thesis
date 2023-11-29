@@ -4,14 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.domain.dto.AdminProductSummaryDto;
 import danny.store.dannystore.domain.dto.ProductDto;
 import danny.store.dannystore.domain.dto.ProductDtoForAdmin;
-import danny.store.dannystore.domain.entity.Product;
-import danny.store.dannystore.domain.entity.ProductDetail;
-import danny.store.dannystore.domain.entity.ProductManufacturer;
-import danny.store.dannystore.domain.entity.User;
-import danny.store.dannystore.repository.ProductDetailRepository;
-import danny.store.dannystore.repository.ProductManufacturerRepository;
-import danny.store.dannystore.repository.ProductRepository;
-import danny.store.dannystore.repository.UserRepository;
+import danny.store.dannystore.domain.entity.*;
+import danny.store.dannystore.repository.*;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +26,7 @@ public class ProductService {
     private final ProductManufacturerRepository manufacturerRepository;
     private final ProductDetailRepository productDetailRepository;
     private final UserRepository userRepository;
+    private final PromotionRepository promotionRepository;
     public List<ProductDto> getListProducts(Long productType, Long manufacturerId) throws NotFoundException {
         try {
             List<ProductDto> productDtos = new ArrayList<>();
@@ -45,13 +40,24 @@ public class ProductService {
             } else {
                 products = productRepository.findAllProducts(true);
             }
+            Float valuePercent = 0F;
             for (Product product : products) {
-                ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);
+                ProductDto productDto = new ProductDto();
+                productDto.setId(product.getId());
+                productDto.setName(product.getName());
+                productDto.setOriginalPrice(String.valueOf(product.getPrice()));
+                Optional<Promotion> promotionOptional = promotionRepository.findById(product.getPromotionId());
+                if (promotionOptional.isPresent()) {
+                    valuePercent = promotionOptional.get().getPercentValue();
+                }
+                productDto.setSellingPrice(String.valueOf(product.getPrice() - product.getPrice() * valuePercent / 100 ));
                 String[] fullString = product.getDescription().split("\\n");
                 if (fullString.length > 0) {
                     fullString[0] = fullString[0].substring(1);
                 }
                 productDto.setDescription(fullString[0]);
+                productDto.setSrc(product.getSrc());
+                productDto.setQuantity(product.getQuantity());
                 productDtos.add(productDto);
             }
             return productDtos;
@@ -117,6 +123,8 @@ public class ProductService {
                     fullString[0] = fullString[0].substring(1);
                 }
                 productDtoForAdmin.setDescription(fullString[0]);
+                Optional<Promotion> promotionOptional = promotionRepository.findById(product.getPromotionId());
+                productDtoForAdmin.setPromotion(String.valueOf(promotionOptional.get().getPercentValue()));
                 productDtoForAdminList.add(productDtoForAdmin);
             }
             adminProductSummaryDto.setProductDtoForAdminList(productDtoForAdminList);
@@ -164,6 +172,7 @@ public class ProductService {
                     product.setDescription(productDtoForAdmin.getDescription());
                     product.setQuantity(productDtoForAdmin.getQuantity());
                     product.setStatus(productDtoForAdmin.getStatusProduct());
+                    product.setPromotionId(productDtoForAdmin.getPromotionId());
                     productRepository.save(product);
                 }
                 return RESPONSE_UPDATE_SUCCESS;

@@ -3,21 +3,29 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 export const useProductStore = defineStore('product', () => {
     interface Product {
-        id: number;
-        name: string;
-        description: string;
-        qty: number;
+        id: number
+        name: string
+        description: string
+        qty: number
         price: number
         unitCount: string;
     }
     interface ProductAdmin {
-        id: number;
-        name: string;
+        id: number
+        name: string
         price: number
-        description: string;
+        description: string
         src: string
         quantity: string
         statusProduct: string
+        promotionId: number
+        promotion: string
+    }
+    interface Promotion {
+        id: number
+        percentValue: string
+        startDayPromotion: number
+        endDayPromotion: string
     }
     function changeProduct(id: number, name: string, description: string, qty: number, price: number, unitCount: string) {
         axios.put(`http://localhost:8080/product?id=${id}&name=${name}&description=${description}&qty=${qty}&price=${price}&unitCount=${unitCount}`, {})
@@ -61,9 +69,9 @@ export const useProductStore = defineStore('product', () => {
             };
             const response = await axios.get(`http://localhost:8080/product/admin/all`, config);
             const responseData = response.data;
+            console.log(responseData)
             if (responseData && responseData.data) {
                 const data = responseData.data;
-
                 if (data && Array.isArray(data.productDtoForAdminList)
                     && typeof data.countProductsTrue === 'number'
                     && typeof data.countProductsAll === 'number'
@@ -77,6 +85,8 @@ export const useProductStore = defineStore('product', () => {
                         src: product.src,
                         quantity: product.quantity,
                         statusProduct: product.statusProduct,
+                        promotionId: product.promotionId,
+                        promotion: product.promotion
                     }));
                     listProductsAdmin.value = transformedData;
                     countProductsTrue.value = data.countProductsTrue
@@ -102,6 +112,7 @@ export const useProductStore = defineStore('product', () => {
             return index >= fromOrder && index <= toOrder
         })
     })
+
     async function updateStatusProduct(productId: number) {
         try {
             const token = localStorage.getItem("accessToken");
@@ -122,7 +133,7 @@ export const useProductStore = defineStore('product', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updateProduct(idInput: number, nameInput: string, priceInput: string, descriptionInput: string, quantityInput: string, statusInput: boolean) {
+    async function updateProduct(idInput: number, nameInput: string, priceInput: string, descriptionInput: string, quantityInput: string, statusInput: boolean, promotionId: number) {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
@@ -136,7 +147,8 @@ export const useProductStore = defineStore('product', () => {
                 price: priceInput,
                 description: descriptionInput,
                 quantity: quantityInput,
-                statusProduct: statusInput
+                statusProduct: statusInput,
+                promotionId: promotionId
             }
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
@@ -144,6 +156,37 @@ export const useProductStore = defineStore('product', () => {
             const scrollPosition = window.scrollY;
             location.reload();
             window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    const listPromotions = ref<Promotion[]>([]);
+    async function getAllPromotions() {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            };
+            const response = await axios.get(`http://localhost:8080/promotion/`, config);
+            const responseData = response.data;
+            if (responseData && responseData.data) {
+                const data = responseData.data;
+                console.log(data)
+                if (data && Array.isArray(data)) {
+                    listPromotions.value = data;
+                } else {
+                    console.error('Invalid data received from the API:', data);
+                }
+            } else {
+                console.error('No data received from the API');
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -160,6 +203,8 @@ export const useProductStore = defineStore('product', () => {
         updateProduct,
         countProductsAll,
         countTotalProducts,
-        countProductsTrue
+        countProductsTrue,
+        getAllPromotions,
+        listPromotions
     }
 })

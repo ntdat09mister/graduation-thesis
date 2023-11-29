@@ -34,11 +34,12 @@ export const useHomeStore = defineStore('home', () => {
     { id: 4, src: 'https://hanoicomputercdn.com/media/banner/31_Julf855258be0815e2eb82e233d3f2954d0.jpg' }
   ]
   interface Item {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-    src: string;
+    id: number,
+    name: string,
+    originalPrice: number,
+    sellingPrice: number,
+    description: string,
+    src: string
   }
 
   interface Manufacturer {
@@ -68,13 +69,14 @@ export const useHomeStore = defineStore('home', () => {
   
       const response = await axios.get(url);
       const responseData = response.data;
-  
+      console.log('123123123')
       // Kiểm tra xem responseData có thuộc tính "data" và "data" là mảng không
       if (responseData && Array.isArray(responseData.data)) {
         const transformedData: Item[] = responseData.data.map((item: any) => ({
           id: item.id,
           name: item.name,
-          price: parseFloat(item.price),
+          originalPrice: parseFloat(item.originalPrice),
+          sellingPrice: parseFloat(item.sellingPrice),
           description: item.description,
           src: item.src.replace(/\\/g, '/'),
         }));
