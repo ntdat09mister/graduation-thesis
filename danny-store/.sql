@@ -2,7 +2,7 @@
 -- Host:                         localhost
 -- Server version:               5.7.41 - MySQL Community Server (GPL)
 -- Server OS:                    Linux
--- HeidiSQL Version:             12.1.0.6537
+-- HeidiSQL Version:             12.5.0.6677
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -98,9 +98,9 @@ CREATE TABLE IF NOT EXISTS `order` (
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.order: ~24 rows (approximately)
+-- Dumping data for table danny-store-db.order: ~25 rows (approximately)
 REPLACE INTO `order` (`id`, `created_at`, `customer_id`, `modified_at`, `sale_staff_id`, `status_id`, `total_amount`) VALUES
-	(1, '2023-11-06 15:53:02', 6, NULL, 2, 1, 3990),
+	(1, '2023-11-06 15:53:02', 6, NULL, 2, 2, 3990),
 	(2, '2023-11-07 15:53:19', 6, NULL, 2, 2, 3000),
 	(3, '2023-11-08 15:53:38', 6, NULL, 2, 3, 5412),
 	(6, '2023-11-09 13:07:34', 4, NULL, 1, 2, 6696),
@@ -430,16 +430,20 @@ CREATE TABLE IF NOT EXISTS `promotion` (
     `end_day_promotion` datetime DEFAULT NULL,
     `start_day_promotion` datetime DEFAULT NULL,
     `percent_value` float DEFAULT NULL,
+    `description_promotion` varchar(255) DEFAULT NULL,
+    `name_promotion` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.promotion: ~5 rows (approximately)
-REPLACE INTO `promotion` (`id`, `end_day_promotion`, `start_day_promotion`, `percent_value`) VALUES
-	(1, NULL, NULL, 0),
-	(2, NULL, NULL, 5),
-	(3, NULL, NULL, 10),
-	(4, NULL, NULL, 15),
-	(5, NULL, NULL, 20);
+-- Dumping data for table danny-store-db.promotion: ~7 rows (approximately)
+REPLACE INTO `promotion` (`id`, `end_day_promotion`, `start_day_promotion`, `percent_value`, `description_promotion`, `name_promotion`) VALUES
+	(1, NULL, NULL, 0, 'Giữ nguyên giá', 'Mặc định'),
+	(2, NULL, NULL, 5, 'Giảm 5% giá trị sản phẩm', 'Chào mừng hè'),
+	(3, NULL, NULL, 12, 'Giảm 12% giá trị sản phẩm', 'Xả hàng cuối năm'),
+	(4, NULL, NULL, 15, 'Giảm 15% giá trị sản phẩm', 'Kỉ niệm 1 năm thành lập'),
+	(5, NULL, NULL, 25, 'Giảm 25% giá trị sản phẩm', 'Khuyến mại tuần'),
+	(6, NULL, NULL, 25, 'Giảm 25% giá trị sản phẩm', 'Khuyến mại tuần'),
+	(7, NULL, NULL, 50, 'Giảm giá tận 50% luôn', 'Giảm giá cực sốc');
 
 -- Dumping structure for table danny-store-db.receipt_import
 DROP TABLE IF EXISTS `receipt_import`;
@@ -529,7 +533,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.user: ~9 rows (approximately)
+-- Dumping data for table danny-store-db.user: ~13 rows (approximately)
 REPLACE INTO `user` (`id`, `active`, `address`, `avatar`, `created_at`, `gender`, `modified_at`, `name`, `password`, `password_reset_token`, `password_reset_token_expiry_date`, `phone`, `role`, `username`) VALUES
 	(1, b'1', 'Nam Dinh', 'None', '2023-11-15 15:00:19', '1', NULL, 'Đạt pro vip', '$2a$10$.mHniwHnIa0QrR.UXC4Y4.c2gAA6/mFmCbJg3to28SGxJaJbb1HPm', NULL, NULL, '1234567890', 'admin', 'admin@gmail.com'),
 	(2, b'1', 'Ha noi', 'None', '2023-10-11 13:42:21', '1', NULL, 'Nam', '$2a$10$L1ivD7VswYqLXaP7bUM3NOvQFFxQNnuyOztsxbS5vYnsYTd8TpMYC', NULL, NULL, '1234567890', 'warehouse', 'warehouse@gmail.com'),

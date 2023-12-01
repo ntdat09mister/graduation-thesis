@@ -85,6 +85,9 @@ export default defineComponent({
             } else {
                 this.setPage(1);
             }
+        },
+        cancel() {
+            this.showModify = false
         }
     },
     mounted() {
@@ -160,23 +163,23 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Sản
                         phẩm</span>
                 </div>
-                <div class="w-[160px] h-[80px] flex justify-center items-center">
-                    <span class="w-[160px] h-[80px] flex justify-center items-center"
+                <div class="w-[160px] h-[80px] flex items-center">
+                    <span class="w-[160px] h-[80px] flex items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tên
                         sản phẩm</span>
                 </div>
-                <div class="w-[100px] h-[80px] flex flex-col justify-center items-center">
-                    <span class="w-[100px] h-[80px] flex flex-col justify-center items-center"
+                <div class="w-[100px] h-[80px] flex items-center">
+                    <span class="w-[100px] h-[80px] flex items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Đơn
                         giá</span>
                 </div>
-                <div class="w-[250px] h-[80px] flex justify-center items-center">
-                    <span class="w-[250px] h-[80px] flex justify-center items-center"
+                <div class="w-[250px] h-[80px] flex items-center">
+                    <span class="w-[250px] h-[80px] flex items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Mô
                         tả</span>
                 </div>
-                <div class="w-[100px] h-[80px] flex justify-center items-center">
-                    <span class="w-[100px] h-[80px] flex justify-center items-center"
+                <div class="w-[100px] h-[80px] flex items-center">
+                    <span class="w-[100px] h-[80px] flex items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Số
                         lượng</span>
                 </div>
@@ -237,16 +240,21 @@ export default defineComponent({
                 <div class="w-[100px] h-[80px] flex justify-center items-center">
                     <select v-model="promotionId"
                         class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
-                        <option v-for="itemPromotion in listPromotions" :value=itemPromotion.id>{{ itemPromotion.percentValue }}</option>
+                        <option v-for="itemPromotion in listPromotions" :value=itemPromotion.id>{{
+                            itemPromotion.percentValue }}%</option>
                     </select>
                 </div>
-                <div class="w-[50px] h-[80px] flex justify-center items-center">
+                <div class="w-[120px] h-[80px] flex justify-between items-center">
                     <button
                         @click="updateProduct(idValue, nameOutput, priceOutput, descriptionOutput, quantityOutput, seletedStatus, promotionId)"
                         class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
+                    <div class="w-[50px] h-[30px] flex justify-center items-center ">
+                        <button @click="cancel()"
+                            class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Cancel</button>
+                    </div>
                 </div>
             </div>
-            <div class="w-[1381px] h-[649px] flex flex-col">
+            <div class="w-[1381px] h-[649px] flex flex-col justify-between items-center">
                 <div v-for="(item, index ) in listDisplayProductAdmin" :key="index"
                     class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
                     <div class="w-[70px] h-[80px] flex items-center">
@@ -260,25 +268,25 @@ export default defineComponent({
                         <img class="w-[52px] h-[52px] flex justify-center items-center" :src="item.src" alt="product-img">
                     </div>
                     <div class="w-[160px] h-[80px] flex items-center">
-                        <span class="w-[160px] h-[80px] flex justify-center items-center"
+                        <span class="w-[160px] h-[80px] flex items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.name }}
                         </span>
                     </div>
-                    <div class="w-[100px] h-[80px] flex flex-col justify-center items-center">
-                        <span class="w-[100px] h-[80px] flex flex-col justify-center items-center"
+                    <div class="w-[100px] h-[80px] flex items-center">
+                        <span class="w-[100px] h-[80px] flex items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.price }}
                         </span>
                     </div>
-                    <div class="w-[250px] h-[80px] flex justify-center items-center">
-                        <span class="w-[250px] h-[80px] flex justify-center items-center"
+                    <div class="w-[250px] h-[80px] flex items-center">
+                        <span class="w-[250px] h-[80px] flex items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.description }}
                         </span>
                     </div>
-                    <div class="w-[50px] h-[80px] flex justify-center items-center">
-                        <span class="w-[50px] h-[80px] flex justify-center items-center"
+                    <div class="w-[100px] h-[80px] flex items-center">
+                        <span class="w-[100px] h-[80px] flex items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.quantity }}
                         </span>
@@ -291,7 +299,7 @@ export default defineComponent({
                     <div class="w-[100px] h-[80px] flex justify-center items-center">
                         <span class="w-[50px] h-[80px] flex justify-center items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                            {{ item.promotion }}
+                            {{ item.promotion }}%
                         </span>
                     </div>
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">

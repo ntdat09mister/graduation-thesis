@@ -15,6 +15,7 @@ import AdminProductView from '../views/AdminProductView.vue'
 import AdminUserView from '../views/AdminUserView.vue'
 import TestPopup from '../views/TestPopup.vue'
 import PaymentView from '../views/PaymentView.vue'
+import AdminPromotionView from '../views/AdminPromotionView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -97,6 +98,11 @@ const router = createRouter({
       path: '/payment',
       name: 'payment',
       component: PaymentView
+    },
+    {
+      path: '/adminPromotionView',
+      name: 'adminPromotionView',
+      component: AdminPromotionView
     }
   ]
 })

@@ -13,4 +13,6 @@ public class Const {
     public static final String RESPONSE_NOT_FOUND = "Không thấy giá trị tương ứng!";
     public static final String RESPONSE_FAIL_REPORT = "Không tìm thấy báo cáo tương ứng!";
     public static final String RESPONSE_UPDATE_SUCCESS = "Cập nhật thành công!";
+    public static final String RESPONSE_UNAUTHORIZED = "Bạn không có quyền!";
+    public static final String RESPONSE_ADD_SUCCESS = "Thêm thành công!";
 }

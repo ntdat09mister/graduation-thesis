@@ -39,11 +39,12 @@ export const useProductDetailStore = defineStore('productDetail', () => {
     }
 
     interface Item {
-        id: number;
-        name: string;
-        price: number;
-        description: string;
-        src: string;
+        id: number
+        name: string
+        originalPrice: number
+        sellingPrice: number
+        description: string
+        src: string
         quantity: number
     }
     const productDto = ref<Item | null>(null);
@@ -59,7 +60,8 @@ export const useProductDetailStore = defineStore('productDetail', () => {
           const transformedData: Item = {
             id: productData.id,
             name: productData.name,
-            price: parseFloat(productData.price || "0"), // Sử dụng 0 nếu không có giá trị price
+            originalPrice: parseFloat(productData.originalPrice || "0"), // Sử dụng 0 nếu không có giá trị price
+            sellingPrice: parseFloat(productData.sellingPrice || "0"), // Sử dụng 0 nếu không có giá trị price
             description: productData.description,
             src: productData.src ? productData.src.replace(/\\/g, '/') : '', // Kiểm tra src trước khi thực hiện replace
             quantity: productData.quantity

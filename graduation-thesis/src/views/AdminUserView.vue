@@ -91,6 +91,9 @@ export default defineComponent({
             } else {
                 this.setPage(1);
             }
+        },
+        cancel() {
+            this.showModify = false
         }
     },
     mounted() {
@@ -133,11 +136,11 @@ export default defineComponent({
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Mã
                                 người dùng</span>
                         </div>
-                        <div class="w-[200px] h-[80px] flex justify-center items-center">
+                        <div class="w-[200px] h-[80px] flex items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Username</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tên đăng nhập</span>
                         </div>
-                        <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
+                        <div class="w-[200px] h-[80px] flex items-center">
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tên
                                 người dùng</span>
@@ -147,7 +150,7 @@ export default defineComponent({
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Giới
                                 tính</span>
                         </div>
-                        <div class="w-[200px] h-[80px] flex justify-center items-center">
+                        <div class="w-[200px] h-[80px] flex items-center ml-[20px]">
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Địa
                                 chỉ</span>
@@ -158,7 +161,7 @@ export default defineComponent({
                                 điện thoại</span>
                         </div>
                         <div class="w-[200px] h-[80px] flex items-center">
-                            <span class="w-[200px] h-[80px] flex justify-center items-center"
+                            <span class="w-[200px] h-[80px] flex items-center"
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Loại
                                 tài khoản</span>
                         </div>
@@ -217,6 +220,10 @@ export default defineComponent({
                                 @click="updateUser(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole)"
                                 class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
                         </div>
+                        <div class="w-[50px] h-[30px] flex justify-center items-center ">
+                        <button @click="cancel()"
+                            class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Cancel</button>
+                    </div>
                     </div>
                     <div v-for="item in listDisplayUsersAdmin" class="w-[1381px] h-[48px] flex flex-row items-center">
                         <div class="w-[100px] h-[80px] flex justify-center items-center">
@@ -225,14 +232,14 @@ export default defineComponent({
                                 {{ item.id }}
                             </span>
                         </div>
-                        <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <span class="w-[200px] h-[80px] flex justify-center items-center"
+                        <div class="w-[200px] h-[80px] flex items-center">
+                            <span class="w-[200px] h-[80px] flex items-center"
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                                 {{ item.username }}
                             </span>
                         </div>
-                        <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <span class="w-[200px] h-[80px] flex justify-center items-center"
+                        <div class="w-[200px] h-[80px] flex items-center">
+                            <span class="w-[200px] h-[80px] flex items-center"
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                                 {{ item.name }}
                             </span>
@@ -243,8 +250,8 @@ export default defineComponent({
                                 {{ item.gender }}
                             </span>
                         </div>
-                        <div class="w-[200px] h-[80px] flex justify-center items-center">
-                            <span class="w-[200px] h-[80px] flex justify-center items-center"
+                        <div class="w-[200px] h-[80px] flex items-center ml-[20px]">
+                            <span class="w-[200px] h-[80px] flex items-center"
                                 style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
                                 {{ item.address }}
                             </span>
@@ -256,8 +263,8 @@ export default defineComponent({
                             </span>
                         </div>
 
-                        <div class="w-[200px] h-[80px] flex justify-center items-center ">
-                            <span class="w-[200px] h-[80px] flex justify-center items-center"
+                        <div class="w-[200px] h-[80px] flex items-center ">
+                            <span class="w-[200px] h-[80px] flex items-center"
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                                 {{ item.role }}
                             </span>
@@ -265,7 +272,7 @@ export default defineComponent({
                         <div class=" flex justify-center items-center ">
                             <button
                                 @click="modifyUser(item.id, item.username, item.name, item.gender, item.address, item.phone, item.role)"
-                                class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
+                                class="w-[60px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
                         </div>
                     </div>
                 </div>

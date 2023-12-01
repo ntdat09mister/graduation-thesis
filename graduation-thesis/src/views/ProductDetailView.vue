@@ -92,7 +92,7 @@ export default defineComponent({
                                 'w-[100px] h-[51px] flex flex-col justify-around items-center bg-red-500 rounded-xl cursor-pointer': selectedVar === variant
                             }" @click="changeVariant(variant)">
                                 <strong>{{ variant === 1 ? '512GB' : variant === 0.75 ? '256GB' : '1TB' }}</strong>
-                                <span>{{ (productDto?.price || 0) * variant }}đ</span>
+                                <span>{{ (productDto?.sellingPrice || 0) * variant }}đ</span>
                             </div>
                         </template>
                     </div>

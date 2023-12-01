@@ -17,6 +17,8 @@ public class Promotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Float percentValue;
+    private String namePromotion;
+    private String descriptionPromotion;
     private Date startDayPromotion;
     private Date endDayPromotion;
 }

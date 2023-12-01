@@ -88,6 +88,9 @@ public class ProductService {
             String cleanText = productDto.getDescription().replaceAll("\\n\\n", "\n");
             String cleanedText = cleanText.replaceFirst("^[^\n]*\n", "");
             productDto.setDescription(cleanedText);
+            productDto.setOriginalPrice(String.valueOf(productOptional.get().getPrice()));
+            Optional<Promotion> promotionOptional = promotionRepository.findById(productOptional.get().getPromotionId());
+            productDto.setSellingPrice(String.valueOf(productOptional.get().getPrice() + promotionOptional.get().getPercentValue()));
             return productDto;
         } else {
             throw new ClassNotFoundException();
