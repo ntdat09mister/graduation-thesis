@@ -145,13 +145,6 @@ export default defineComponent({
                     </div>
                 </div>
             </div>
-            <div class="w-[1438px] h-[86px] flex flex-row rounded-[12px]">
-                <div class="w-[1381px] h-[66px] flex flex-row justify-between items-center ml-[24px]">
-                    <span
-                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 27px;color: #1C1D21;">Latest
-                        sales</span>
-                </div>
-            </div>
             <div class="w-[1381px] h-[48px] flex flex-row justify-between items-center">
                 <div class="w-[70px] h-[80px] flex items-center">
                     <span class="w-[70px] h-[80px] flex justify-center items-center"
@@ -254,7 +247,7 @@ export default defineComponent({
                     </div>
                 </div>
             </div>
-            <div class="w-[1381px] h-[649px] flex flex-col justify-between items-center">
+            <div class="w-[1381px] h-[649px] flex flex-col items-center">
                 <div v-for="(item, index ) in listDisplayProductAdmin" :key="index"
                     class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
                     <div class="w-[70px] h-[80px] flex items-center">

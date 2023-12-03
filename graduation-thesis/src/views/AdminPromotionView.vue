@@ -131,12 +131,12 @@ export default defineComponent({
                     <div class="w-[160px] h-[80px] flex items-center">
                         <input v-model="startDayPromotion"
                             class="w-[160px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                            type="text" :placeholder="`${startDayPromotion}`">
+                            type="text" placeholder="dd/MM/yyyy">
                     </div>
                     <div class="w-[160px] h-[80px] flex items-center">
                         <input v-model="endDayPromotion"
                             class="w-[160px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                            type="text" :placeholder="`${endDayPromotion}`">
+                            type="text" placeholder="dd/MM/yyyy">
                     </div>
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
                         <button
@@ -229,12 +229,12 @@ export default defineComponent({
                     <div class="w-[160px] h-[80px] flex items-center">
                         <input v-model="startDayPromotion"
                             class="w-[160px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                            type="text" :placeholder="`${startDayPromotion}`">
+                            type="text" placeholder="dd/MM/yyyy">
                     </div>
                     <div class="w-[160px] h-[80px] flex items-center">
                         <input v-model="endDayPromotion"
                             class="w-[160px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-300"
-                            type="text" :placeholder="`${endDayPromotion}`">
+                            type="text" placeholder="dd/MM/yyyy">
                     </div>
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
                         <button

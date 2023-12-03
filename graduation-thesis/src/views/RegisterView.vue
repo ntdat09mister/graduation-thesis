@@ -50,19 +50,19 @@ export default defineComponent({
         </div>
         <div class="flex flex-col justify-around items-center h-[500px]">
             <div class="flex flex-col mb-3">
-                <span>Username:</span>
+                <span>Tên tài khoản:</span>
                 <input v-model="username"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
                     placeholder="Nhập username.....">
             </div>
             <div class="flex flex-col mb-3">
-                <span>Password:</span>
+                <span>Mật khẩu:</span>
                 <input v-model="password"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
                     type="password" placeholder="Nhập password.....">
             </div>
             <div class="flex flex-col mb-3">
-                <span>Nhập lại password:</span>
+                <span>Nhập lại mật khẩu:</span>
                 <input v-model="retypePassword"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
                     type="password" placeholder="Nhập lại password.....">
@@ -97,7 +97,7 @@ export default defineComponent({
             <button
                 class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
                 @click="register(username, password, retypePassword, name, phone, address, seletedGender)">
-                Register
+                Đăng ký
             </button>
             <div>
                 <span>Đã tài khoản? </span>

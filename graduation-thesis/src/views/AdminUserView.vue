@@ -119,13 +119,6 @@ export default defineComponent({
                         </div>
                     </div>
                 </div>
-                <div class="w-[1438px] h-[86px] flex flex-row rounded-[12px]">
-                    <div class="w-[1281px] h-[66px] flex flex-row justify-between items-center ml-[24px]">
-                        <span
-                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 27px;color: #1C1D21;">Latest
-                            sales</span>
-                    </div>
-                </div>
                 <div class="w-[1438px] h-[48px] flex flex-row justify-around items-center">
                     <div class="w-[1381px] h-[48px] flex flex-row items-center">
                         <div class="w-[100px] h-[80px] flex justify-center items-center">
@@ -187,8 +180,8 @@ export default defineComponent({
                             <select
                                 class="w-[50px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
                                 v-model="seletedGender">
-                                <option value="male">Nam</option>
-                                <option value="female">Nữ</option>
+                                <option value="nam">Nam</option>
+                                <option value="nữ">Nữ</option>
                                 <option value="none">N/A</option>
                             </select>
                         </div>

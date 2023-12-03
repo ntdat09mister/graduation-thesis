@@ -80,7 +80,10 @@ export default defineComponent({
         handleEnter() {
             const keyword = this.searchKeyword;
             sessionStorage.setItem("searchKeyword", keyword);
-            this.getListSearch(String(sessionStorage.getItem("searchKeyword")));
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
             console.log(this.searchKeyword);
             router.push({ name: 'search' });
             this.setVModelInput()
@@ -155,7 +158,7 @@ export default defineComponent({
                                 <a href="" @click="logout()">
                                     <IconLogout class="w-[30px]" />
                                 </a>
-                                <span class="text-[12px]">Logout</span>
+                                <span class="text-[12px]">Đăng xuất</span>
                             </div>
                         </template>
                         <template v-else>
@@ -163,7 +166,7 @@ export default defineComponent({
                                 <a href="" @click="routerPage('login')">
                                     <IconLogin class="w-[30px]" />
                                 </a>
-                                <span class="text-[12px]">Login</span>
+                                <span class="text-[12px]">Đăng nhập</span>
                             </div>
                         </template>
                     </div>

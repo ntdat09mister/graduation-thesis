@@ -51,7 +51,7 @@ export default defineComponent({
             <span class="w-[121px] flex justify-center">Sản phẩm</span>
             <span class="w-[130px]">Tên sản phẩm</span>
             <span class="w-[100px]">Số lượng</span>
-            <span class="w-[150px]">Thời gian mua</span>
+            <span class="w-[150px]">Thông tin</span>
             <span class="w-[50px]">Giá</span>
             <span class="w-[50px]">Xóa</span>
         </div>
@@ -76,7 +76,7 @@ export default defineComponent({
                     </div>
                 </div>
                 <div class=" w-[150px] mb-[30px] ml-[20px] mt-[30px]">
-                    <p>{{ cartItem.createdAt }}</p>
+                    <p>1TB, màu vàng</p>
                 </div>
                 <div class="w-[50px]">
                     <p>{{ cartItem.price }}</p>

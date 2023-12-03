@@ -45,13 +45,13 @@ export default defineComponent({
         </div>
         <div class="flex flex-col justify-around items-center h-[200px]">
             <div class="flex flex-col mb-3">
-                <span>Username:</span>
+                <span>Tên đăng nhập:</span>
                 <input v-model="username"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
                     placeholder="Nhập username.....">
             </div>
             <div class="flex flex-col mb-3">
-                <span>Password:</span>
+                <span>Mật khẩu:</span>
                 <input v-model="password"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
                     type="password" placeholder="Nhập password.....">
@@ -60,7 +60,7 @@ export default defineComponent({
             <button
                 class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
                 @click="login(username, password)">
-                Login
+                Đăng nhập
             </button>
             <div>
                 <span>Chưa có tài khoản? </span>

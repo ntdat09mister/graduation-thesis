@@ -95,7 +95,7 @@ export default defineComponent({
                     <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Thông tin</h6>
                     <div class="">
                       <div class="col-sm-6">
-                        <p class="m-b-10 f-w-600">Email</p>
+                        <p class="m-b-10 f-w-600">Tài khoản</p>
                         <h6 class="text-muted f-w-400">{{ user?.username }}</h6>
                       </div>
                       <div class="col-sm-6">
