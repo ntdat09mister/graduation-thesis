@@ -55,9 +55,6 @@ export default defineComponent({
         };
     },
     computed: {
-        ...mapState(useOrderStore, {
-            listOrders: 'listOrders'
-        }),
         ...mapState(useUserStore, {
             listDisplayUsersAdmin: 'listDisplayUsersAdmin',
             listUsersAdmin: 'listUsersAdmin'

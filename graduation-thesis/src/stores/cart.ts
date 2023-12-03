@@ -100,7 +100,7 @@ export const useCartStore = defineStore('cart', () => {
       const headers = { Authorization: `Bearer ${token}`, };
       const response = await axios.post(apiUrl, requestData, { headers });
       console.log(response);
-      router.push({ name: 'order' }).then(() => {
+      router.push({ name: 'payment' }).then(() => {
         location.reload();
       });
     } catch (error) {

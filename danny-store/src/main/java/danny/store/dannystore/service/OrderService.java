@@ -116,6 +116,7 @@ public class OrderService {
                 orderItemDto.setProductName(productOptional.get().getName());
                 orderItemDto.setPrice(orderItem.getPrice());
                 orderItemDto.setQuantity(orderItem.getQuantity());
+                orderItemDto.setSrcProduct(productOptional.get().getSrc());
                 return orderItemDto;
             }).collect(Collectors.toList());
             OrderDetailDto orderDetailDto = new OrderDetailDto();
@@ -127,6 +128,7 @@ public class OrderService {
             orderDetailDto.setNameCustomer(userOptional.get().getName());
             orderDetailDto.setAddress(userOptional.get().getAddress());
             orderDetailDto.setPhoneNumber(userOptional.get().getPhone());
+            orderDetailDto.setUsername(userOptional.get().getUsername());
             System.out.println(RESPONSE_LIST_ORDER_DETAIL);
             return orderDetailDto;
         } else {

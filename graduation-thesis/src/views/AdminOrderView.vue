@@ -9,7 +9,6 @@ import IconCheckListOrder from '@/components/icons/IconCheckListOrder.vue';
 import IconUpdateStatusOrder from '@/components/icons/IconUpdateStatusOrder.vue'
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
-import { useOrderStore } from '@/stores/order';
 import { useAdminStore } from '@/stores/admin';
 import { useUserStore } from '@/stores/user';
 import router from '@/router';
@@ -37,9 +36,6 @@ export default defineComponent({
         };
     },
     computed: {
-        ...mapState(useOrderStore, {
-            listOrders: 'listOrders',
-        }),
         ...mapState(useAdminStore, {
             listOrdersAdmin: 'listOrdersAdmin',
             listDisplayOrderAdmin: 'listDisplayOrderAdmin',

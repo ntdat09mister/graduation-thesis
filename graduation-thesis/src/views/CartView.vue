@@ -95,7 +95,7 @@ export default defineComponent({
                 </div>
             </div>
             <div class="w-[140px] h-[50px] bg-[red] flex justify-center items-center rounded-xl ml-[500px] cursor-pointer" @click="createOrderFromCart">
-                <p class="text-neutral-50">Thanh toán</p>
+                <p class="text-neutral-50">Tạo đơn hàng</p>
             </div>
         </div>
         <Footer />

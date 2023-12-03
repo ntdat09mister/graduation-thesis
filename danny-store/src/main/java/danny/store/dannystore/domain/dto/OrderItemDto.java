@@ -4,6 +4,7 @@ import lombok.Data;
 @Data
 public class OrderItemDto {
     private Long orderId;
+    private String srcProduct;
     private String productName;
     private Float price;
     private Long quantity;

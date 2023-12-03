@@ -12,5 +12,6 @@ public class OrderDetailDto {
     private Long userId;
     private List<OrderItemDto> orderItemList;
     private Float totalAmount;
+    private String username;
     private String createdAt;
 }
