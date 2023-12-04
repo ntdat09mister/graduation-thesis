@@ -84,7 +84,7 @@ export default defineComponent({
     },
     mounted() {
         this.handleFilterSelected(),
-        this.handlePageChangeMounted()
+            this.handlePageChangeMounted()
     }
 });
 </script>
@@ -269,26 +269,26 @@ export default defineComponent({
             </div>
         </div>
         <div>
-            <div class="flex justify-center items-center mt-[30px]">
+            <div class="flex justify-center items-center mt-[10px]">
                 <el-pagination :page-size="pageSize" :total="listOrdersAdmin.length" :current-page.sync="currentPage"
                     @current-change="handlePageChange" @click="setPage(Number(currentPage))" />
             </div>
         </div>
         <template v-if="user?.role === 'admin'">
             <div class="w-[1438px] flex flex-row justify-between items-center">
-            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                <button @click="routerPage('adminProductView')"
-                    class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
-                    Left</button>
-                <span class="text-[13px] ml-[10px]">Di chuyển tới trang quản sản phẩm</span>
+                <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
+                    <button @click="routerPage('adminProductView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                        Left</button>
+                    <span class="text-[13px] ml-[10px]">Di chuyển tới trang quản sản phẩm</span>
+                </div>
+                <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
+                    <span class="text-[13px] mr-[10px]">Di chuyển tới trang quản người dùng</span>
+                    <button @click="routerPage('adminUserView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                        right</button>
+                </div>
             </div>
-            <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
-                <span class="text-[13px] mr-[10px]">Di chuyển tới trang quản người dùng</span>
-                <button @click="routerPage('adminUserView')"
-                    class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
-                    right</button>
-            </div>
-        </div>
         </template>
     </div>
     <Footer />

@@ -82,12 +82,12 @@ export default defineComponent({
                     <option value="">N/A</option>
                 </select>
             </div>
-            <div class="flex flex-col mb-3">
+            <!-- <div class="flex flex-col mb-3">
                 <span>Nhập địa chỉ:</span>
                 <input v-model="address"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
                     placeholder="Nhập địa chỉ.....">
-            </div>
+            </div> -->
             <div class="flex flex-col mb-3">
                 <span>Nhập sđt:</span>
                 <input v-model="phone"
@@ -96,7 +96,7 @@ export default defineComponent({
             </div>
             <button
                 class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
-                @click="register(username, password, retypePassword, name, phone, address, seletedGender)">
+                @click="register(username, password, retypePassword, name, phone, seletedGender)">
                 Đăng ký
             </button>
             <div>

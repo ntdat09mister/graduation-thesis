@@ -11,14 +11,14 @@ export default defineComponent({
     },
     computed: {
         ...mapState(useOrderStore, {
-            listOrders: 'listOrders'
+            listOrderItems: 'listOrderItems'
         })
     },
     methods: {
         ...mapActions(useOrderStore, ['getOrderDetail'])
     },
     mounted() {
-        this.getOrderDetail(11)
+        this.getOrderDetail(36)
     }
 })
 </script>
@@ -39,18 +39,18 @@ export default defineComponent({
                 <span>Trạng thái</span>
             </div>
         </div>
-        <div class="w-[780px] flex flex-row justify-between items-center" v-for="orderItem in listOrders">
+        <div class="w-[780px] flex flex-row justify-between items-center" v-for="orderItem in listOrderItems">
             <div class="w-[150px]">
-                <span>{{ orderItem.id }}</span>
+                <span>{{ orderItem.orderId }}</span>
             </div>
             <div class="w-[150px]">
-                <span>{{ orderItem.totalAmount }}</span>
+                <span>{{ orderItem.price }}</span>
             </div>
             <div class="w-[150px]">
                 <span>{{ orderItem.createdAt }}</span>
             </div>
             <div class="w-[150px]">
-                <span>{{ orderItem.status }}</span>
+                <span>{{ orderItem.productName }}</span>
             </div>
         </div>
         <Footer />

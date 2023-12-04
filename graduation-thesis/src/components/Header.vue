@@ -19,6 +19,7 @@ import { useSearchStore } from '@/stores/search';
 import { authStore } from '@/stores/auth';
 import { mapActions, mapState } from 'pinia';
 import { useUserStore } from '@/stores/user'
+import { toast } from 'vue3-toastify';
 export default defineComponent({
     components: {
         LogoDannyStore,
@@ -93,8 +94,13 @@ export default defineComponent({
         },
         logout() {
             localStorage.removeItem("accessToken"),
-                localStorage.removeItem("authenticated")
-            router.push({ name: 'home' })
+            localStorage.removeItem("authenticated")
+            toast.success("Đăng xuất thành công")
+            setTimeout(() => {
+                router.push({ name: 'home' }).then(() => {
+                    location.reload();
+                });
+            }, 1000);
         }
     },
     mounted() {

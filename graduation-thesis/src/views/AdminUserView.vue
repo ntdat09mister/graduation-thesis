@@ -202,7 +202,7 @@ export default defineComponent({
                                 <option value="customer">Khách hàng</option>
                                 <option value="sales">Nhân viên bán hàng</option>
                                 <option value="warehouse">Nhân viên kho</option>
-                                <option value="admin">Admin</option>
+                                <option value="admin">Chủ cửa hàng</option>
                             </select>
                         </div>
                         <div class="w-[80px] h-[80px] flex justify-center items-center">

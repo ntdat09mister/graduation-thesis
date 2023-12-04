@@ -6,6 +6,8 @@ import { authStore } from '../stores/auth'
 import LogoDannyStore from '@/components/icons/LogoDannyStore.vue'
 import { defineComponent } from 'vue'
 import router from '@/router'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default defineComponent({
     components: {
         Header,
@@ -28,7 +30,13 @@ export default defineComponent({
         handleClick(valueRouter: string) {
             router.push({ name: valueRouter })
         },
-        ...mapActions(authStore, ['login'])
+        ...mapActions(authStore, ['login']),
+        handleLogin(username: string, password: string) {
+            toast.success("Thành công")
+            setTimeout(() => {
+                this.login(username, password); // Call the login function after 2 seconds
+            }, 1000);
+        }
     }
 })
 </script>

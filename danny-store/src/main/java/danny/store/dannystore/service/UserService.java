@@ -14,6 +14,8 @@ import danny.store.dannystore.repository.UserRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,7 @@ public class UserService {
     private final OrderRepository orderRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    public String register(UserInput userInput) throws NotFoundException {
+    public ResponseEntity register(UserInput userInput) throws NotFoundException {
         if (existsByUsername(userInput.getUsername()))
             throw new NotFoundException("Username already exist!");
         User user = objectMapper.convertValue(userInput, User.class);
@@ -46,7 +48,7 @@ public class UserService {
         user.setCreatedAt(new Date());
         user.setGender(userInput.getGender());
         userRepository.save(user);
-        return "Created success account with username: " + userInput.getUsername();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);

@@ -15,6 +15,7 @@ spring:
     password: ENC(AdxkT8pIWxe+6B83WYzUdLm9qShfSy1+)
 server:
   port: 8080
+  address: 0.0.0.0
 
 security:
   oauth2:

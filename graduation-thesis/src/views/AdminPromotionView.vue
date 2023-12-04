@@ -198,8 +198,7 @@ export default defineComponent({
             <div v-if="showButtonAdd" class="w-[1200px] flex justify-between items-center ml-[100px]">
                 <div class="w-[100px] h-[38px] flex justify-center items-center ">
                     <button @click="addNewPromotion()"
-                        class="w-[100px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Add new
-                        Promotion</button>
+                        class="w-[100px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Tạo khuyến mại mới</button>
                 </div>
             </div>
             <div v-if="showCreate" class="w-[1200px] flex flex-col justify-between items-center">
