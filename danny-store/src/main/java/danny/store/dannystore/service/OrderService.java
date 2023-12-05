@@ -34,7 +34,7 @@ public class OrderService {
     @Autowired
     private ObjectMapper objectMapper;
     @Transactional(rollbackOn = Exception.class)
-    public String createOrderFromCart(Long userId) throws NotFoundException {
+    public Long createOrderFromCart(Long userId) throws NotFoundException {
         Order order = new Order();
         Float countTotalAmount = 0F;
         List<Cart> cartList = cartRepository.findByUserId(userId);
@@ -60,10 +60,31 @@ public class OrderService {
             order.setSaleStaffId(1L);
             orderRepository.save(order);
             System.out.println(RESPONSE_ADD_ORDER_SUCCESS);
-            return RESPONSE_ADD_ORDER_SUCCESS;
+            return order.getId();
         } else {
-            System.out.println(RESPONSE_LIST_CARTS_NULL);
-            throw new NotFoundException(RESPONSE_LIST_CARTS_NULL);
+            return 0L;
+        }
+    }
+    @Transactional(rollbackOn = Exception.class)
+    public Long addOrderInstant(Long userId, OrderInstant orderInstant) {
+        Optional<Product> productOptional = productRepository.findById(orderInstant.getProductId());
+        if (productOptional.isPresent() && productOptional.get().getQuantity() > 0) {
+            Order order = new Order();
+            OrderItem orderItem = new OrderItem();
+            order.setCustomerId(userId);
+            order.setCreatedAt(new Date());
+            order.setStatusId(1L);
+            order.setTotalAmount(orderInstant.getPrice());
+            orderRepository.save(order);
+            orderItem.setOrderId(order.getId());
+            orderItem.setQuantity(1L);
+            orderItem.setProductId(orderInstant.getProductId());
+            orderItem.setCreatedAt(new Date());
+            orderItem.setPrice(productOptional.get().getPrice());
+            orderItemRepository.save(orderItem);
+            return order.getId();
+        } else {
+            return 0L;
         }
     }
 
@@ -130,8 +151,28 @@ public class OrderService {
             orderDetailDto.setAddress(userOptional.get().getAddress());
             orderDetailDto.setPhoneNumber(userOptional.get().getPhone());
             orderDetailDto.setUsername(userOptional.get().getUsername());
+            orderDetailDto.setAddress(orderOptional.get().getDeliveryAddress());
+            orderDetailDto.setPhoneNumber(orderOptional.get().getPhone());
+            Optional<StatusOrder> statusOrderOptional = statusOrderRepository.findById(orderOptional.get().getStatusId());
+            if (statusOrderOptional.isPresent()) {
+                orderDetailDto.setStatus(statusOrderOptional.get().getStatusName());
+            }
             System.out.println(RESPONSE_LIST_ORDER_DETAIL);
             return orderDetailDto;
+        } else {
+            System.out.println(RESPONSE_NOT_FOUND_ORDER);
+            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+        }
+    }
+    @Transactional(rollbackOn = Exception.class)
+    public Long updatePayment(Long userId, PaymentDto paymentDto) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(paymentDto.getOrderId(), userId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.setStatusId(2L);
+            order.setDeliveryAddress(paymentDto.getAddress());
+            orderRepository.save(order);
+            return order.getId();
         } else {
             System.out.println(RESPONSE_NOT_FOUND_ORDER);
             throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
@@ -313,26 +354,5 @@ public class OrderService {
         }
         return null;
     }
-    @Transactional(rollbackOn = Exception.class)
-    public Long addOrderInstant(Long userId, OrderInstant orderInstant) {
-        Optional<Product> productOptional = productRepository.findById(orderInstant.getProductId());
-        if (productOptional.isPresent() && productOptional.get().getQuantity() > 0) {
-            Order order = new Order();
-            OrderItem orderItem = new OrderItem();
-            order.setCustomerId(userId);
-            order.setCreatedAt(new Date());
-            order.setStatusId(1L);
-            order.setTotalAmount(orderInstant.getPrice());
-            orderRepository.save(order);
-            orderItem.setOrderId(order.getId());
-            orderItem.setQuantity(1L);
-            orderItem.setProductId(orderInstant.getProductId());
-            orderItem.setCreatedAt(new Date());
-            orderItem.setPrice(productOptional.get().getPrice());
-            orderItemRepository.save(orderItem);
-            return order.getId();
-        } else {
-            return 0L;
-        }
-    }
+
 }

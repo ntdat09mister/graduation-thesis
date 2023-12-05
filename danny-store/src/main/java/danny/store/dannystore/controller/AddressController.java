@@ -34,9 +34,9 @@ public class AddressController {
     public String concatAddress(@RequestParam Long wardsId,
                                 @RequestParam Long districtId,
                                 @RequestParam Long provinceId) {
-        String province = provinceRepository.getProvince(wardsId);
+        String province = provinceRepository.getProvince(provinceId);
         String district = districtRepository.getDistrict(districtId);
-        String wards = wardsRepository.getWards(provinceId);
+        String wards = wardsRepository.getWards(wardsId);
         return wards + " " +district + " Tỉnh" +province;
     }
 }

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import router from '@/router'
+import { toast } from 'vue3-toastify'
 export const useCartStore = defineStore('cart', () => {
   interface Cart {
     cartId: number,
@@ -99,10 +100,13 @@ export const useCartStore = defineStore('cart', () => {
       const requestData = {}
       const headers = { Authorization: `Bearer ${token}`, };
       const response = await axios.post(apiUrl, requestData, { headers });
-      console.log(response);
-      router.push({ name: 'payment' }).then(() => {
-        location.reload();
-      });
+      if (response.data) {
+        console.log(response.data)
+        toast.loading('Đang tạo đơn hàng....')
+        setTimeout(() => {
+          router.push({ name: 'payment', params: { id: Number(response.data.data) } })
+        }, 2000);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -125,7 +129,7 @@ export const useCartStore = defineStore('cart', () => {
       console.error('Error fetching data:', error);
     }
   }
-  
+
   return {
     getListCart,
     listCart,

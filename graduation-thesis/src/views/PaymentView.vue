@@ -13,7 +13,10 @@ export default defineComponent({
         return {
             provinceId: 1,
             districtId: 1,
-            wardsId: 1
+            wardsId: 1,
+            showAddress: false,
+            paymentMethod: true,
+            orderId: 1
         }
     },
     computed: {
@@ -25,26 +28,44 @@ export default defineComponent({
             username: 'username',
             listProvinces: 'listProvinces',
             listDistricts: 'listDistricts',
-            listWards: 'listWards'
+            listWards: 'listWards',
+            adressSelected: 'adressSelected',
+            totalAmount: 'totalAmount',
+            
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getOrderDetail', 'getListProvinces', 'getListDistrictOfProvince', 'getListWardsOfDistrict','concatAddress']),
+        ...mapActions(useOrderStore, ['getOrderDetail', 'getListProvinces', 'getListDistrictOfProvince', 'getListWardsOfDistrict', 'concatAddress','updatePayment']),
         handleGetListDistrict(provinceIdSelected: number) {
+            provinceIdSelected = this.provinceId
             this.getListDistrictOfProvince(provinceIdSelected)
         },
         handleGetListWards(districtIdSelected: number) {
+            districtIdSelected = this.districtId
             this.getListWardsOfDistrict(districtIdSelected)
+        },
+        concatAddressHandle(wardsId: number, districtId: number, provinceId: number) {
+            console.log(wardsId, districtId, provinceId)
+            wardsId = this.wardsId
+            this.concatAddress(wardsId, districtId, provinceId)
+            this.showAddress = true
+        },
+        selectPaymentMethod() {
+            this.paymentMethod = !this.paymentMethod
+        },
+        setOrderId(id: number) {
+            this.orderId = id
         }
     },
     created() {
         const { id } = this.$route.params
-        this.getOrderDetail(Number(id))
+        this.getOrderDetail(Number(id)),
+        this.setOrderId(Number(id))
     },
     mounted() {
         this.getListProvinces(),
-        this.getListDistrictOfProvince(this.districtId),
-        this.getListWardsOfDistrict(this.wardsId)
+            this.getListDistrictOfProvince(this.districtId),
+            this.getListWardsOfDistrict(this.wardsId)
     }
 })
 </script>
@@ -94,6 +115,35 @@ export default defineComponent({
                 <span>Tài khoản đăng nhập:</span>
                 <input type="text" :placeholder="username">
             </div>
+            <div v-if="paymentMethod" class="w-[600px] flex flex-col mt-[10px] bg-[#FFFFFF]">
+                <div class="flex flex-row">
+                    <div
+                        class="flex justify-center items-center w-[300px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">
+                        <button>Thanh toán trực tiếp</button>
+                    </div>
+                    <div @click="selectPaymentMethod()" class="flex justify-center w-[300px]">
+                        <button>Quét mã QR</button>
+                    </div>
+                </div>
+                <div>
+                    <span>Mời quý khách đến ngay cửa hàng Danny Store tọa lạc ở số 341 Xuân Phương Nam Từ Liêm để nhân viên
+                        cửa hàng hỗ trợ giao dịch!</span>
+                </div>
+            </div>
+            <div v-if="!paymentMethod" class="w-[600px] flex flex-col mt-[10px] bg-[#FFFFFF]">
+                <div class="flex flex-row">
+                    <div @click="selectPaymentMethod()" class="flex justify-center w-[300px]">
+                        <button>Thanh toán trực tiếp</button>
+                    </div>
+                    <div
+                        class="flex justify-center items-center w-[300px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">
+                        <button>Quét mã QR</button>
+                    </div>
+                </div>
+                <div class="w-[600px] flex justify-center mt-[20px] mb-[10px]">
+                    <img class="w-[300px]" src="https://i.imgur.com/UFpL94n.jpg" alt="">
+                </div>
+            </div>
             <div class="w-[600px] flex flex-col mt-[10px]">
                 <p
                     style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 17px;line-height: 21px;color: #1C1D21;">
@@ -116,22 +166,26 @@ export default defineComponent({
                             <span>Chọn quận huyện</span>
                             <select v-model="districtId" @change="handleGetListWards(districtId)"
                                 class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
-                                <option v-for="district in listDistricts" :value=district.districtId>{{
-                                    district.name }}</option>
+                                <option v-for="district in listDistricts" :value=district.districtId>{{ district.name }}
+                                </option>
                             </select>
                         </div>
                         <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
                             <span>Chọn xã phường</span>
-                            <select v-model="wardsId"
+                            <select v-model="wardsId" @change="concatAddressHandle(wardsId, districtId, provinceId)"
                                 class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
                                 <option v-for="wards in listWards" :value=wards.wardsId>{{
                                     wards.name }}</option>
                             </select>
                         </div>
                     </div>
-                    <div>
+                    <div class="flex flex-col">
+                        <span>Địa chỉ tương đối:</span>
+                        <span>{{ adressSelected }}</span>
+                    </div>
+                    <div class="flex flex-col">
                         <span>Địa chỉ chi tiết:</span>
-                        <span>{{ wardsId }}</span>
+                        <input v-model="adressSelected" type="text" :placeholder="`${adressSelected}`">
                     </div>
                 </div>
             </div>
@@ -142,9 +196,9 @@ export default defineComponent({
                         Tổng tiền tạm tính</p>
                     <p
                         style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
-                        1000000đ</p>
+                        {{ totalAmount }}đ</p>
                 </div>
-                <button
+                <button @click="updatePayment(orderId, adressSelected)"
                     class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tiếp
                     tục</button>
             </div>

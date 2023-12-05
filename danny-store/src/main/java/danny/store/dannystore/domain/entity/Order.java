@@ -20,6 +20,8 @@ public class Order {
     private Long customerId;
     private Float totalAmount;
     private Long statusId;
+    private String deliveryAddress;
+    private String phone;
     private Date createdAt;
     private Date modifiedAt;
 }

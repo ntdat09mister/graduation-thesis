@@ -4,6 +4,7 @@ import Footer from '@/components/Footer.vue'
 import { defineComponent } from 'vue'
 import { mapActions, mapState } from 'pinia';
 import { useOrderStore } from '@/stores/order';
+import router from '@/router'
 export default defineComponent({
     components: {
         Header,
@@ -15,7 +16,10 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder'])
+        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder']),
+        routerOrderDetail(orderId: number) {
+            router.push({ name: 'orderDetail', params: { id: orderId } })
+        }
     },
     mounted() {
         this.getAllOrders()
@@ -55,7 +59,7 @@ export default defineComponent({
         <div class="w-[1000px] flex flex-row justify-center items-center p-4 border border border-gray-400"
             v-for="orderItem in listOrders">
             <div class="w-[150px] flex flex-row justify-center items-center">
-                <span>{{ orderItem.id }}</span>
+                <button @click="routerOrderDetail(orderItem.id)" class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500"> {{ orderItem.id }} </button>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <img class="w-[52px] h-[52px] ml-[25px]" :src="orderItem.src" alt="product-img">
@@ -72,16 +76,15 @@ export default defineComponent({
             <div class="w-[170px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.status }}</span>
             </div>
-            <template
-                v-if="orderItem.status === 'Hủy đơn' || orderItem.status === 'Đã giao hàng' || orderItem.status === 'Đang giao hàng'">
-                <div class="w-[70px] h-[50px] flex justify-center items-center"></div>
-            </template>
-            <template v-else>
+            <template v-if="orderItem.status === 'Tiếp nhận đơn' || orderItem.status === 'Lên đơn'">
                 <div class="w-[70px] h-[50px] flex justify-center items-center">
                     <button @click="cancelOrder(orderItem.id)"
                         class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Hủy
                         đơn</button>
                 </div>
+            </template>
+            <template v-else>
+                <div class="w-[70px] h-[50px] flex justify-center items-center"></div>
             </template>
         </div>
         <Footer />

@@ -13,5 +13,6 @@ public class OrderDetailDto {
     private List<OrderItemDto> orderItemList;
     private Float totalAmount;
     private String username;
+    private String status;
     private String createdAt;
 }
