@@ -4,6 +4,7 @@ import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import { defineComponent } from 'vue';
 import { useProductDetailStore } from '@/stores/productDetail';
+import { useOrderStore } from '@/stores/order';
 import { mapActions, mapState } from 'pinia';
 import IconGift from '@/components/icons/IconGift.vue'
 import IconAddToCart from '@/components/icons/IconAddToCart.vue'
@@ -36,6 +37,7 @@ export default defineComponent({
     methods: {
         ...mapActions(useProductDetailStore, ['getProductImgDetail', 'getProductDtoById']),
         ...mapActions(useCartStore, ['addToCart']),
+        ...mapActions(useOrderStore, ['addOrderInstant']),
         changeVariant(variant: number) {
             this.selectedVar = variant;
         },
@@ -86,7 +88,7 @@ export default defineComponent({
                         <p>Chọn dung lượng mong muốn</p>
                     </div>
                     <div class="flex flex-row justify-around items-center">
-                        <template v-for="variant in [1.25, 1, 0.75]">
+                        <template v-for="variant in [1.1, 1, 0.9]">
                             <div :class="{
                                 'w-[100px] h-[51px] flex flex-col justify-around items-center bg-slate-200 rounded-xl cursor-pointer': selectedVar !== variant,
                                 'w-[100px] h-[51px] flex flex-col justify-around items-center bg-red-500 rounded-xl cursor-pointer': selectedVar === variant
@@ -113,7 +115,7 @@ export default defineComponent({
                     </div>
                     <p>Số lượng còn lại trong kho: {{ productDto?.quantity }}</p>
                     <div class="w-[360px] h-[70px] flex flex-row justify-around items-center mt-[10px]">
-                        <div
+                        <div @click="addOrderInstant(productDto?.id, productDto.sellingPrice)"
                             class="w-[280px] h-[60px] flex flex-col justify-center items-center bg-[red] rounded-xl cursor-pointer">
                             <strong class="text-white text-base text-sm">Mua ngay</strong>
                             <span class="text-white text-base text-xs">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>
@@ -143,11 +145,13 @@ export default defineComponent({
 </template>
 <style scoped>
 .truncated {
-  max-height: 400px; /* Số chiều cao tối đa ban đầu */
-  overflow: hidden;
+    max-height: 400px;
+    /* Số chiều cao tối đa ban đầu */
+    overflow: hidden;
 }
 
 .truncated.expanded {
-  max-height: none; /* Khi được mở rộng, không có giới hạn chiều cao */
+    max-height: none;
+    /* Khi được mở rộng, không có giới hạn chiều cao */
 }
 </style>

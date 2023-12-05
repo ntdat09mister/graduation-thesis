@@ -7,7 +7,6 @@ import IconRightArrow from '@/components/icons/IconRightArrow.vue'
 import IconLeftArrow from '@/components/icons/IconLeftArrow.vue'
 import { defineComponent, ref } from 'vue'
 import { mapActions, mapState } from 'pinia'
-import { useOrderStore } from '@/stores/order'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
 
@@ -61,7 +60,7 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useUserStore, ['getProductsAdmin', 'setPage', 'updateUser']),
+        ...mapActions(useUserStore, ['getUsersAdmin', 'setPage', 'updateUserAdmin']),
         handlePageChange(newPage: number) {
             this.currentPage = newPage;
             sessionStorage.setItem("changePageUserAdmin", String(newPage));
@@ -94,7 +93,7 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.getProductsAdmin(),
+        this.getUsersAdmin(),
         this.handlePageChangeMounted()
             
     }
@@ -207,7 +206,7 @@ export default defineComponent({
                         </div>
                         <div class="w-[80px] h-[80px] flex justify-center items-center">
                             <button
-                                @click="updateUser(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole)"
+                                @click="updateUserAdmin(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole)"
                                 class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
                         </div>
                         <div class="w-[50px] h-[30px] flex justify-center items-center ">

@@ -1,5 +1,6 @@
 package danny.store.dannystore.controller;
 import danny.store.dannystore.domain.dto.OrderDtoForAdmin;
+import danny.store.dannystore.domain.dto.OrderInstant;
 import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.CartService;
@@ -19,6 +20,10 @@ public class OrderController extends BaseController{
     @PostMapping("/add")
     public ResponseEntity<?> createOrderFromCart(@UserInfo User user) throws NotFoundException {
         return successResponseCreated(orderService.createOrderFromCart(user.getId()), null, HttpStatus.CREATED);
+    }
+    @PostMapping("/addOrderInstant")
+    public ResponseEntity<?> addOrderInstant(@UserInfo User user, @RequestBody OrderInstant orderInstant) {
+        return successResponse(orderService.addOrderInstant(user.getId(), orderInstant));
     }
     @GetMapping("/all")
     public ResponseEntity<?> getAllOrders(@UserInfo User user) throws NotFoundException {

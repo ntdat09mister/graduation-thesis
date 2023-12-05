@@ -3,6 +3,7 @@ package danny.store.dannystore.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.common.RoleType;
 import danny.store.dannystore.common.StatusType;
+import danny.store.dannystore.domain.dto.InforUserUpdateDto;
 import danny.store.dannystore.domain.dto.UserAdminDto;
 import danny.store.dannystore.domain.entity.Role;
 import danny.store.dannystore.domain.entity.User;
@@ -134,7 +135,7 @@ public class UserService {
         }
     }
 
-    public String updateUser(Long id, UserAdminDto userAdminDto) throws NotFoundException {
+    public String updateUserAdmin(Long id, UserAdminDto userAdminDto) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
         Optional<User> optionalUserUpdate = userRepository.findById(userAdminDto.getId());
         Optional<Role> roleOptional = roleRepository.findByRoleName(userAdminDto.getRole());
@@ -146,6 +147,20 @@ public class UserService {
             user.setAddress(userAdminDto.getAddress());
             user.setPhone(userAdminDto.getPhone());
             user.setRole(roleOptional.get().getRoleName());
+            user.setCreatedAt(new Date());
+            userRepository.save(user);
+            return "Update success user" + optionalUserUpdate.get().getUsername();
+        } else {
+            throw new NotFoundException(RESPONSE_NOT_FOUND_USER);
+        }
+    }
+    public String updateUser(Long id, InforUserUpdateDto inforUserUpdateDto) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> optionalUserUpdate = userRepository.findById(inforUserUpdateDto.getUserId());
+        if (userOptional.get().getRole().equals("admin") && optionalUserUpdate.isPresent()) {
+            User user = optionalUserUpdate.get();
+            user.setAddress(inforUserUpdateDto.getAddress());
+            user.setPhone(inforUserUpdateDto.getPhone());
             user.setCreatedAt(new Date());
             userRepository.save(user);
             return "Update success user" + optionalUserUpdate.get().getUsername();

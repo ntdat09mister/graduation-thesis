@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
+import { toast } from 'vue3-toastify'
 export const useUserStore = defineStore('user', () => {
     interface User {
         id: number,
@@ -17,7 +18,8 @@ export const useUserStore = defineStore('user', () => {
         quantityOrdersSuccess: string,
         totalAmount: string
     }
-    const user = ref<User | null>(null);
+    const defaultUser: User = { id: 0, username: '', name: '', gender: '', address: '', phone: '', role: '', avatar: '', createdAt: '', modifiedAt: '', quantityOrders: '', quantityOrdersSuccess: '', totalAmount: '' };
+    const user = ref<User>(defaultUser);
     async function getInforUser() {
         try {
             const token = localStorage.getItem("accessToken");
@@ -55,7 +57,7 @@ export const useUserStore = defineStore('user', () => {
         createdAt: string
     }
     const listUsersAdmin = ref<UserForAdmin[]>([]);
-    async function getProductsAdmin() {
+    async function getUsersAdmin() {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
@@ -71,7 +73,6 @@ export const useUserStore = defineStore('user', () => {
             const responseData = response.data;
             if (responseData && responseData.data) {
                 const data = responseData.data;
-
                 if (data && Array.isArray(data)) {
                     const transformedData: UserForAdmin[] = data.map((item: any) => ({
                         id: item.id,
@@ -82,9 +83,12 @@ export const useUserStore = defineStore('user', () => {
                         phone: item.phone,
                         role: item.role,
                         createdAt: item.createdAt
-                      }));
-                      listUsersAdmin.value = transformedData;
+                    }));
+                    listUsersAdmin.value = transformedData;
                 } else {
+                    toast.error('Không tìm được sản phẩm!')
+                    setTimeout(() => {
+                    }, 1000);
                     console.error('Invalid data received from the API:', data);
                 }
             } else {
@@ -94,14 +98,14 @@ export const useUserStore = defineStore('user', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updateUser(idInput: number, usernameInput: string, nameInput: string, genderInput: string, addressInput: string, phoneInput: string, roleInput: string) {
+    async function updateUserAdmin(idInput: number, usernameInput: string, nameInput: string, genderInput: string, addressInput: string, phoneInput: string, roleInput: string) {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
-              console.error('Access token not found in localStorage');
-              return;
+                console.error('Access token not found in localStorage');
+                return;
             }
-            const apiUrl = 'http://localhost:8080/user/admin/updateUser';
+            const apiUrl = 'http://localhost:8080/user/admin/updateUserAdmin';
             const requestData = {
                 id: idInput,
                 username: usernameInput,
@@ -114,14 +118,44 @@ export const useUserStore = defineStore('user', () => {
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
             console.log(response)
+            toast.success('Cập nhật thành công!')
+            setTimeout(() => {
+            }, 1000);
             const scrollPosition = window.scrollY;
             location.reload();
             window.scrollTo(0, scrollPosition);
         } catch (error) {
             console.error('Error fetching data:', error);
-          }
+        }
     }
 
+    async function updateUser(idInput: number, addressInput: string, phoneInput: string) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = 'http://localhost:8080/user/updateUser';
+            const requestData = {
+                userId: idInput,
+                address: addressInput,
+                phone: phoneInput,
+            }
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, requestData, { headers });
+            console.log(response)
+            toast.success('Cập nhật thành công!')
+            setTimeout(() => {
+            }, 1000);
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            toast.error('Cập nhật khống thành công!')
+            console.error('Error fetching data:', error);
+        }
+    }
     const page = ref(1)
     function setPage(value: number) { page.value = value }
     const limit = ref(8)
@@ -137,8 +171,9 @@ export const useUserStore = defineStore('user', () => {
         user,
         setPage,
         listDisplayUsersAdmin,
-        getProductsAdmin,
+        getUsersAdmin,
         listUsersAdmin,
+        updateUserAdmin,
         updateUser
     }
 })

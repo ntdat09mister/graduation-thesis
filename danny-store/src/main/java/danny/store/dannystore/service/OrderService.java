@@ -7,6 +7,7 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -312,19 +313,26 @@ public class OrderService {
         }
         return null;
     }
-
-//    public String updateOrderAdmin(Long userId, OrderDtoForAdmin orderDtoForAdmin) throws NotFoundException {
-//        Optional<User> userOptional = userRepository.findById(userId);
-//        try {
-//            if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
-//                Optional<Order> orderOptional = orderRepository.findById(orderDtoForAdmin.getId());
-//                if (orderOptional.isPresent()) {
-//                    Order order = orderOptional.get();
-//                    return null;
-//                }
-//            }
-//        } catch (Exception e) {
-//            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
-//        }
-//    }
+    @Transactional(rollbackOn = Exception.class)
+    public Long addOrderInstant(Long userId, OrderInstant orderInstant) {
+        Optional<Product> productOptional = productRepository.findById(orderInstant.getProductId());
+        if (productOptional.isPresent() && productOptional.get().getQuantity() > 0) {
+            Order order = new Order();
+            OrderItem orderItem = new OrderItem();
+            order.setCustomerId(userId);
+            order.setCreatedAt(new Date());
+            order.setStatusId(1L);
+            order.setTotalAmount(orderInstant.getPrice());
+            orderRepository.save(order);
+            orderItem.setOrderId(order.getId());
+            orderItem.setQuantity(1L);
+            orderItem.setProductId(orderInstant.getProductId());
+            orderItem.setCreatedAt(new Date());
+            orderItem.setPrice(productOptional.get().getPrice());
+            orderItemRepository.save(orderItem);
+            return order.getId();
+        } else {
+            return 0L;
+        }
+    }
 }

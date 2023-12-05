@@ -12,7 +12,8 @@ export default defineComponent({
     data() {
         return {
             provinceId: 1,
-            districtId: 1
+            districtId: 1,
+            wardsId: 1
         }
     },
     computed: {
@@ -23,19 +24,27 @@ export default defineComponent({
             phoneNumber: 'phoneNumber',
             username: 'username',
             listProvinces: 'listProvinces',
-            listDistricts: 'listDistricts'
+            listDistricts: 'listDistricts',
+            listWards: 'listWards'
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getOrderDetail', 'getListProvinces', 'getListDistrictOfProvince']),
+        ...mapActions(useOrderStore, ['getOrderDetail', 'getListProvinces', 'getListDistrictOfProvince', 'getListWardsOfDistrict','concatAddress']),
         handleGetListDistrict(provinceIdSelected: number) {
             this.getListDistrictOfProvince(provinceIdSelected)
+        },
+        handleGetListWards(districtIdSelected: number) {
+            this.getListWardsOfDistrict(districtIdSelected)
         }
     },
+    created() {
+        const { id } = this.$route.params
+        this.getOrderDetail(Number(id))
+    },
     mounted() {
-        this.getOrderDetail(36),
-            this.getListProvinces(),
-            this.getListDistrictOfProvince(this.districtId)
+        this.getListProvinces(),
+        this.getListDistrictOfProvince(this.districtId),
+        this.getListWardsOfDistrict(this.wardsId)
     }
 })
 </script>
@@ -95,7 +104,7 @@ export default defineComponent({
                         <span>Giao hàng tận nơi</span>
                     </div>
                     <div class="flex flex-row justify-around">
-                        <div class="w-[300px] h-[80px] flex flex-col justify-center items-center">
+                        <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
                             <span>Chọn tỉnh thành</span>
                             <select v-model="provinceId" @change="handleGetListDistrict(provinceId)"
                                 class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
@@ -103,16 +112,27 @@ export default defineComponent({
                                     province.name }}</option>
                             </select>
                         </div>
-                        <div class="w-[300px] h-[80px] flex flex-col justify-center items-center">
+                        <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
                             <span>Chọn quận huyện</span>
-                            <select v-model="districtId"
+                            <select v-model="districtId" @change="handleGetListWards(districtId)"
                                 class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
                                 <option v-for="district in listDistricts" :value=district.districtId>{{
                                     district.name }}</option>
                             </select>
                         </div>
+                        <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
+                            <span>Chọn xã phường</span>
+                            <select v-model="wardsId"
+                                class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
+                                <option v-for="wards in listWards" :value=wards.wardsId>{{
+                                    wards.name }}</option>
+                            </select>
+                        </div>
                     </div>
-                    <span>Ghi chú khác</span>
+                    <div>
+                        <span>Địa chỉ chi tiết:</span>
+                        <span>{{ wardsId }}</span>
+                    </div>
                 </div>
             </div>
             <div class="w-[600px] flex flex-col mt-[10px]">

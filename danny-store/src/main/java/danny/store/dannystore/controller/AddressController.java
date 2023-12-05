@@ -7,10 +7,7 @@ import danny.store.dannystore.repository.DistrictRepository;
 import danny.store.dannystore.repository.ProvinceRepository;
 import danny.store.dannystore.repository.WardsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +29,14 @@ public class AddressController {
     @GetMapping("province/district/wards")
     public List<Wards> getListWardsOfDistrict(@RequestParam Long districtId) {
         return wardsRepository.wardsRepository(districtId);
+    }
+    @GetMapping("/concatAddress")
+    public String concatAddress(@RequestParam Long wardsId,
+                                @RequestParam Long districtId,
+                                @RequestParam Long provinceId) {
+        String province = provinceRepository.getProvince(wardsId);
+        String district = districtRepository.getDistrict(districtId);
+        String wards = wardsRepository.getWards(provinceId);
+        return wards + " " +district + " Tỉnh" +province;
     }
 }

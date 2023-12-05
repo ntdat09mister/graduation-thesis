@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { toast } from 'vue3-toastify'
+import router from '@/router'
 export const useOrderStore = defineStore('order', () => {
     interface OrderItem {
         orderId: number,
@@ -48,6 +50,31 @@ export const useOrderStore = defineStore('order', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function addOrderInstant(productId: number, price: number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = 'http://localhost:8080/order/addOrderInstant';
+            const requestData = {
+                productId: productId,
+                price: price
+            }
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.post(apiUrl, requestData, { headers });
+            if (response.data) {
+                console.log(response.data)
+                toast.loading('Đang tạo đơn hàng....')
+                setTimeout(() => {
+                    router.push({ name: 'payment', params: { id: Number(response.data.data) } })
+                }, 2000);
+            }
+        } catch (error) {
+            toast.error("Không tạo được đơn hàng!")
+        }
+    }
     async function cancelOrder(orderId: number) {
         try {
             const token = localStorage.getItem("accessToken");
@@ -85,15 +112,15 @@ export const useOrderStore = defineStore('order', () => {
     async function getListProvinces() {
         try {
             axios.get(`http://localhost:8080/address/province`, {})
-            .then((response) => {
-                const { data } = response;
-                const transformedData: Province[] = data.map((province: any) => ({
-                    provinceId: province.provinceId,
-                    name: province.name
-                }))
-                listProvinces.value = transformedData
-                console.log(listProvinces)
-            })
+                .then((response) => {
+                    const { data } = response;
+                    const transformedData: Province[] = data.map((province: any) => ({
+                        provinceId: province.provinceId,
+                        name: province.name
+                    }))
+                    listProvinces.value = transformedData
+                    console.log(listProvinces)
+                })
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -101,20 +128,43 @@ export const useOrderStore = defineStore('order', () => {
     async function getListDistrictOfProvince(provinceId: number) {
         try {
             axios.get(`http://localhost:8080/address/province/district?provinceId=${provinceId}`, {})
-            .then((response) => {
-                const { data } = response;
-                const transformedData: District[] = data.map((district: any) => ({
-                    districtId: district.districtId,
-                    provinceId: district.provinceId,
-                    name: district.name
-                }))
-                listDistricts.value = transformedData
-                console.log(listProvinces)
-            })
+                .then((response) => {
+                    const { data } = response;
+                    const transformedData: District[] = data.map((district: any) => ({
+                        districtId: district.districtId,
+                        provinceId: district.provinceId,
+                        name: district.name
+                    }))
+                    listDistricts.value = transformedData
+                    console.log(listProvinces)
+                })
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
+    async function getListWardsOfDistrict(districtId: number) {
+        try {
+            axios.get(`http://localhost:8080/address/province/district/wards?districtId=${districtId}`, {})
+                .then((response) => {
+                    const { data } = response;
+                    const transformedData: Wards[] = data.map((wards: any) => ({
+                        wardsId: wards.wardsId,
+                        districtId: wards.districtId,
+                        name: wards.name
+                    }))
+                    listWards.value = transformedData
+                    console.log(listProvinces)
+                })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function concatAddress(wardsId: number, districtId: number, provinceId: number) {
+        const apiUrl = `http://localhost:8080/address/concatAdress?wardsId=${wardsId}&districtId=${districtId}&provinceId=${provinceId}`;
+        const response = await axios.get(apiUrl);
+        console.log(response)
+    }
+
     return {
         listOrderItems,
         getOrderDetail,
@@ -126,6 +176,10 @@ export const useOrderStore = defineStore('order', () => {
         getListProvinces,
         listProvinces,
         getListDistrictOfProvince,
-        listDistricts
+        listDistricts,
+        addOrderInstant,
+        getListWardsOfDistrict,
+        listWards,
+        concatAddress
     }
 })

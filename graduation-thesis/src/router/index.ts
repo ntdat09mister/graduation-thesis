@@ -95,7 +95,7 @@ const router = createRouter({
       component: TestPopup
     },
     {
-      path: '/payment',
+      path: '/payment/:id',
       name: 'payment',
       component: PaymentView
     },

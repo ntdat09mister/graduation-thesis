@@ -47,7 +47,8 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         src: string
         quantity: number
     }
-    const productDto = ref<Item | null>(null);
+    const defaultProduct: Item = { id: 0, name: '', originalPrice: 0, sellingPrice: 0, description: '', src: '', quantity: 0 }
+    const productDto = ref<Item>(defaultProduct);
 
     async function getProductDtoById(id: Number) {
       try {
