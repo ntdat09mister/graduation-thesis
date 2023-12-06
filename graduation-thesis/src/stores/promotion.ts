@@ -92,10 +92,26 @@ export const usePromotionStore = defineStore('promotion', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function deletePromotion(promotionId:number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+              console.error('Access token not found in localStorage');
+              return;
+            }
+            const apiUrl = 'http://localhost:8080/promotionId';
+            const params = { promotionId: promotionId };
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.delete(apiUrl, { headers, params });
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+    }
     return {
         getListPromotions,
         listPromotions,
         updatePromotion,
-        createPromotion
+        createPromotion,
+        deletePromotion
     }
 })

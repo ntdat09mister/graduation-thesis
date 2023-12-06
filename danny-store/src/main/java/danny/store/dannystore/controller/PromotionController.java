@@ -4,6 +4,7 @@ import danny.store.dannystore.domain.dto.PromotionDto;
 import danny.store.dannystore.domain.entity.User;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.PromotionService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,5 +29,10 @@ public class PromotionController extends BaseController{
     @PostMapping
     public ResponseEntity<?> createPromotion(@UserInfo User user, @RequestBody PromotionDto promotionDto) {
         return successResponse(promotionService.createPromotion(user.getId(), promotionDto));
+    }
+    @PreAuthorize("hasAnyAuthority('warehouse','admin','sales')")
+    @DeleteMapping
+    public ResponseEntity<?> deletePromotion(@UserInfo User user, @RequestParam Long promotionId) throws NotFoundException {
+        return successResponse(promotionService.deletePromotion(user.getId(), promotionId));
     }
 }

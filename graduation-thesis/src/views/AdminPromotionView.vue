@@ -5,6 +5,7 @@ import { usePromotionStore } from '@/stores/promotion';
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import IconShowNaviDB from '@/components/icons/IconShowNaviDB.vue';
+import router from '@/router';
 export default defineComponent({
     components: {
         Header,
@@ -30,7 +31,7 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(usePromotionStore, ['getListPromotions', 'updatePromotion', 'createPromotion']),
+        ...mapActions(usePromotionStore, ['getListPromotions', 'updatePromotion', 'createPromotion', 'deletePromotion']),
         modifyPromotion(id: number, namePromotion: string, percentValue: number, descriptionPromotion: string, startDayPromotion: string, endDayPromotion: string) {
             this.id = id
             this.namePromotion = namePromotion
@@ -46,6 +47,9 @@ export default defineComponent({
             this.showButtonAdd = false
             this.showModify = false
         },
+        routerPage(routerName: string) {
+            router.push({ name: routerName })
+        },
         cancel() {
             this.showModify = false
             this.showCreate = false
@@ -60,7 +64,7 @@ export default defineComponent({
     <div class="flex flex-col justify-center items-center">
         <Header />
         <div class="w-[1438px] h-[1020] bg-[#F2F2F2] flex flex-col justify-center items-center">
-            <div class="w-[1200px] h-[50px] flex flex-row items-center rounded-[12px]">
+            <div class="w-[1200px] h-[50px] flex flex-row justify-between items-center rounded-[12px] mb-[10px]">
                 <div class="flex flex-row items-center">
                     <div
                         class="w-[36px] h-[36px] flex justify-center items-center rounded-[6px] ml-[28px] bg-[#5E81F41A] cursor-pointer">
@@ -69,6 +73,11 @@ export default defineComponent({
                     <span class=" ml-[20px]"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 27px;color: #1C1D21;">Quản
                         lý khuyến mại</span>
+                </div>
+                <div class="w-[200px] h-[50px] flex flex-row mt-[30px] items-center">
+                    <button @click="routerPage('adminProductView')"
+                        class="w-[140px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Quản lý
+                        sản phẩm</button>
                 </div>
             </div>
             <div class="w-[1200px] h-[48px] flex flex-row justify-between items-center">
@@ -141,11 +150,15 @@ export default defineComponent({
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
                         <button
                             @click="updatePromotion(id, namePromotion, percentValue, descriptionPromotion, startDayPromotion, endDayPromotion)"
-                            class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
+                            class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 bg-green-400 border-green-500">Lưu</button>
                     </div>
                     <div class="w-[50px] h-[30px] flex justify-center items-center ">
                         <button @click="cancel()"
-                            class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Cancel</button>
+                            class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Hủy</button>
+                    </div>
+                    <div class="w-[50px] h-[30px] flex justify-center items-center ">
+                        <button @click="deletePromotion(id)"
+                            class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border bg-red-600 text-white focus:outline-none">Xóa</button>
                     </div>
                 </div>
             </div>
@@ -188,17 +201,19 @@ export default defineComponent({
                             {{ item.endDayPromotion }}
                         </span>
                     </div>
-                    <div class="w-[50px] h-[38px] flex justify-center items-center ">
+                    <div class="w-[70px] h-[38px] flex justify-center items-center ">
                         <button
                             @click="modifyPromotion(item.id, item.namePromotion, item.percentValue, item.descriptionPromotion, item.startDayPromotion, item.endDayPromotion)"
-                            class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
+                            class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Chỉnh
+                            sửa</button>
                     </div>
                 </div>
             </div>
             <div v-if="showButtonAdd" class="w-[1200px] flex justify-between items-center ml-[100px]">
                 <div class="w-[100px] h-[38px] flex justify-center items-center ">
                     <button @click="addNewPromotion()"
-                        class="w-[100px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Tạo khuyến mại mới</button>
+                        class="w-[100px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Tạo
+                        khuyến mại mới</button>
                 </div>
             </div>
             <div v-if="showCreate" class="w-[1200px] flex flex-col justify-between items-center">
@@ -238,15 +253,14 @@ export default defineComponent({
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
                         <button
                             @click="createPromotion(id, namePromotion, percentValue, descriptionPromotion, startDayPromotion, endDayPromotion)"
-                            class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Save</button>
+                            class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Lưu</button>
                     </div>
                     <div class="w-[50px] h-[38px] flex justify-center items-center ">
                         <button @click="cancel()"
-                            class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Cancel</button>
+                            class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Hủy</button>
                     </div>
                 </div>
             </div>
             <Footer />
         </div>
-    </div>
-</template>
+</div></template>

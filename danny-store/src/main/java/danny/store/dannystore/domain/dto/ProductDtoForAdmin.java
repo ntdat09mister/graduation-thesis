@@ -10,6 +10,7 @@ public class ProductDtoForAdmin {
     private String description;
     private String src;
     private Long quantity;
+    private String manufacturer;
     private Boolean statusProduct;
     private Long promotionId;
     private String promotion;

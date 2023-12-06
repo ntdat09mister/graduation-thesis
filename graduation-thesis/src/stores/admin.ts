@@ -25,6 +25,7 @@ export const useAdminStore = defineStore('admin', () => {
         phoneNumber: string,
         address: string,
         status: string,
+        statusId: number,
         createdAt: string,
     }
 
@@ -91,7 +92,6 @@ export const useAdminStore = defineStore('admin', () => {
                     totalOrders.value = data.totalOrders;
                     successOrders.value = data.successOrders;
                     ordersReceived.value = data.ordersReceived;
-                    console.log('12345')
                     console.log(listOrdersAdmin)
                 } else {
                     console.error('Invalid data received from the API:', data);
@@ -103,14 +103,14 @@ export const useAdminStore = defineStore('admin', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updateStatusOrder(orderId: number) {
+    async function updateStatusOrder(orderId: number, statusUpdate: number) {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');
                 return;
             }
-            const apiUrl = `http://localhost:8080/order/admin/updateStatusOrder?orderId=${orderId}`;
+            const apiUrl = `http://localhost:8080/order/admin/updateStatusOrder?orderId=${orderId}&statusUpdate=${statusUpdate}`;
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, null, { headers });
             const responseData = response.data;

@@ -3,6 +3,7 @@ package danny.store.dannystore.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.domain.dto.AdminProductSummaryDto;
 import danny.store.dannystore.domain.dto.ProductDto;
+import danny.store.dannystore.domain.dto.ProductDtoAddForAdmin;
 import danny.store.dannystore.domain.dto.ProductDtoForAdmin;
 import danny.store.dannystore.domain.entity.*;
 import danny.store.dannystore.repository.*;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,6 +124,8 @@ public class ProductService {
             for (Product product: products) {
                 ProductDtoForAdmin productDtoForAdmin = objectMapper.convertValue(product, ProductDtoForAdmin.class);
                 productDtoForAdmin.setStatusProduct(product.getStatus());
+                Optional<ProductManufacturer> manufacturer = manufacturerRepository.findById(product.getManufacturerId());
+                productDtoForAdmin.setManufacturer(manufacturer.get().getManufacturer());
                 String[] fullString = product.getDescription().split("\\n");
                 if (fullString.length > 0) {
                     fullString[0] = fullString[0].substring(1);
@@ -180,10 +185,42 @@ public class ProductService {
                 }
                 return RESPONSE_UPDATE_SUCCESS;
             } else {
-                throw new NotFoundException(RESPONSE_NOT_FOUND_PRODUCT);
+                throw new NotFoundException(RESPONSE_UNAUTHORIZED);
             }
         } catch (Exception e) {
             throw new NotFoundException(RESPONSE_NOT_FOUND_PRODUCT);
         }
+    }
+    @Transactional(rollbackOn = Exception.class)
+    public String createProduct(Long userId, ProductDtoAddForAdmin productDtoAddForAdmin) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(userId);
+        try {
+            if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("warehouse")) {
+                Product product = new Product();
+                product.setName(productDtoAddForAdmin.getName());
+                product.setQuantity(productDtoAddForAdmin.getQuantity());
+                product.setDescription(productDtoAddForAdmin.getDescription());
+                product.setPrice(Float.parseFloat(productDtoAddForAdmin.getPrice()));
+                product.setSrc("https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-spark-10_5_.png");
+                product.setCreatedAt(new Date());
+                product.setStatus(false);
+                product.setPromotionId(1L);
+                product.setProductType(1L);
+                product.setManufacturerId(9L);
+                productRepository.save(product);
+                for (int i=0 ; i < 4 ; i ++) {
+                    ProductDetail productDetail = new ProductDetail();
+                    productDetail.setProductId(product.getId());
+                    productDetail.setImageSrc("https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/tecno-spark-10_6_.png");
+                    productDetail.setCreatedAt(new Date());
+                    productDetailRepository.save(productDetail);
+                }
+            }  else {
+                throw new NotFoundException(RESPONSE_UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            throw new NotFoundException("Thêm thất bại!");
+        }
+        return null;
     }
 }

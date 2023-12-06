@@ -40,20 +40,20 @@ public class OrderService {
         List<Cart> cartList = cartRepository.findByUserId(userId);
         if (!cartList.isEmpty() && cartList != null) {
             order.setCustomerId(userId);
-            order.setStatusId(1L);
+            order.setStatusId(1L); //when create order -> status will be status 1
             orderRepository.save(order);
             for (Cart cart: cartList) {
-                CartDetail cartDetail = cartDetailRepository.findByCartId(cart.getId());
+                List<CartDetail> cartDetails = cartDetailRepository.findByCartId(cart.getId());
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrderId(order.getId());
-                orderItem.setProductId(cartDetail.getProductId());
-                orderItem.setQuantity(cartDetail.getQuantity());
-                orderItem.setPrice(cartDetail.getPrice());
+                orderItem.setProductId(cartDetails.get(0).getProductId());
+                orderItem.setQuantity(cartDetails.get(0).getQuantity());
+                orderItem.setPrice(cartDetails.get(0).getPrice());
                 orderItem.setCreatedAt(new Date());
                 orderItemRepository.save(orderItem);
                 cartRepository.deleteById(cart.getId());
                 cartDetailRepository.deleteByCartId(cart.getId());
-                countTotalAmount += cartDetail.getPrice() * cartDetail.getQuantity();
+                countTotalAmount += cartDetails.get(0).getPrice() * cartDetails.get(0).getQuantity();
             }
             order.setCreatedAt(new Date());
             order.setTotalAmount(countTotalAmount);
@@ -167,11 +167,13 @@ public class OrderService {
     @Transactional(rollbackOn = Exception.class)
     public Long updatePayment(Long userId, PaymentDto paymentDto) throws NotFoundException {
         Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(paymentDto.getOrderId(), userId);
-        if (orderOptional.isPresent()) {
+        if (orderOptional.isPresent()) { //Only update when status < deliver
             Order order = orderOptional.get();
             order.setStatusId(2L);
             order.setDeliveryAddress(paymentDto.getAddress());
-            orderRepository.save(order);
+            if (orderOptional.get().getStatusId() < 3) {
+                orderRepository.save(order);
+            }
             return order.getId();
         } else {
             System.out.println(RESPONSE_NOT_FOUND_ORDER);
@@ -285,6 +287,7 @@ public class OrderService {
                 orderDtoForAdmin.setTotalAmount(order.getTotalAmount());
                 orderDtoForAdmin.setCreatedAt(publicFunction.formatTime(order.getCreatedAt()));
                 orderDtoForAdmin.setStatus(getStatusOrder(order.getStatusId()));
+                orderDtoForAdmin.setStatusId(order.getStatusId());
                 orderDtoForAdmin.setListProducts(productLists.toString());
                 orderDtoForAdmin.setUsername(optionalUser.get().getUsername());
                 orderDtoForAdmin.setAddress(optionalUser.get().getAddress());
@@ -307,14 +310,13 @@ public class OrderService {
         }
     }
 
-    public String updateStatusOrder(Long id, Long orderId) throws NotFoundException {
+    public String updateStatusOrder(Long id, Long orderId, Long statusUpdate) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
             Optional<Order> orderOptional = orderRepository.findById(orderId);
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
-                if (order.getStatusId() < 5) {
-                    order.setStatusId(order.getStatusId() + 1);
+                    order.setStatusId(statusUpdate);
                     if (order.getStatusId() == 5) {
                         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
                         for (OrderItem orderItem : orderItemList) {
@@ -324,7 +326,6 @@ public class OrderService {
                             productRepository.save(product);
                         }
                     }
-                }
                 orderRepository.save(order);
                 return "Update successfully";
             } else {
@@ -340,7 +341,7 @@ public class OrderService {
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             if (orderOptional.get().getStatusId() > 0 && orderOptional.get().getStatusId() < 3) {
-                order.setStatusId(5L);
+                order.setStatusId(6L);
                 List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
                 for (OrderItem orderItem : orderItemList) {
                     Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());

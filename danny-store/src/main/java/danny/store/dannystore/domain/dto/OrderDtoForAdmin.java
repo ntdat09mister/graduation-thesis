@@ -13,5 +13,6 @@ public class OrderDtoForAdmin {
     private String phoneNumber;
     private String address;
     private String status;
+    private Long statusId;
     private String createdAt;
 }

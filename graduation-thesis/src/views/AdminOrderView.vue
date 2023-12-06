@@ -32,7 +32,8 @@ export default defineComponent({
                 { component: IconRevenue, name: 'Doanh thu', value: '50000000' }
             ],
             selected: Number(localStorage.getItem("selectedFilter")),
-            currentPage: Number(sessionStorage.getItem("changePageOrderAdmin"))
+            currentPage: Number(sessionStorage.getItem("changePageOrderAdmin")),
+            selectedStatus: 2
         };
     },
     computed: {
@@ -256,13 +257,18 @@ export default defineComponent({
                         {{ item.totalAmount }}
                     </span>
                     <div class="w-[130px] h-[80px] flex flex-row justify-between items-center">
-                        <span
-                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 17px;text-align: center;color: #1B51E5;">
-                            {{ item.status }}
-                        </span>
+                        <select v-model="item.statusId">
+                            <option value="1">Tiếp nhận đơn</option>
+                            <option value="2">Vận đơn</option>
+                            <option value="3">Đang giao hàng</option>
+                            <option value="4">Đã giao hàng</option>
+                            <option value="5">Trả hàng</option>
+                            <option value="6">Hủy đơn</option>
+                            <option value="7">Hoàn thành</option>
+                        </select>
                     </div>
                     <div class="w-[50px] h-[40px] flex justify-center items-center">
-                        <button @click="updateStatusOrder(item.id)"
+                        <button @click="updateStatusOrder(item.id, item.statusId)"
                             class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Update</button>
                     </div>
                 </div>

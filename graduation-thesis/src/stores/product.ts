@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { toast } from 'vue3-toastify'
 export const useProductStore = defineStore('product', () => {
     interface Product {
         id: number
@@ -191,6 +192,47 @@ export const useProductStore = defineStore('product', () => {
             console.error('Error fetching data:', error);
         }
     }
+    async function createProduct(nameOutput: string, priceOutput: string, descriptionOutput: string, quantityOutput: string) {
+        try {
+            if (!nameOutput) {
+                toast.error("Vui lòng điền tên sản phẩm!");
+                return;
+            }
+            if (!priceOutput) {
+                toast.error("Vui lòng điền giá sản phẩm!");
+                return;
+            }
+            if (!descriptionOutput) {
+                toast.error("Vui lòng điền mô tả sản phẩm!");
+                return;
+            }
+            if (!quantityOutput) {
+                toast.error("Vui lòng điền số lượng sản phẩm!");
+                return;
+            }
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = 'http://localhost:8080/product/admin/createProduct';
+            const requestData = {
+                name: nameOutput,
+                price: priceOutput,
+                description: descriptionOutput,
+                quantity: quantityOutput
+            }
+            console.log(nameOutput, priceOutput, descriptionOutput, quantityOutput)
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.post(apiUrl, requestData, { headers });
+            console.log(response)
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
     return {
         getProducts,
         listProducts,
@@ -205,6 +247,7 @@ export const useProductStore = defineStore('product', () => {
         countTotalProducts,
         countProductsTrue,
         getAllPromotions,
-        listPromotions
+        listPromotions,
+        createProduct
     }
 })

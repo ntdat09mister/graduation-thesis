@@ -37,9 +37,9 @@ public class CartService {
         List<Cart> cartList = cartRepository.findByUserId(userId);
         Float countTotalAmount = 0F;
         for (Cart cart: cartList) {
-            CartDetail cartDetail = cartDetailRepository.findByCartId(cart.getId());
+            List<CartDetail> cartDetails = cartDetailRepository.findByCartId(cart.getId());
             CartDto cartDto = new CartDto();
-            Optional<Product> productOptional = productRepository.findById(cartDetail.getProductId());
+            Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
             if (productOptional.isPresent()) {
                 Product product = productOptional.get();
                 cartDto.setSrc(product.getSrc());
@@ -48,10 +48,10 @@ public class CartService {
                 cartDto.setCreatedAt(publicFunction.formatTime(cart.getCreatedAt()));
             }
             cartDto.setCartId(cart.getId());
-            cartDto.setPrice(cartDetail.getPrice());
-            cartDto.setQuantity(cartDetail.getQuantity());
+            cartDto.setPrice(cartDetails.get(0).getPrice());
+            cartDto.setQuantity(cartDetails.get(0).getQuantity());
             cartDtoList.add(cartDto);
-            countTotalAmount += Float.valueOf(cartDetail.getPrice()) * Float.valueOf(cartDetail.getQuantity());
+            countTotalAmount += Float.valueOf(cartDetails.get(0).getPrice()) * Float.valueOf(cartDetails.get(0).getQuantity());
         }
         cartDtoAndAmount.setTotalAmount(countTotalAmount);
         cartDtoAndAmount.setCartDtoList(cartDtoList);
@@ -102,17 +102,17 @@ public class CartService {
         List<Cart> cartList = cartRepository.findByUserId(userId);
         Boolean checkCartExist = cartList.stream().anyMatch(cart -> cart.getId() == cartId);
         if (checkCartExist) {
-            CartDetail cartDetail = cartDetailRepository.findByCartId(cartId);
+            List<CartDetail> cartDetails = cartDetailRepository.findByCartId(cartId);
             if (statusUpdate) {
-                cartDetail.setQuantity(cartDetail.getQuantity() + 1);
+                cartDetails.get(0).setQuantity(cartDetails.get(0).getQuantity() + 1);
             } else {
-                cartDetail.setQuantity(cartDetail.getQuantity() - 1);
-                if (cartDetail.getQuantity() == 0) {
+                cartDetails.get(0).setQuantity(cartDetails.get(0).getQuantity() - 1);
+                if (cartDetails.get(0).getQuantity() == 0) {
                     cartRepository.deleteById(cartId);
                     cartDetailRepository.deleteByCartId(cartId);
                 }
             }
-            cartDetailRepository.save(cartDetail);
+            cartDetailRepository.save(cartDetails.get(0));
         }
         return RESPONSE_UPDATE_SUCCESS;
     }

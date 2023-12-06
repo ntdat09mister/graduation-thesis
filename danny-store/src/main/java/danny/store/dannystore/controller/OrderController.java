@@ -41,8 +41,8 @@ public class OrderController extends BaseController{
     }
     @PreAuthorize("hasAnyAuthority('sales','admin')")
     @PutMapping("admin/updateStatusOrder")
-    public ResponseEntity<?> updateStatusOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
-        return successResponse(orderService.updateStatusOrder(user.getId(), orderId));
+    public ResponseEntity<?> updateStatusOrder(@UserInfo User user, @RequestParam Long orderId, @RequestParam Long statusUpdate) throws NotFoundException {
+        return successResponse(orderService.updateStatusOrder(user.getId(), orderId, statusUpdate));
     }
     @PutMapping("/cancelOrder")
     public ResponseEntity<?> cancelOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {

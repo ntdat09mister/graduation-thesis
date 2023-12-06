@@ -20,6 +20,12 @@ export const useOrderStore = defineStore('order', () => {
     const idOrder = ref(1)
     const statusDetail = ref('')
     const listOrderItems = ref<OrderItem[]>([])
+    const today = new Date(); 
+    const toDaytime = ref('')
+    const day = today.getDate(); 
+    const month = today.getMonth(); 
+    const year = today.getFullYear(); 
+    toDaytime.value = `${day + 1}/${month}/${year}`
     async function getOrderDetail(orderId: number) {
         try {
             const token = localStorage.getItem("accessToken");
@@ -119,6 +125,7 @@ export const useOrderStore = defineStore('order', () => {
                 console.error('Access token not found in localStorage');
                 return;
             }
+            toast.loading('Đang hủy đơn hàng....')
             const apiUrl = `http://localhost:8080/order/cancelOrder?orderId=${orderId}`;
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, null, { headers });
@@ -146,7 +153,7 @@ export const useOrderStore = defineStore('order', () => {
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
             if (response.data) {
-                
+
                 toast.loading('Đang tạo đơn hàng....')
                 console.log(orderId)
                 setTimeout(() => {
@@ -252,6 +259,7 @@ export const useOrderStore = defineStore('order', () => {
         statusDetail,
         getAllOrders,
         listOrders,
-        updatePayment
+        updatePayment,
+        toDaytime
     }
 })
