@@ -101,19 +101,17 @@ export default defineComponent({
             </div>
             <div v-for="item in listOrderItems" class="w-[600px] flex flex-col items-center">
                 <div class="w-[580px] flex flex-col  rounded-[10px] bg-[#FFFFFF] mt-[10px]">
-                    <div class="w-[580px] flex flex-row justify-between items-center">
+                    <div class="ml-[40px] w-[400px] flex flex-row justify-between items-center">
                         <div class="w-[130px]">
                             <img class="w-[100px] h-[100px]" :src="item.srcProduct" alt="Ảnh">
                         </div>
-                        <div class="w-[270px] flex flex-col">
+                        <div class="w-[200px] flex flex-col">
                             <div>
-                                <span>Giá gốc: {{ item.price }}đ</span>
+                                <span>Tên sản phẩm: {{ item.productName }}</span>
                             </div>
                             <div>
-                                <span>Giá bán: {{ item.price }}đ</span>
+                                <span>Giá: {{ item.price }}đ</span>
                             </div>
-                        </div>
-                        <div class="w-[200px]">
                             <span>Số lượng: {{ item.quantity }}</span>
                         </div>
                     </div>

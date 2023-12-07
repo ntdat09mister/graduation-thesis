@@ -57,6 +57,38 @@ export const authStore = defineStore('auth', () => {
                     console.log(response)
                 })
         },
+        async changePassword(userName: string, oldPassword: string, newPassword: string, retypeNewPassword: string) {
+            try {
+                if (!oldPassword || !newPassword || !retypeNewPassword) {
+                    toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
+                    return;
+                }
+                const token = localStorage.getItem("accessToken");
+                if (!token) {
+                    console.error('Access token not found in localStorage');
+                    return;
+                }
+                const apiUrl = 'http://localhost:8080/auth/changePassword';
+                const requestData = {
+                    userName: userName,
+                    oldPassword: oldPassword,
+                    newPassword: newPassword,
+                    retypeNewPassword: retypeNewPassword
+                }
+                const headers = { Authorization: `Bearer ${token}` };
+                const response = await axios.put(apiUrl, requestData, { headers });
+                console.log(response)
+                if (response.status === 200) {
+                    toast.success('Đổi mật khẩu thành công')
+                    setTimeout(() => {
+                        router.push({ name: 'login' })
+                    }, 2000);
+                }
+            } catch (error) {
+                toast.error('Đổi mật khẩu thất bại!')
+                console.error('Error fetching data:', error);
+            }
+        },
         async register(username: string, password: string, retypePassword: string, name: string, phone: string, seletedGender: string) {
             if (!username) {
                 toast.error("Vui lòng điền tên tài khoản!");
@@ -107,6 +139,6 @@ export const authStore = defineStore('auth', () => {
                 }, 1000);
             }
         },
-        getIsAuthenticatedFromLocalStorage
+        getIsAuthenticatedFromLocalStorage,
     }
 })

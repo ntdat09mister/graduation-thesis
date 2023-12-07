@@ -3,6 +3,7 @@ import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { authStore } from '@/stores/auth';
 import { mapActions, mapState } from 'pinia';
 import router from '@/router';
 export default defineComponent({
@@ -24,11 +25,16 @@ export default defineComponent({
       showModifyUser: false,
       userId: 1,
       address: '',
-      phone: ''
+      phone: '',
+      changePasswordValue: false,
+      newPassword: '',
+      retypeNewPassword: '',
+      oldPassword: ''
     };
   },
   methods: {
     ...mapActions(useUserStore, ['getInforUser', 'updateUser']),
+    ...mapActions(authStore, ['changePassword']),
     routerPage(routerName: string) {
       router.push({ name: routerName })
     },
@@ -40,7 +46,15 @@ export default defineComponent({
     },
     handleClickSave(userId: number, address: string, phone: string) {
       this.updateUser(userId, address, phone)
+    },
+    cancelSaveInfor() {
       this.showModifyUser = false
+    },
+    handleClickChangePassword() {
+      this.changePasswordValue = true
+    },
+    cancelChangePassword() {
+      this.changePasswordValue = false
     }
   },
   mounted() {
@@ -106,54 +120,101 @@ export default defineComponent({
                 </div>
                 <div class="col-sm-8">
                   <div class="card-block">
-                    <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Thông tin</h6>
-                    <div class="">
-                      <div class="col-sm-6">
-                        <p class="m-b-10 f-w-600">Tài khoản</p>
-                        <h6 class="text-muted f-w-400">{{ user.username }}</h6>
+                    <div>
+                      <div v-if="!changePasswordValue">
+                        <div v-if="showModifyUser">
+                          <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Thông tin</h6>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Tài khoản</p>
+                            <h6 class="text-muted f-w-400">{{ user.username }}</h6>
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Giới tính</p>
+                            <h6 class="text-muted f-w-400">{{ user.gender === '1' ? 'Nam' : user.gender === '0' ? 'Nữ' :
+                              'NA' }}</h6>
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Số điện thoại</p>
+                            <input v-model="phone" type="text" :placeholder="`${phone}`">
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Địa chỉ</p>
+                            <input v-model="address" type="text" :placeholder="`${address}`">
+                          </div>
+                          <button @click="handleClickSave(user.id, address, phone)"
+                            class="w-[120px] h-[30px] mt-[10px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu
+                            thông tin</button>
+                          <button @click="cancelSaveInfor()"
+                            class="w-[50px] h-[30px] text-[12px] mt-[10px] ml-[10px] rounded-xl focus:outline-none border border-gray-500">Hủy</button>
+                        </div>
+                        <div v-else>
+                          <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Thông tin</h6>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Tài khoản</p>
+                            <h6 class="text-muted f-w-400">{{ user.username }}</h6>
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Giới tính</p>
+                            <h6 class="text-muted f-w-400">{{ user.gender === '1' ? 'Nam' : user.gender === '0' ? 'Nữ' :
+                              'NA' }}</h6>
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Số điện thoại</p>
+                            <h6 class="text-muted f-w-400">{{ user.phone }}</h6>
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="m-b-10 f-w-600">Địa chỉ</p>
+                            <h6 class="text-muted f-w-400">{{ user.address }}</h6>
+                          </div>
+                          <div class="flex flex-col">
+                            <button @click="handleClickModify(user.id, user.address, user.phone)"
+                              class="w-[120px] h-[30px] text-[12px] mt-[10px] rounded-xl focus:outline-none border border-gray-500">Sửa
+                              thông tin</button>
+                            <button @click="handleClickChangePassword()"
+                              class="w-[120px] h-[30px] text-[12px] mt-[10px] rounded-xl focus:outline-none border border-gray-500">Đổi
+                              mật khẩu</button>
+                          </div>
+                        </div>
                       </div>
-                      <div class="col-sm-6">
-                        <p class="m-b-10 f-w-600">Giới tính</p>
-                        <h6 class="text-muted f-w-400">{{ user.gender === '1' ? 'Nam' : user.gender === '0' ? 'Nữ' :
-                          'NA' }}</h6>
-                      </div>
-                      <div v-if="showModifyUser">
+                      <div v-if="changePasswordValue" class="flex flex-col mt-[10px]">
+                        <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Đổi mật khẩu</h6>
                         <div class="col-sm-6">
-                          <p class="m-b-10 f-w-600">Số điện thoại</p>
-                          <input v-model="phone" type="text" :placeholder="`${phone}`">
+                          <p class="m-b-10 f-w-600">Mật khẩu cũ:</p>
+                          <input v-model="oldPassword"
+                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="text">
                         </div>
                         <div class="col-sm-6">
-                          <p class="m-b-10 f-w-600">Địa chỉ</p>
-                          <input v-model="address" type="text" :placeholder="`${address}`">
-                        </div>
-                        <button @click="handleClickSave(user.id, address, phone)"
-                        class="w-[120px] h-[30px] mt-[10px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu thông tin</button>
-                      </div>
-                      <div v-else>
-                        <div class="col-sm-6">
-                          <p class="m-b-10 f-w-600">Số điện thoại</p>
-                          <h6 class="text-muted f-w-400">{{ user.phone }}</h6>
+                          <p class="m-b-10 f-w-600">Mật khẩu mới:</p>
+                          <input v-model="newPassword"
+                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="text">
                         </div>
                         <div class="col-sm-6">
-                          <p class="m-b-10 f-w-600">Địa chỉ</p>
-                          <h6 class="text-muted f-w-400">{{ user.address }}</h6>
+                          <p class="m-b-10 f-w-600">Nhập lại mật khẩu mới:</p>
+                          <input v-model="retypeNewPassword"
+                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="text">
                         </div>
-                        <button @click="handleClickModify(user.id, user.address, user.phone)"
-                          class="w-[120px] h-[30px] text-[12px] mt-[10px] rounded-xl focus:outline-none border border-gray-500">Sửa
-                          thông tin</button>
+                        <div class="flex flex-row">
+                          <button @click="changePassword(user.username, oldPassword, newPassword, retypeNewPassword)"
+                            class="w-[120px] h-[30px] mt-[10px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu
+                            thông tin</button>
+                          <button @click="cancelChangePassword()"
+                            class="w-[50px] h-[30px] text-[12px] mt-[10px] ml-[10px] rounded-xl focus:outline-none border border-gray-500">Hủy</button>
+                        </div>
                       </div>
 
                     </div>
-                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Tổng quan</h6>
-                    <div class="">
-                      <div class="col-sm-6">
-                        <p class="m-b-10 f-w-600">Total</p>
-                        <h6 class="text-muted f-w-400">{{ user?.totalAmount }}</h6>
-                      </div>
-                      <div class="col-sm-6">
-                        <p class="m-b-10 f-w-600">Số giao dịch đã thành công</p>
-                        <h6 class="text-muted f-w-400">Thành công: {{ user?.quantityOrdersSuccess }} / Tổng số: {{
-                          user?.quantityOrders }}</h6>
+                    <div v-if="!changePasswordValue" class="flex flex-col">
+                      <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Tổng quan</h6>
+                      <div class="">
+                        <div class="col-sm-6">
+                          <p class="m-b-10 f-w-600">Total</p>
+                          <h6 class="text-muted f-w-400">{{ user?.totalAmount }}</h6>
+                        </div>
+                        <div class="col-sm-6">
+                          <p class="m-b-10 f-w-600">Số giao dịch đã thành công</p>
+                          <h6 class="text-muted f-w-400">Thành công: {{ user?.quantityOrdersSuccess }} / Tổng số: {{
+                            user?.quantityOrders }}</h6>
+                        </div>
                       </div>
                     </div>
                     <ul class="social-link list-unstyled m-t-40 m-b-10">

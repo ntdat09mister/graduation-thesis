@@ -82,12 +82,6 @@ export default defineComponent({
                     <option value="">N/A</option>
                 </select>
             </div>
-            <!-- <div class="flex flex-col mb-3">
-                <span>Nhập địa chỉ:</span>
-                <input v-model="address"
-                    class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
-                    placeholder="Nhập địa chỉ.....">
-            </div> -->
             <div class="flex flex-col mb-3">
                 <span>Nhập sđt:</span>
                 <input v-model="phone"

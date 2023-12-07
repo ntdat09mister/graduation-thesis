@@ -30,8 +30,10 @@ export default defineComponent({
     data() {
         return {
             selected: 'Đen',
-            selectedVar: 1.25,
-            isTruncated: true
+            selectedVar: 1.1,
+            isTruncated: true,
+            capacity: '',
+            color: ''
         };
     },
     methods: {
@@ -88,25 +90,25 @@ export default defineComponent({
                         <p>Chọn dung lượng mong muốn</p>
                     </div>
                     <div class="flex flex-row justify-around items-center">
-                        <template v-for="variant in [1.1, 1, 0.9]">
-                            <div :class="{
+                        <template v-model="capacity" v-for="variant in [1.1, 1, 0.9]">
+                            <button :class="{
                                 'w-[100px] h-[51px] flex flex-col justify-around items-center bg-slate-200 rounded-xl cursor-pointer': selectedVar !== variant,
                                 'w-[100px] h-[51px] flex flex-col justify-around items-center bg-red-500 rounded-xl cursor-pointer': selectedVar === variant
                             }" @click="changeVariant(variant)">
-                                <strong>{{ variant === 1 ? '512GB' : variant === 0.75 ? '256GB' : '1TB' }}</strong>
+                                <strong>{{ variant === 1.1 ? '1TBB' : variant === 1 ? '512GB' : '256GB' }}</strong>
                                 <span>{{ (productDto?.sellingPrice || 0) * variant }}đ</span>
-                            </div>
+                        </button>
                         </template>
                     </div>
                     <div class="mt-[10px] mb-[10px]">
                         <p>Chọn màu để xem giá và chi nhánh có hàng</p>
                     </div>
                     <div class="flex flex-row justify-around items-center cursor-pointer">
-                        <template v-for="value in ['Đen', 'Vàng', 'Trắng']">
-                            <div :class="{ 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selected !== value, 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selected === value }"
+                        <template v-model="color" v-for="value in ['Đen', 'Vàng', 'Trắng']">
+                            <button :class="{ 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selected !== value, 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selected === value }"
                                 @click="changeBackground(value)">
                                 <strong>{{ value }}</strong>
-                            </div>
+                            </button>
                         </template>
                     </div>
                     <div class="flex flex-row mt-[20px]">

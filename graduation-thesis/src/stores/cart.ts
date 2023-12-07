@@ -49,6 +49,10 @@ export const useCartStore = defineStore('cart', () => {
 
   async function addToCart(productId: number, quantity: number, priceCoefficient: number) {
     try {
+      if (!productId || !quantity || !priceCoefficient) {
+        toast.error("Không thể tạo đơn hàng");
+        return;
+    }
       const token = localStorage.getItem("accessToken");
       if (!token) {
         console.error('Access token not found in localStorage');

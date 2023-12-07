@@ -100,6 +100,14 @@ export const useUserStore = defineStore('user', () => {
     }
     async function updateUserAdmin(idInput: number, usernameInput: string, nameInput: string, genderInput: string, addressInput: string, phoneInput: string, roleInput: string) {
         try {
+            if (!idInput || !usernameInput || !nameInput || !genderInput || !addressInput || !phoneInput || !roleInput) {
+                toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
+                return;
+            }
+            if (phoneInput.length > 12 || phoneInput.length < 10) {
+                toast.error("Số điện thoại phải là 10 hoặc 11 số");
+                return;
+            }
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');
@@ -131,6 +139,14 @@ export const useUserStore = defineStore('user', () => {
 
     async function updateUser(idInput: number, addressInput: string, phoneInput: string) {
         try {
+            if (!idInput || !addressInput || !phoneInput) {
+                toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
+                return;
+            }
+            if (phoneInput.length > 11 || phoneInput.length < 10) {
+                toast.error("Số điện thoại phải là 10 hoặc 11 số");
+                return;
+            }
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');
@@ -147,7 +163,7 @@ export const useUserStore = defineStore('user', () => {
             console.log(response)
             toast.success('Cập nhật thành công!')
             setTimeout(() => {
-            }, 1000);
+            }, 2000);
             const scrollPosition = window.scrollY;
             location.reload();
             window.scrollTo(0, scrollPosition);

@@ -95,6 +95,10 @@ export const useOrderStore = defineStore('order', () => {
     }
     async function addOrderInstant(productId: number, price: number) {
         try {
+            if (!productId || !price) {
+                toast.error("Không tạo được đơn hàng");
+                return;
+            }
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');

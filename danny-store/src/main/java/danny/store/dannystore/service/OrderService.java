@@ -50,6 +50,10 @@ public class OrderService {
                 orderItem.setQuantity(cartDetails.get(0).getQuantity());
                 orderItem.setPrice(cartDetails.get(0).getPrice());
                 orderItem.setCreatedAt(new Date());
+
+                Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
+                Product product = productOptional.get();
+                product.setQuantity(product.getQuantity() - cartDetails.get(0).getQuantity());
                 orderItemRepository.save(orderItem);
                 cartRepository.deleteById(cart.getId());
                 cartDetailRepository.deleteByCartId(cart.getId());
@@ -82,6 +86,9 @@ public class OrderService {
             orderItem.setCreatedAt(new Date());
             orderItem.setPrice(productOptional.get().getPrice());
             orderItemRepository.save(orderItem);
+            Product product = productOptional.get();
+            product.setQuantity(product.getQuantity() - 1);
+            productRepository.save(product);
             return order.getId();
         } else {
             return 0L;

@@ -90,6 +90,11 @@ public class CartService {
     public String deleteCartWithId(Long userId, Long cartId) throws NotFoundException {
         Cart cart = cartRepository.findByUserIdAndId(userId, cartId);
         if (cart != null) {
+            List<CartDetail> cartDetailList = cartDetailRepository.findByCartId(cartId);
+            Optional<Product> productOptional = productRepository.findById(cartDetailList.get(0).getProductId());
+            Product product = productOptional.get();
+            product.setQuantity(productOptional.get().getQuantity() + cartDetailList.get(0).getQuantity());
+            productRepository.save(product);
             cartRepository.deleteById(cartId);
             cartDetailRepository.deleteById(cartId);
             return "Delete success!";
@@ -103,10 +108,15 @@ public class CartService {
         Boolean checkCartExist = cartList.stream().anyMatch(cart -> cart.getId() == cartId);
         if (checkCartExist) {
             List<CartDetail> cartDetails = cartDetailRepository.findByCartId(cartId);
+            Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
+            Product product = productOptional.get();
             if (statusUpdate) {
                 cartDetails.get(0).setQuantity(cartDetails.get(0).getQuantity() + 1);
+                product.setQuantity(product.getQuantity() - 1);
+                productRepository.save(product);
             } else {
                 cartDetails.get(0).setQuantity(cartDetails.get(0).getQuantity() - 1);
+                product.setQuantity(product.getQuantity() - 1);
                 if (cartDetails.get(0).getQuantity() == 0) {
                     cartRepository.deleteById(cartId);
                     cartDetailRepository.deleteByCartId(cartId);

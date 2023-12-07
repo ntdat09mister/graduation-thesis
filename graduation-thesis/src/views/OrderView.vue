@@ -76,7 +76,7 @@ export default defineComponent({
             <div class="w-[170px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.status }}</span>
             </div>
-            <template v-if="orderItem.status === 'Tiếp nhận đơn' || orderItem.status === 'Lên đơn'">
+            <template v-if="orderItem.status === 'Tiếp nhận đơn' || orderItem.status === 'Vận đơn'">
                 <div class="w-[70px] h-[50px] flex justify-center items-center">
                     <button @click="cancelOrder(orderItem.id)"
                         class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Hủy

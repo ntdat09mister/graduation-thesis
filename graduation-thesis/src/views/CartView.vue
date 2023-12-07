@@ -23,7 +23,8 @@ export default defineComponent({
     data() {
         return {
             userId: 1,
-            totalAmountShow: 0
+            totalAmountShow: 0,
+            checkTotalAmountBoolean: false
         }
     },
     methods: {
@@ -31,12 +32,18 @@ export default defineComponent({
         handleClick(id: number) {
             router.push({ name: 'productDetail', params: { id: Number(id) } })
         },
-        routerOrderPage() {
-            router.push({ name: 'order' })
+        routerPage(name: string) {
+            router.push({ name })
+        },
+        checkTotalAmount() {
+            if (this.totalAmount > 0) {
+                this.checkTotalAmountBoolean = true
+            }
         }
     },
     mounted() {
-        this.getListCart()
+        this.getListCart(),
+        this.checkTotalAmount()
     }
 })
 </script>
@@ -44,7 +51,7 @@ export default defineComponent({
     <div class="flex flex-col justify-center items-center">
         <Header />
         <div class="w-[580px] h-[25px] flex flex-row items-center mt-[10px]">
-            <IconBack class="w-[25px] h-[25px]" />
+            <IconBack @click="routerPage('home')" class="w-[25px] h-[25px]" />
             <p class="text-[25px] font-semibold ml-[160px]">Giỏ hàng của bạn</p>
         </div>
         <div class="w-[780px] flex flex-row justify-between mt-[20px] p-2 border bg-gray-200 border border-gray-400">
@@ -86,7 +93,7 @@ export default defineComponent({
                 </div>
             </div>
         </div>
-        <div class="w-[600px] h-[100px] flex flex-col justify-between">
+        <div v-if="checkTotalAmountBoolean" class="w-[600px] h-[100px] flex flex-col justify-between">
             <div class="w-[100px] h-[100px] flex flex-col justify-center items-center ml-[520px]">
                 <p>Tạm tính</p>
                 <div>

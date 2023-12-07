@@ -3,6 +3,7 @@ package danny.store.dannystore.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.common.RoleType;
 import danny.store.dannystore.common.StatusType;
+import danny.store.dannystore.domain.dto.ChangePasswordDto;
 import danny.store.dannystore.domain.dto.InforUserUpdateDto;
 import danny.store.dannystore.domain.dto.UserAdminDto;
 import danny.store.dannystore.domain.entity.Role;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.exceptions.UnauthorizedClientException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,8 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static danny.store.dannystore.common.Const.RESPONSE_NOT_FOUND;
-import static danny.store.dannystore.common.Const.RESPONSE_NOT_FOUND_USER;
+import static danny.store.dannystore.common.Const.*;
 
 @Service
 @RequiredArgsConstructor
@@ -157,7 +158,7 @@ public class UserService {
     public String updateUser(Long id, InforUserUpdateDto inforUserUpdateDto) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
         Optional<User> optionalUserUpdate = userRepository.findById(inforUserUpdateDto.getUserId());
-        if (userOptional.get().getRole().equals("admin") && optionalUserUpdate.isPresent()) {
+        if (userOptional.isPresent() && optionalUserUpdate.isPresent()) {
             User user = optionalUserUpdate.get();
             user.setAddress(inforUserUpdateDto.getAddress());
             user.setPhone(inforUserUpdateDto.getPhone());
@@ -166,6 +167,21 @@ public class UserService {
             return "Update success user" + optionalUserUpdate.get().getUsername();
         } else {
             throw new NotFoundException(RESPONSE_NOT_FOUND_USER);
+        }
+    }
+    public String changePassword(Long userId, ChangePasswordDto input) throws Exception {
+        // check for user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("Not found any user with id: " + userId));
+        // check for old password
+        if (!passwordEncoder.matches(input.getOldPassword(), user.getPassword()))
+            throw new Exception("Wrong username or password!");
+        if (input.getNewPassword().equals(input.getRetypeNewPassword())) {
+            user.setPassword(passwordEncoder.encode(input.getNewPassword()));
+            userRepository.save(user);
+            return "Đổi mật khẩu thành công";
+        } else {
+            return "Mật khẩu mới không khớp";
         }
     }
 }
