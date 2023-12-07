@@ -4,6 +4,7 @@ import Footer from '@/components/Footer.vue'
 import { defineComponent } from 'vue'
 import { mapActions, mapState } from 'pinia';
 import { useOrderStore } from '@/stores/order';
+import router from '@/router';
 export default defineComponent({
     components: {
         Header,
@@ -22,14 +23,28 @@ export default defineComponent({
             adressSelected: 'adressSelected',
             totalAmount: 'totalAmount',
             idOrder: 'idOrder',
-            statusDetail: 'statusDetail'
+            statusDetail: 'statusDetail',
+            paymentStatus: 'paymentStatus'
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getOrderDetail'])
+        ...mapActions(useOrderStore, ['getOrderDetail']),
+        checkStatusDetail(orderId: number) {
+            if (this.statusDetail === 'Tiếp nhận đơn') {
+                router.push({ name: 'payment', params: { id: Number(orderId) } })
+            }
+        },
+        getPaymentName(paymentStatus : string) {
+            if (paymentStatus === "1") {
+                return "Đã thanh toán";
+            } else {
+                return "Chưa thanh toán";
+            }
+        }
     },
     mounted() {
-
+        const { id } = this.$route.params
+        this.checkStatusDetail(Number(id))
     },
     created() {
         const { id } = this.$route.params
@@ -105,7 +120,7 @@ export default defineComponent({
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Giá:</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{
-                                    item.price }}</span>
+                                    item.price }}đ</span>
                         </div>
                     </div>
 
@@ -113,6 +128,10 @@ export default defineComponent({
                 <div>
                     <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Trạng thái đơn hàng:</span>
                     <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{ statusDetail }}</span>
+                </div>
+                <div>
+                    <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Trạng thái thanh toán:</span>
+                    <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{ getPaymentName(String(paymentStatus)) }}</span>
                 </div>
             </div>
 
@@ -123,7 +142,7 @@ export default defineComponent({
                 tiền:</span>
             <span
                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #e51b1b;">{{
-                    totalAmount }}</span>
+                    totalAmount }}đ</span>
         </div>
         <Footer />
     </div>

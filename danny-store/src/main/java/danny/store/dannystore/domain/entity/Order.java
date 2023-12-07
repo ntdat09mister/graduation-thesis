@@ -22,6 +22,7 @@ public class Order {
     private Long statusId;
     private String deliveryAddress;
     private String phone;
+    private Long paymentStatus;
     private Date createdAt;
     private Date modifiedAt;
 }

@@ -104,7 +104,11 @@ export const useUserStore = defineStore('user', () => {
                 toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
                 return;
             }
-            if (phoneInput.length > 12 || phoneInput.length < 10) {
+            if (usernameInput.length > 50) {
+                toast.error("Nhập quá số kí tự cho phép");
+                return;
+            }
+            if (phoneInput.length > 11 || phoneInput.length < 10) {
                 toast.error("Số điện thoại phải là 10 hoặc 11 số");
                 return;
             }
@@ -133,6 +137,9 @@ export const useUserStore = defineStore('user', () => {
             location.reload();
             window.scrollTo(0, scrollPosition);
         } catch (error) {
+            toast.success('Cập nhật thất bại!')
+            setTimeout(() => {
+            }, 1000);
             console.error('Error fetching data:', error);
         }
     }

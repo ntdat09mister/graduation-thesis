@@ -46,8 +46,8 @@ export default defineComponent({
         changeBackground(value: string) {
             this.selected = value;
         },
-        clickAddToCart() {
-            this.addToCart(Number(this.productDto?.id), 1, this.selectedVar)
+        clickAddToCart(quantityProduct: number) {
+            this.addToCart(Number(this.productDto?.id), 1, this.selectedVar,quantityProduct)
         },
         toggleDescription() {
             this.isTruncated = !this.isTruncated;
@@ -117,13 +117,13 @@ export default defineComponent({
                     </div>
                     <p>Số lượng còn lại trong kho: {{ productDto?.quantity }}</p>
                     <div class="w-[360px] h-[70px] flex flex-row justify-around items-center mt-[10px]">
-                        <div @click="addOrderInstant(productDto?.id, productDto.sellingPrice)"
+                        <div @click="addOrderInstant(productDto?.id, productDto.sellingPrice, productDto?.quantity)"
                             class="w-[280px] h-[60px] flex flex-col justify-center items-center bg-[red] rounded-xl cursor-pointer">
                             <strong class="text-white text-base text-sm">Mua ngay</strong>
                             <span class="text-white text-base text-xs">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>
                         </div>
                         <div class="w-[60px] h-[60px] flex flex-col justify-center items-center border-[2px] border-red-500 rounded-xl cursor-pointer"
-                            @click="clickAddToCart">
+                            @click="clickAddToCart(productDto?.quantity)">
                             <IconAddToCart class="w-[30px] h-[30px] fill-[#FF0000]" />
                             <span class="text-[7px] text-[red]">Thêm vào giỏ</span>
                         </div>

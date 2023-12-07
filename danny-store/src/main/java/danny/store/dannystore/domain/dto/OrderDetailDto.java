@@ -14,5 +14,6 @@ public class OrderDetailDto {
     private Float totalAmount;
     private String username;
     private String status;
+    private Long paymentStatus;
     private String createdAt;
 }

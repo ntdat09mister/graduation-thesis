@@ -47,8 +47,12 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addToCart(productId: number, quantity: number, priceCoefficient: number) {
+  async function addToCart(productId: number, quantity: number, priceCoefficient: number, productQuantity: number) {
     try {
+      if (productQuantity === 0) {
+        toast.error("Sản phẩm đã hết vui lòng chọn sản phẩm khác");
+        return;
+      }
       if (!productId || !quantity || !priceCoefficient) {
         toast.error("Không thể tạo đơn hàng");
         return;

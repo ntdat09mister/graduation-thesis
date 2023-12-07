@@ -24,7 +24,8 @@ export const useOrderStore = defineStore('order', () => {
     const toDaytime = ref('')
     const day = today.getDate(); 
     const month = today.getMonth(); 
-    const year = today.getFullYear(); 
+    const year = today.getFullYear();
+    const paymentStatus = ref(0)
     toDaytime.value = `${day + 1}/${month}/${year}`
     async function getOrderDetail(orderId: number) {
         try {
@@ -52,6 +53,7 @@ export const useOrderStore = defineStore('order', () => {
                     totalAmount.value = data.totalAmount
                     idOrder.value = data.orderId
                     statusDetail.value = data.status
+                    paymentStatus.value = data.paymentStatus
                 } else {
                     console.error('Invalid data received from the API:', data);
                 }
@@ -93,8 +95,12 @@ export const useOrderStore = defineStore('order', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function addOrderInstant(productId: number, price: number) {
+    async function addOrderInstant(productId: number, price: number, productQuantity: number) {
         try {
+            if (productQuantity === 0) {
+                toast.error("Sản phẩm đã hết vui lòng chọn sản phẩm khác");
+                return;
+              }
             if (!productId || !price) {
                 toast.error("Không tạo được đơn hàng");
                 return;
@@ -142,8 +148,20 @@ export const useOrderStore = defineStore('order', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updatePayment(orderId: number, address: string) {
+    async function updatePayment(orderId: number, address: string, phoneNumber: string) {
         try {
+            if (!phoneNumber) {
+                toast.error("Vui lòng nhập số điện thoại");
+                return;
+            }
+            if (phoneNumber.length > 11 || phoneNumber.length < 10) {
+                toast.error("Số điện thoại phải là 10 hoặc 11 số");
+                return;
+            }
+            if (!address) {
+                toast.error("Vui lòng nhập địa chỉ");
+                return;
+            }
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');
@@ -151,7 +169,8 @@ export const useOrderStore = defineStore('order', () => {
             }
             const requestData = {
                 orderId: orderId,
-                address: address
+                address: address,
+                phoneNumber: phoneNumber
             }
             const apiUrl = `http://localhost:8080/order/updatePayment`;
             const headers = { Authorization: `Bearer ${token}` };
@@ -264,6 +283,7 @@ export const useOrderStore = defineStore('order', () => {
         getAllOrders,
         listOrders,
         updatePayment,
-        toDaytime
+        toDaytime,
+        paymentStatus
     }
 })

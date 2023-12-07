@@ -13,6 +13,14 @@ export const authStore = defineStore('auth', () => {
     return {
         authenticated: getIsAuthenticatedFromLocalStorage(),
         login(username: string, password: string) {
+            if (username.length > 50) {
+                toast.error("Nhập quá số kí tự cho phép");
+                return;
+            }
+            if (password.length < 7 || password.length > 50) {
+                toast.error("Nhập sai số kí tự cho phép");
+                return;
+            }
             if (!username) {
                 toast.error("Vui lòng điền tên tài khoản!");
                 return;
@@ -63,6 +71,14 @@ export const authStore = defineStore('auth', () => {
                     toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
                     return;
                 }
+                if (oldPassword.length < 7 || oldPassword.length > 50 || newPassword.length < 7 || newPassword.length > 50 || retypeNewPassword.length < 7 || retypeNewPassword.length > 50) {
+                    toast.error("Nhập sai số kí tự cho phép");
+                    return;
+                }
+                if (newPassword != retypeNewPassword) {
+                    toast.error("Mật khẩu nhập không khớp");
+                    return;
+                }
                 const token = localStorage.getItem("accessToken");
                 if (!token) {
                     console.error('Access token not found in localStorage');
@@ -94,12 +110,19 @@ export const authStore = defineStore('auth', () => {
                 toast.error("Vui lòng điền tên tài khoản!");
                 return;
             }
+            if (username.length > 50) {
+                toast.error("Nhập quá số kí tự cho phép");
+                return;
+            }
 
             if (!password) {
                 toast.error("Vui lòng điền mật khẩu!");
                 return;
             }
-
+            if (password.length < 6 || password.length > 50) {
+                toast.error("Nhập sai số kí tự cho phép");
+                return;
+            }
             if (password !== retypePassword) {
                 toast.error("Mật khẩu không khớp");
                 return;
@@ -109,7 +132,14 @@ export const authStore = defineStore('auth', () => {
                 toast.error("Vui lòng điền tên!");
                 return;
             }
-
+            if (!/^[0-9]+$/.test(phone.replace(/\s/g, ""))) {
+                toast.error("Số điện thoại sai định dạng");
+                return;
+            }
+            if (phone.length > 12 || phone.length < 10) {
+                toast.error("Số điện thoại phải là 10 hoặc 11 số");
+                return;
+            }
             if (!phone) {
                 toast.error("Vui lòng điền số điện thoại!");
                 return;

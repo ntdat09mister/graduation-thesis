@@ -96,11 +96,9 @@ export default defineComponent({
             localStorage.removeItem("accessToken"),
             localStorage.removeItem("authenticated")
             toast.success("Đăng xuất thành công")
-            setTimeout(() => {
-                router.push({ name: 'home' }).then(() => {
+            router.push({ name: 'home' }).then(() => {
                     location.reload();
                 });
-            }, 1000);
         }
     },
     mounted() {

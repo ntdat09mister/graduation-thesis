@@ -90,12 +90,23 @@ export default defineComponent({
         },
         cancel() {
             this.showModify = false
+        },
+        getRoleName(role : string) {
+            if (role === "admin") {
+                return "Chủ cửa hàng";
+            } else if (role === "sales") {
+                return "Nhân viên bán hàng";
+            } else if (role === "warehouse") {
+                return "Nhân viên kho";
+            } else if (role === "customer") {
+                return "Khách hàng";
+            }
         }
     },
     mounted() {
         this.getUsersAdmin(),
-        this.handlePageChangeMounted()
-            
+            this.handlePageChangeMounted()
+
     }
 });
 </script>
@@ -127,7 +138,8 @@ export default defineComponent({
                         </div>
                         <div class="w-[200px] h-[80px] flex items-center">
                             <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tên đăng nhập</span>
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tên
+                                đăng nhập</span>
                         </div>
                         <div class="w-[200px] h-[80px] flex items-center">
                             <span
@@ -207,12 +219,12 @@ export default defineComponent({
                         <div class="w-[80px] h-[80px] flex justify-center items-center">
                             <button
                                 @click="updateUserAdmin(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole)"
-                                class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Save</button>
+                                class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu</button>
                         </div>
                         <div class="w-[50px] h-[30px] flex justify-center items-center ">
-                        <button @click="cancel()"
-                            class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Cancel</button>
-                    </div>
+                            <button @click="cancel()"
+                                class="w-[50px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Cancel</button>
+                        </div>
                     </div>
                     <div v-for="item in listDisplayUsersAdmin" class="w-[1381px] h-[48px] flex flex-row items-center">
                         <div class="w-[100px] h-[80px] flex justify-center items-center">
@@ -255,13 +267,13 @@ export default defineComponent({
                         <div class="w-[200px] h-[80px] flex items-center ">
                             <span class="w-[200px] h-[80px] flex items-center"
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                                {{ item.role }}
+                                {{ getRoleName(item.role) }}
                             </span>
                         </div>
                         <div class=" flex justify-center items-center ">
                             <button
                                 @click="modifyUser(item.id, item.username, item.name, item.gender, item.address, item.phone, item.role)"
-                                class="w-[60px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Modifiy</button>
+                                class="w-[60px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Sửa</button>
                         </div>
                     </div>
                 </div>
@@ -276,18 +288,18 @@ export default defineComponent({
         <div class="w-[1438px] flex flex-row justify-between items-center">
             <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
                 <a href="" @click="routerPage('adminProductView')">
-                    <button
-                        @click="routerPage('adminProductView')"
-                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step - Left</button>
+                    <button @click="routerPage('adminProductView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                        Left</button>
                 </a>
                 <span class="text-[13px] ml-[10px]">Di chuyển tới trang quản lý sản phẩm</span>
             </div>
             <div class="w-[400px] h-[50px] flex flex-row mt-[30px] items-center">
                 <span class="text-[13px] mr-[10px]">Di chuyển tới trang quản lý đơn hàng</span>
                 <a href="" @click="routerPage('adminOrderView')">
-                    <button
-                        @click="routerPage('adminProductView')"
-                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step - right</button>
+                    <button @click="routerPage('adminProductView')"
+                        class="w-[70px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Step -
+                        right</button>
                 </a>
             </div>
         </div>

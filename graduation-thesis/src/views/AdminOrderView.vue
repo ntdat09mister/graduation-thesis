@@ -43,7 +43,8 @@ export default defineComponent({
             totalAmount: 'totalAmount',
             totalOrders: 'totalOrders',
             successOrders: 'successOrders',
-            ordersReceived: 'ordersReceived'
+            ordersReceived: 'ordersReceived',
+            paymentStatus: 'paymentStatus'
         }),
         ...mapState(useUserStore, {
             user: 'user'
@@ -80,6 +81,16 @@ export default defineComponent({
                 this.getAllOrdersAdmin(this.selected)
             } else {
                 this.getAllOrdersAdmin(1)
+            }
+        },
+        routerOrderDetail(orderId: number) {
+            router.push({ name: 'orderDetail', params: { id: orderId } })
+        },
+        getPaymentStatus(paymentStatus: string) {
+            if (paymentStatus === "1") {
+                return 'Đã thanh toán';
+            } else {
+                return 'Chưa thanh toán';
             }
         }
     },
@@ -212,16 +223,20 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Trạng
                         thái</span>
                 </div>
+                <div class="w-[130px] h-[80px] flex items-center">
+                    <span
+                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Thanh
+                        toán</span>
+                </div>
                 <div class="w-[50px] h-[40px] flex justify-center items-center"></div>
             </div>
             <div class="w-[1381px] h-[649px]">
                 <div v-for="item in listDisplayOrderAdmin"
                     class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
                     <div class="w-[80px] h-[80px] flex justify-center items-center">
-                        <span class="w-[80px] h-[80px] flex justify-center items-center"
-                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                            {{ item.id }}
-                        </span>
+                        <button @click="routerOrderDetail(item.id)"
+                            class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500"> {{
+                                item.id }} </button>
                     </div>
                     <div class="w-[80px] h-[80px] flex justify-center items-center">
                         <img class="w-[52px] h-[52px] ml-[25px]" :src="item.src" alt="product-img">
@@ -256,7 +271,7 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
                         {{ item.totalAmount }}
                     </span>
-                    <div class="w-[130px] h-[80px] flex flex-row justify-between items-center">
+                    <div class="w-[120px] h-[80px] flex flex-row justify-between items-center">
                         <select v-model="item.statusId">
                             <option value="1">Tiếp nhận đơn</option>
                             <option value="2">Vận đơn</option>
@@ -267,9 +282,16 @@ export default defineComponent({
                             <option value="7">Hoàn thành</option>
                         </select>
                     </div>
-                    <div class="w-[50px] h-[40px] flex justify-center items-center">
-                        <button @click="updateStatusOrder(item.id, item.statusId)"
-                            class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Update</button>
+                    <div class="w-[80px] h-[80px] flex flex-row justify-between items-center">
+                        <select v-model="item.paymentStatus">
+                            <option value="1">Đã thanh toán</option>
+                            <option value="0">Chưa thanh toán</option>
+                        </select>
+                    </div>
+                    <div class="w-[100px] h-[40px] flex justify-center items-center">
+                        <button @click="updateStatusOrder(item.id, item.statusId, item.paymentStatus)"
+                            class="w-[70px] h-[30px] text-[10px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu
+                            trạng thái</button>
                     </div>
                 </div>
             </div>

@@ -50,7 +50,6 @@ public class OrderService {
                 orderItem.setQuantity(cartDetails.get(0).getQuantity());
                 orderItem.setPrice(cartDetails.get(0).getPrice());
                 orderItem.setCreatedAt(new Date());
-
                 Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
                 Product product = productOptional.get();
                 product.setQuantity(product.getQuantity() - cartDetails.get(0).getQuantity());
@@ -61,6 +60,7 @@ public class OrderService {
             }
             order.setCreatedAt(new Date());
             order.setTotalAmount(countTotalAmount);
+            order.setPaymentStatus(0L);
             order.setSaleStaffId(1L);
             orderRepository.save(order);
             System.out.println(RESPONSE_ADD_ORDER_SUCCESS);
@@ -78,6 +78,7 @@ public class OrderService {
             order.setCustomerId(userId);
             order.setCreatedAt(new Date());
             order.setStatusId(1L);
+            order.setPaymentStatus(0L);
             order.setTotalAmount(orderInstant.getPrice());
             orderRepository.save(order);
             orderItem.setOrderId(order.getId());
@@ -134,9 +135,10 @@ public class OrderService {
         }
     }
     public OrderDetailDto getOrderDetail(Long userId, Long orderId) throws NotFoundException {
-        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(orderId, userId);
+        Optional<Order> orderOptionalByIdAndUserId = orderRepository.findByIdAndCustomerId(orderId, userId);
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
         Optional<User> userOptional = userRepository.findById(userId);
-        if (orderOptional.isPresent()) {
+        if (orderOptionalByIdAndUserId.isPresent() || userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
             List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
             List<OrderItemDto> orderItemDtoList = orderItemList.stream().map(orderItem -> {
                 Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
@@ -160,6 +162,7 @@ public class OrderService {
             orderDetailDto.setUsername(userOptional.get().getUsername());
             orderDetailDto.setAddress(orderOptional.get().getDeliveryAddress());
             orderDetailDto.setPhoneNumber(orderOptional.get().getPhone());
+            orderDetailDto.setPaymentStatus(orderOptional.get().getPaymentStatus());
             Optional<StatusOrder> statusOrderOptional = statusOrderRepository.findById(orderOptional.get().getStatusId());
             if (statusOrderOptional.isPresent()) {
                 orderDetailDto.setStatus(statusOrderOptional.get().getStatusName());
@@ -178,6 +181,7 @@ public class OrderService {
             Order order = orderOptional.get();
             order.setStatusId(2L);
             order.setDeliveryAddress(paymentDto.getAddress());
+            order.setPhone(paymentDto.getPhoneNumber());
             if (orderOptional.get().getStatusId() < 3) {
                 orderRepository.save(order);
             }
@@ -297,9 +301,10 @@ public class OrderService {
                 orderDtoForAdmin.setStatusId(order.getStatusId());
                 orderDtoForAdmin.setListProducts(productLists.toString());
                 orderDtoForAdmin.setUsername(optionalUser.get().getUsername());
-                orderDtoForAdmin.setAddress(optionalUser.get().getAddress());
+                orderDtoForAdmin.setAddress(order.getDeliveryAddress());
                 orderDtoForAdmin.setNameCustomer(optionalUser.get().getName());
                 orderDtoForAdmin.setPhoneNumber(optionalUser.get().getPhone());
+                orderDtoForAdmin.setPaymentStatus(order.getPaymentStatus());
                 orderDtoList.add(orderDtoForAdmin);
                 totalAmount +=  order.getTotalAmount();
             }
@@ -317,13 +322,14 @@ public class OrderService {
         }
     }
 
-    public String updateStatusOrder(Long id, Long orderId, Long statusUpdate) throws NotFoundException {
+    public String updateStatusOrder(Long id, Long orderId, Long statusUpdate, Long paymentStatus) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.get().getRole().equals("admin") || userOptional.get().getRole().equals("sales")) {
             Optional<Order> orderOptional = orderRepository.findById(orderId);
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
                     order.setStatusId(statusUpdate);
+                    order.setPaymentStatus(paymentStatus);
                     if (order.getStatusId() == 5) {
                         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
                         for (OrderItem orderItem : orderItemList) {

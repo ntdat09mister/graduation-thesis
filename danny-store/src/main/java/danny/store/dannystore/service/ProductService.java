@@ -125,11 +125,11 @@ public class ProductService {
                 ProductDtoForAdmin productDtoForAdmin = objectMapper.convertValue(product, ProductDtoForAdmin.class);
                 productDtoForAdmin.setStatusProduct(product.getStatus());
                 Optional<ProductManufacturer> manufacturer = manufacturerRepository.findById(product.getManufacturerId());
-                productDtoForAdmin.setManufacturer(manufacturer.get().getManufacturer());
+//                productDtoForAdmin.setManufacturer(manufacturer.get().getManufacturer());
                 String[] fullString = product.getDescription().split("\\n");
-                if (fullString.length > 0) {
-                    fullString[0] = fullString[0].substring(1);
-                }
+//                if (fullString.length > 0) {
+//                    fullString[0] = fullString[0].substring(1);
+//                }
                 productDtoForAdmin.setDescription(fullString[0]);
                 Optional<Promotion> promotionOptional = promotionRepository.findById(product.getPromotionId());
                 productDtoForAdmin.setPromotion(String.valueOf(promotionOptional.get().getPercentValue()));

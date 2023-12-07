@@ -19,7 +19,9 @@ export default defineComponent({
             paymentMethod: true,
             orderId: 1,
             passStepUpdatePayment: false,
-            atStore: true
+            atStore: true,
+            phoneNumber: '',
+            adressSelectedFinal: ''
         }
     },
     computed: {
@@ -60,9 +62,10 @@ export default defineComponent({
         setOrderId(id: number) {
             this.orderId = id
         },
-        handleUpdatePayment(orderIdInput: number, addressInput: string) {
+        handleUpdatePayment(orderIdInput: number, addressInput: string, phoneNumber: string) {
             if (this.passStepUpdatePayment || addressInput === 'Nhận tại cửa hàng') {
-                this.updatePayment(orderIdInput, addressInput)
+                // this.adressSelectedFinal = addressInput
+                this.updatePayment(orderIdInput, addressInput, phoneNumber)
             } else {
                 toast.error("Vui lòng nhập xác lựa chọn thông tin nhận hàng!")
             }
@@ -126,7 +129,7 @@ export default defineComponent({
                 <span>Tên khách hàng:</span>
                 <input type="text" :placeholder="nameCustomer">
                 <span>Số điện thoại:</span>
-                <input type="text" :placeholder="phoneNumber">
+                <input v-model="phoneNumber" type="text" :placeholder="`${phoneNumber}`">
                 <span>Tài khoản đăng nhập:</span>
                 <input type="text" :placeholder="username">
             </div>
@@ -173,11 +176,11 @@ export default defineComponent({
                         </div>
                         <div class="flex flex-col">
                             <span>Địa chỉ tương đối:</span>
-                            <span>{{ adressSelected }}</span>
+                            <input v-model="adressSelected" type="text" :placeholder="`${adressSelected}`">
                         </div>
                         <div class="flex flex-col">
                             <span>Địa chỉ chi tiết:</span>
-                            <input v-model="adressSelected" type="text" :placeholder="`${adressSelected}`">
+                            <input v-model="adressSelectedFinal" type="text" :placeholder="`${adressSelected}`">
                         </div>
                     </div>
                 </div>
@@ -237,9 +240,9 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
                             {{ totalAmount }}đ</p>
                     </div>
-                    <button @click="handleUpdatePayment(orderId, adressSelected)"
-                        class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tiếp
-                        tục</button>
+                    <button @click="handleUpdatePayment(orderId, adressSelectedFinal, phoneNumber)"
+                        class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
+                        trang theo dõi đơn</button>
                 </div>
             </div>
             <div v-else>
@@ -273,7 +276,7 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
                             {{ totalAmount }}đ</p>
                     </div>
-                    <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng')"
+                    <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng', phoneNumber)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
                         trang theo dõi đơn</button>
                 </div>

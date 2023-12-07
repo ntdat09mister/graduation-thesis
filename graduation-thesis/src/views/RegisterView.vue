@@ -68,7 +68,7 @@ export default defineComponent({
                     type="password" placeholder="Nhập lại password.....">
             </div>
             <div class="flex flex-col mb-3">
-                <span>Nhập tên của bạn:</span>
+                <span>Họ tên:</span>
                 <input v-model="name"
                     class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300" type="text"
                     placeholder="Nhập tên của bạn.....">

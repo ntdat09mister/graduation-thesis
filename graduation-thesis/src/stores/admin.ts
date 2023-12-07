@@ -103,14 +103,14 @@ export const useAdminStore = defineStore('admin', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updateStatusOrder(orderId: number, statusUpdate: number) {
+    async function updateStatusOrder(orderId: number, statusUpdate: number, paymentStatus: number) {
         try {
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');
                 return;
             }
-            const apiUrl = `http://localhost:8080/order/admin/updateStatusOrder?orderId=${orderId}&statusUpdate=${statusUpdate}`;
+            const apiUrl = `http://localhost:8080/order/admin/updateStatusOrder?orderId=${orderId}&statusUpdate=${statusUpdate}&paymentStatus=${paymentStatus}`;
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, null, { headers });
             const responseData = response.data;

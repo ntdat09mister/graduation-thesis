@@ -105,10 +105,8 @@ export default defineComponent({
                             <span>5000</span>
                         </div>
                     </div>
-
                 </div>
             </div>
-
             <div class="w-[800px] flex flex-row">
                 <span>TỔNG CỘNG</span>
             </div>
