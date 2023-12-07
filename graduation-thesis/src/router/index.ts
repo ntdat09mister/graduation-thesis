@@ -16,6 +16,7 @@ import AdminUserView from '../views/AdminUserView.vue'
 import TestPopup from '../views/TestPopup.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminPromotionView from '../views/AdminPromotionView.vue'
+import BillOrderView from '../views/BillOrderView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -103,6 +104,11 @@ const router = createRouter({
       path: '/adminPromotionView',
       name: 'adminPromotionView',
       component: AdminPromotionView
+    },
+    {
+      path: '/billOrder/:id',
+      name: 'BillOrderView',
+      component: BillOrderView
     }
   ]
 })
