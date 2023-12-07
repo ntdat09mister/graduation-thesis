@@ -14,7 +14,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+-- Dumping database structure for danny-store-db
+CREATE DATABASE IF NOT EXISTS `danny-store-db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `danny-store-db`;
+
 -- Dumping structure for table danny-store-db.cart
+DROP TABLE IF EXISTS `cart`;
 CREATE TABLE IF NOT EXISTS `cart` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `created_at` datetime DEFAULT NULL,
@@ -31,6 +37,7 @@ REPLACE INTO `cart` (`id`, `created_at`, `modified_at`, `user_id`) VALUES
 	(8, '2023-12-07 17:11:36', '2023-12-07 17:11:36', 25);
 
 -- Dumping structure for table danny-store-db.cart_detail
+DROP TABLE IF EXISTS `cart_detail`;
 CREATE TABLE IF NOT EXISTS `cart_detail` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `cart_id` bigint(20) DEFAULT NULL,
@@ -52,6 +59,7 @@ REPLACE INTO `cart_detail` (`id`, `cart_id`, `created_at`, `modified_at`, `price
 	(20, 8, '2023-12-07 17:11:36', '2023-12-07 17:11:36', 9900000, 1, 1, NULL);
 
 -- Dumping structure for table danny-store-db.district
+DROP TABLE IF EXISTS `district`;
 CREATE TABLE IF NOT EXISTS `district` (
     `district_id` int(11) NOT NULL AUTO_INCREMENT,
     `province_id` int(11) NOT NULL,
@@ -770,6 +778,7 @@ REPLACE INTO `district` (`district_id`, `province_id`, `name`) VALUES
 /*!40000 ALTER TABLE `district` ENABLE KEYS */;
 
 -- Dumping structure for table danny-store-db.evaluate
+DROP TABLE IF EXISTS `evaluate`;
 CREATE TABLE IF NOT EXISTS `evaluate` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
@@ -782,6 +791,7 @@ CREATE TABLE IF NOT EXISTS `evaluate` (
 -- Dumping data for table danny-store-db.evaluate: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.hibernate_sequence
+DROP TABLE IF EXISTS `hibernate_sequence`;
 CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -796,6 +806,7 @@ REPLACE INTO `hibernate_sequence` (`next_val`) VALUES
 	(4);
 
 -- Dumping structure for table danny-store-db.order
+DROP TABLE IF EXISTS `order`;
 CREATE TABLE IF NOT EXISTS `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
@@ -862,6 +873,7 @@ REPLACE INTO `order` (`id`, `created_at`, `customer_id`, `modified_at`, `sale_st
 	(59, '2023-12-07 15:54:48', 25, NULL, NULL, 2, 3012, 'Xã Khánh Yên Thượng Huyện Văn Bàn Tỉnh Lào Cai', '1234567890', NULL);
 
 -- Dumping structure for table danny-store-db.order_item
+DROP TABLE IF EXISTS `order_item`;
 CREATE TABLE IF NOT EXISTS `order_item` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
@@ -944,6 +956,7 @@ REPLACE INTO `order_item` (`id`, `created_at`, `modified_at`, `order_id`, `produ
 	(97, '2023-12-07 15:54:48', NULL, 59, 2, 1, 3000);
 
 -- Dumping structure for table danny-store-db.product
+DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `description` varchar(4000) DEFAULT NULL,
@@ -1003,6 +1016,7 @@ REPLACE INTO `product` (`id`, `description`, `manufacturer_id`, `modified_at`, `
 	(37, 'Iphone mới ra', 9, NULL, 'Iphone 15', '1000000', 1, 1, 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-spark-10_5_.png', NULL, NULL, 111, b'0', '2023-12-07 17:30:41');
 
 -- Dumping structure for table danny-store-db.product_detail
+DROP TABLE IF EXISTS `product_detail`;
 CREATE TABLE IF NOT EXISTS `product_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
@@ -1164,6 +1178,7 @@ REPLACE INTO `product_detail` (`id`, `created_at`, `image_src`, `modified_at`, `
 	(148, '2023-12-07 17:30:41', 'https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/tecno-spark-10_6_.png', NULL, 37);
 
 -- Dumping structure for table danny-store-db.product_manufacturer
+DROP TABLE IF EXISTS `product_manufacturer`;
 CREATE TABLE IF NOT EXISTS `product_manufacturer` (
   `id` bigint(20) NOT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -1176,6 +1191,7 @@ CREATE TABLE IF NOT EXISTS `product_manufacturer` (
 -- Dumping data for table danny-store-db.product_manufacturer: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.product_type
+DROP TABLE IF EXISTS `product_type`;
 CREATE TABLE IF NOT EXISTS `product_type` (
   `id` bigint(20) NOT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -1187,6 +1203,7 @@ CREATE TABLE IF NOT EXISTS `product_type` (
 -- Dumping data for table danny-store-db.product_type: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.promotion
+DROP TABLE IF EXISTS `promotion`;
 CREATE TABLE IF NOT EXISTS `promotion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `end_day_promotion` datetime DEFAULT NULL,
@@ -1197,7 +1214,7 @@ CREATE TABLE IF NOT EXISTS `promotion` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Dumping data for table danny-store-db.promotion: ~7 rows (approximately)
+-- Dumping data for table danny-store-db.promotion: ~8 rows (approximately)
 REPLACE INTO `promotion` (`id`, `end_day_promotion`, `start_day_promotion`, `percent_value`, `description_promotion`, `name_promotion`) VALUES
 	(1, NULL, '1970-01-02 10:12:03', 0, 'Giữ nguyên giá', 'Mặc định'),
 	(2, NULL, NULL, 14, 'Giảm 5% giá trị sản phẩm', 'Chào mừng hè'),
@@ -1209,6 +1226,7 @@ REPLACE INTO `promotion` (`id`, `end_day_promotion`, `start_day_promotion`, `per
 	(8, NULL, NULL, 90, 'Nhân ngày LA ăn cức', 'LA ăn cức');
 
 -- Dumping structure for table danny-store-db.province
+DROP TABLE IF EXISTS `province`;
 CREATE TABLE IF NOT EXISTS `province` (
   `province_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
@@ -1284,6 +1302,7 @@ REPLACE INTO `province` (`province_id`, `name`) VALUES
 /*!40000 ALTER TABLE `province` ENABLE KEYS */;
 
 -- Dumping structure for table danny-store-db.receipt_import
+DROP TABLE IF EXISTS `receipt_import`;
 CREATE TABLE IF NOT EXISTS `receipt_import` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
@@ -1296,6 +1315,7 @@ CREATE TABLE IF NOT EXISTS `receipt_import` (
 -- Dumping data for table danny-store-db.receipt_import: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.receipt_import_detail
+DROP TABLE IF EXISTS `receipt_import_detail`;
 CREATE TABLE IF NOT EXISTS `receipt_import_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `price` bigint(20) DEFAULT NULL,
@@ -1309,6 +1329,7 @@ CREATE TABLE IF NOT EXISTS `receipt_import_detail` (
 -- Dumping data for table danny-store-db.receipt_import_detail: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.role
+DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) DEFAULT NULL,
@@ -1323,6 +1344,7 @@ REPLACE INTO `role` (`id`, `role_name`) VALUES
 	(4, 'customer');
 
 -- Dumping structure for table danny-store-db.status
+DROP TABLE IF EXISTS `status`;
 CREATE TABLE IF NOT EXISTS `status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status_name` varchar(255) DEFAULT NULL,
@@ -1332,6 +1354,7 @@ CREATE TABLE IF NOT EXISTS `status` (
 -- Dumping data for table danny-store-db.status: ~0 rows (approximately)
 
 -- Dumping structure for table danny-store-db.status_order
+DROP TABLE IF EXISTS `status_order`;
 CREATE TABLE IF NOT EXISTS `status_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status_name` varchar(255) DEFAULT NULL,
@@ -1349,6 +1372,7 @@ REPLACE INTO `status_order` (`id`, `status_name`) VALUES
 	(7, 'Hoàn thành');
 
 -- Dumping structure for table danny-store-db.user
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `active` bit(1) DEFAULT NULL,
@@ -1397,6 +1421,7 @@ REPLACE INTO `user` (`id`, `active`, `address`, `avatar`, `created_at`, `gender`
 	(26, b'1', NULL, NULL, '2023-12-07 15:27:43', '1', NULL, 'Customer', '$2a$10$dhS4CvIBY3CzSsY2HZukQOlYhkGo9IEuU6gVKI3ViVWJNpYMiWpWW', NULL, NULL, '0329735190', 'customer', 'customer12345678');
 
 -- Dumping structure for table danny-store-db.wards
+DROP TABLE IF EXISTS `wards`;
 CREATE TABLE IF NOT EXISTS `wards` (
   `wards_id` int(11) NOT NULL AUTO_INCREMENT,
   `district_id` int(11) NOT NULL,
