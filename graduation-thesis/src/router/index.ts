@@ -17,6 +17,7 @@ import TestPopup from '../views/TestPopup.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminPromotionView from '../views/AdminPromotionView.vue'
 import BillOrderView from '../views/BillOrderView.vue'
+import ReceiptView from '../views/ReceiptView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -109,6 +110,11 @@ const router = createRouter({
       path: '/billOrder/:id',
       name: 'BillOrderView',
       component: BillOrderView
+    },
+    {
+      path: '/receipt',
+      name: '/ReceiptView',
+      component: ReceiptView
     }
   ]
 })

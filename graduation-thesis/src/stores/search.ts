@@ -20,7 +20,6 @@ export const useSearchStore = defineStore('search', () => {
         try {
             const response = await axios.get(`http://localhost:8080/product/search?name=${name}`);
             const responseData = response.data;
-
             // Kiểm tra xem response có thuộc tính "data" không
             if (responseData && Array.isArray(responseData.data)) {
                 const data = responseData.data;

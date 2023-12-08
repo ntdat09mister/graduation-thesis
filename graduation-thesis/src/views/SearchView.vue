@@ -51,9 +51,8 @@ export default defineComponent({
         this.getListIphones(this.productType, this.manufacturerId),
             this.getListManufacturers(),
             this.getListSearch(String(sessionStorage.getItem("searchKeyword"))).then(() => {
-            this.nameSearch = String(sessionStorage.getItem("searchKeyword"));
-            console.log(this.listDisplayProducts)
-        });
+                this.nameSearch = String(sessionStorage.getItem("searchKeyword"));
+            });
     }
 })
 </script>
@@ -91,8 +90,8 @@ export default defineComponent({
         </div>
         <div class="flex flex-row justify-center">
             <div v-for="item in listDisplayProducts" :key="item.id">
-                <Product :src="item.src" :alt="item.name" :name="item.name" :original-price="item.originalPrice" :sellingPrice="item.sellingPrice" 
-                    :description="item.description" :id="item.id" />
+                <Product :src="item.src" :alt="item.name" :name="item.name" :original-price="item.originalPrice"
+                    :sellingPrice="item.sellingPrice" :description="item.description" :id="item.id" />
             </div>
         </div>
         <div class="flex flex-row justify-center items-center">
