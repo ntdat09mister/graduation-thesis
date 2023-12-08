@@ -70,9 +70,6 @@ export default defineComponent({
         handleSearch() {
             const keyword = this.searchKeyword;
             sessionStorage.setItem("searchKeyword", keyword)
-            const scrollPosition = window.scrollY;
-            location.reload();
-            window.scrollTo(0, scrollPosition);
             this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
             console.log(this.searchKeyword)
             router.push({ name: 'search' })
@@ -81,9 +78,6 @@ export default defineComponent({
         handleEnter() {
             const keyword = this.searchKeyword;
             sessionStorage.setItem("searchKeyword", keyword);
-            const scrollPosition = window.scrollY;
-            location.reload();
-            window.scrollTo(0, scrollPosition);
             this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
             console.log(this.searchKeyword);
             router.push({ name: 'search' });

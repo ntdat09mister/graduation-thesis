@@ -5,7 +5,8 @@ export const useSearchStore = defineStore('search', () => {
     interface Item {
         id: number;
         name: string;
-        price: number;
+        originalPrice: number;
+        sellingPrice:number
         description: string;
         src: string;
     }
@@ -26,7 +27,8 @@ export const useSearchStore = defineStore('search', () => {
                 const transformedData: Item[] = data.map((item: any) => ({
                     id: item.id,
                     name: item.name,
-                    price: parseFloat(item.price), // Chuyển đổi giá trị thành số
+                    originalPrice: parseFloat(item.originalPrice),
+                    sellingPrice: parseFloat(item.sellingPrice), // Chuyển đổi giá trị thành số
                     description: item.description,
                     src: item.src
                 }));

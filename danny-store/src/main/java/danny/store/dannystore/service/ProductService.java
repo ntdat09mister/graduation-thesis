@@ -103,8 +103,15 @@ public class ProductService {
     public List<ProductDto> searchProductDtosByName(String name) {
         List<Product> productList = productRepository.searchProductDtosByName(name);
         List<ProductDto> productDtos = new ArrayList<>();
+        Float valuePercent = 0F;
         for (Product product : productList) {
             ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);
+            productDto.setOriginalPrice(String.valueOf(product.getPrice()));
+            Optional<Promotion> promotionOptional = promotionRepository.findById(product.getPromotionId());
+            if (promotionOptional.isPresent()) {
+                valuePercent = promotionOptional.get().getPercentValue();
+            }
+            productDto.setSellingPrice(String.valueOf(product.getPrice() - product.getPrice() * valuePercent / 100 ));
             String[] fullString = product.getDescription().split("\\n");
             if (fullString.length > 0) {
                 fullString[0] = fullString[0].substring(1);
