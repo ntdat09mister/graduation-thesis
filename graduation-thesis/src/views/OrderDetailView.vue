@@ -24,7 +24,8 @@ export default defineComponent({
             totalAmount: 'totalAmount',
             idOrder: 'idOrder',
             statusDetail: 'statusDetail',
-            paymentStatus: 'paymentStatus'
+            paymentStatus: 'paymentStatus',
+            createdAt: 'createdAt'
         })
     },
     methods: {
@@ -34,7 +35,7 @@ export default defineComponent({
                 router.push({ name: 'payment', params: { id: Number(orderId) } })
             }
         },
-        getPaymentName(paymentStatus : string) {
+        getPaymentName(paymentStatus: string) {
             if (paymentStatus === "1") {
                 return "Đã thanh toán";
             } else {
@@ -44,105 +45,87 @@ export default defineComponent({
     },
     mounted() {
         const { id } = this.$route.params
+        this.getOrderDetail(Number(id))
         this.checkStatusDetail(Number(id))
     },
     created() {
         const { id } = this.$route.params
         this.getOrderDetail(Number(id))
+        this.checkStatusDetail(Number(id))
     }
 })
 </script>
 <template>
     <div class="flex flex-col justify-center items-center">
         <Header />
-        <div class="w-[780px] flex flex-col justify-between bg-[#F2F2F2]">
-            <div class="w-[500px] h-[30px] flex flex-row items-center">
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Mã
-                    đơn hàng:</span>
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">{{
-                        idOrder }}</span>
+        <div class="flex flex-col justify-center items-center">
+            <div>
+                <span class="text-[30px] font-[600]">Chi tiết đơn hàng</span>
             </div>
-            <div class="w-[500px] h-[30px] flex flex-row items-center">
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Tên
-                    người nhận:</span>
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">{{
-                        nameCustomer }}</span>
+            <div class="w-[800px] flex flex-col">
+                <span class="text-[20px] font-[600]">Thông tin đơn hàng</span>
             </div>
-            <div class="w-[500px] h-[30px] flex flex-row items-center">
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Số
-                    điện thoại người nhận:</span>
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">{{
-                        phoneNumber }}</span>
+            <div class="w-[800px] flex flex-col">
+                <span class="h-[25px]">Mã đơn: {{ idOrder }}</span>
+                <span class="h-[25px]">Tên khách hàng: {{ nameCustomer }}</span>
+                <span class="h-[25px]">Địa chỉ nhận hàng: {{ address }}</span>
+                <span class="h-[25px]">Số điện thoại: {{ phoneNumber }}</span>
+                <span class="h-[25px]">Trạng thái đơn hàng: {{ statusDetail }}</span>
+                <span class="h-[25px]">Trạng thái thanh toán: {{ getPaymentName(String(paymentStatus)) }}</span>
+                <span class="h-[25px]">Thời gian mua: {{ createdAt }}</span>
             </div>
-            <div class="w-[500px] h-[30px] flex flex-row items-center">
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Địa
-                    chỉ nhận hàng:</span>
-                <span
-                    style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">{{
-                        address }}</span>
-            </div>
-            <div class="flex flex-col">
-                <div class="w-[500px] h-[30px] flex flex-row items-center">
-                    <span
-                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Danh
-                        sách sản phẩm đã đặt:</span>
+            <div class="w-[800px] flex flex-col mt-[10px]">
+                <div class="w-[800px] flex flex-col">
+                    <span class="text-[20px] font-[600]">Thông tin sản phẩm</span>
                 </div>
-                <div v-for="item in listOrderItems" class="flex flex-row">
-                    <div>
-                        <img class="w-[80px]" :src="item.srcProduct" alt="">
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <div>
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Tên:
-                            </span>
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{
-                                    item.productName }}</span>
+                <div class="w-[800px] flex flex-row justify-between mt-[10px]">
+                    <div class="w-[400px] flex flex-row border">
+                        <div class="w-[100px] flex justify-center items-center border">
+                            <span>TT</span>
                         </div>
-                        <div>
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Số
-                                lượng:</span>
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{
-                                    item.quantity }}</span>
-                        </div>
-                        <div>
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Giá:</span>
-                            <span
-                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{
-                                    item.price }}đ</span>
+                        <div class="w-[300px] flex justify-center items-center">
+                            <span>TÊN SẢN PHẨM</span>
                         </div>
                     </div>
-
+                    <div class="w-[400px] flex flex-row border">
+                        <div class="w-[133px] flex justify-center items-center">
+                            <span>SỐ LƯỢNG</span>
+                        </div>
+                        <div class="w-[133px] flex justify-center items-center border">
+                            <span>ĐƠN GIÁ</span>
+                        </div>
+                        <div class="w-[133px] flex justify-center items-center">
+                            <span>THÀNH TIỀN</span>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Trạng thái đơn hàng:</span>
-                    <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{ statusDetail }}</span>
+                <div v-for="(item, index) in listOrderItems">
+                    <div class="w-[800px] flex flex-row justify-between">
+                        <div class="w-[400px] flex flex-row">
+                            <div class="w-[100px] flex justify-center items-center border">
+                                <span>{{ index + 1 }}</span>
+                            </div>
+                            <div class="w-[300px] flex justify-center items-center border">
+                                <span>{{ item.productName }}</span>
+                            </div>
+                        </div>
+                        <div class="w-[400px] flex flex-row">
+                            <div class="w-[133px] flex justify-center items-center border">
+                                <span>{{ item.quantity }}</span>
+                            </div>
+                            <div class="w-[133px] flex justify-center items-center border">
+                                <span>{{ item.price }}</span>
+                            </div>
+                            <div class="w-[133px] flex justify-center items-center border">
+                                <span>{{ item.totalAmount }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #1B51E5;">Trạng thái thanh toán:</span>
-                    <span style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #2ce51b;">{{ getPaymentName(String(paymentStatus)) }}</span>
+                <div class="w-[800px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
+                    <span>TỔNG CỘNG: {{ totalAmount }}đ</span>
                 </div>
             </div>
-
-        </div>
-        <div>
-            <span
-                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #e5431b;">Tổng
-                tiền:</span>
-            <span
-                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 18px;line-height: 18px;color: #e51b1b;">{{
-                    totalAmount }}đ</span>
         </div>
         <Footer />
     </div>

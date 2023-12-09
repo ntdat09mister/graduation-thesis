@@ -274,12 +274,13 @@ export default defineComponent({
                     <div class="w-[120px] h-[80px] flex flex-row justify-between items-center">
                         <select v-model="item.statusId">
                             <option value="1">Tiếp nhận đơn</option>
-                            <option value="2">Vận đơn</option>
-                            <option value="3">Đang giao hàng</option>
+                            <option value="2">Lên đơn</option>
+                            <option value="3">Đang giao</option>
                             <option value="4">Đã giao hàng</option>
                             <option value="5">Trả hàng</option>
                             <option value="6">Hủy đơn</option>
                             <option value="7">Hoàn thành</option>
+                            <option value="8">Chờ phê duyệt</option>
                         </select>
                     </div>
                     <div class="w-[80px] h-[80px] flex flex-row justify-between items-center">

@@ -20,7 +20,7 @@ export default defineComponent({
             orderId: 1,
             passStepUpdatePayment: false,
             atStore: true,
-            phoneNumber: '',
+            phoneNumberInput: '',
             adressSelectedFinal: ''
         }
     },
@@ -64,7 +64,6 @@ export default defineComponent({
         },
         handleUpdatePayment(orderIdInput: number, addressInput: string, phoneNumber: string) {
             if (this.passStepUpdatePayment || addressInput === 'Nhận tại cửa hàng') {
-                // this.adressSelectedFinal = addressInput
                 this.updatePayment(orderIdInput, addressInput, phoneNumber)
             } else {
                 toast.error("Vui lòng nhập xác lựa chọn thông tin nhận hàng!")
@@ -85,7 +84,8 @@ export default defineComponent({
     mounted() {
         this.getListProvinces(),
             this.getListDistrictOfProvince(this.districtId),
-            this.getListWardsOfDistrict(this.wardsId)
+            this.getListWardsOfDistrict(this.wardsId),
+            this.concatAddressHandle(this.wardsId, this.districtId, this.provinceId)
     }
 })
 </script>
@@ -93,13 +93,14 @@ export default defineComponent({
     <div class="flex flex-col justify-center items-center bg-[#F2F2F2]">
         <Header />
         <div class="w-[600px] flex flex-col items-center">
-            <h1>Thông tin đơn hàng</h1>
+            <p
+                style="font-family: 'Lato';font-style: normal;font-weight: 600;font-size: 20px;line-height: 21px;color: #1C1D21;">
+                Thông tin khách hàng</p>
             <div class="w-[600px] flex flex-row items-center">
-                <div class="w-[300px] flex justify-center">
-                    <span>Thông tin</span>
-                </div>
-                <div class="w-[300px] flex justify-center">
-                    <span>Thanh toán</span>
+                <div class="w-[600px] flex">
+                    <p
+                        style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 17px;line-height: 21px;color: #1C1D21;">
+                        Danh sách sản phẩm</p>
                 </div>
             </div>
             <div v-for="item in listOrderItems" class="w-[600px] flex flex-col items-center">
@@ -127,11 +128,11 @@ export default defineComponent({
             </div>
             <div class="w-[600px] flex flex-col  rounded-[10px] bg-[#FFFFFF] mt-[10px]">
                 <span>Tên khách hàng:</span>
-                <input type="text" :placeholder="nameCustomer">
+                <span>{{ nameCustomer }}</span>
                 <span>Số điện thoại:</span>
-                <input v-model="phoneNumber" type="text" :placeholder="`${phoneNumber}`">
+                <input v-model="phoneNumberInput" type="text" :placeholder="`${phoneNumber}`">
                 <span>Tài khoản đăng nhập:</span>
-                <input type="text" :placeholder="username">
+                <span>{{ username }}</span>
             </div>
             <div v-if="atStore">
                 <div class="w-[600px] flex flex-col mt-[10px]">
@@ -240,7 +241,7 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
                             {{ totalAmount }}đ</p>
                     </div>
-                    <button @click="handleUpdatePayment(orderId, adressSelectedFinal, phoneNumber)"
+                    <button @click="handleUpdatePayment(orderId, adressSelectedFinal, phoneNumberInput)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
                         trang theo dõi đơn</button>
                 </div>
@@ -276,7 +277,7 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
                             {{ totalAmount }}đ</p>
                     </div>
-                    <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng', phoneNumber)"
+                    <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng', phoneNumberInput)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
                         trang theo dõi đơn</button>
                 </div>

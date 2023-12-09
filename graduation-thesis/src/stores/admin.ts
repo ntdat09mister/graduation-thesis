@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { toast } from 'vue3-toastify'
 export const useAdminStore = defineStore('admin', () => {
     interface User {
         id: number,
@@ -105,6 +106,10 @@ export const useAdminStore = defineStore('admin', () => {
     }
     async function updateStatusOrder(orderId: number, statusUpdate: number, paymentStatus: number) {
         try {
+            // if (!statusUpdate || !paymentStatus) {
+            //     toast.error("Vui lòng không bỏ trống trường thông tin nào");
+            //     return;
+            // }
             const token = localStorage.getItem("accessToken");
             if (!token) {
                 console.error('Access token not found in localStorage');

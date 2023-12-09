@@ -47,16 +47,24 @@ export default defineComponent({
             this.selected = value;
         },
         clickAddToCart(quantityProduct: number) {
-            this.addToCart(Number(this.productDto?.id), 1, this.selectedVar,quantityProduct)
+            this.addToCart(Number(this.productDto?.id), 1, this.selectedVar, quantityProduct)
         },
         toggleDescription() {
             this.isTruncated = !this.isTruncated;
+        },
+        checkQuantity(quantity: number) {
+            if (quantity === 0) {
+                return 'Hết hàng'
+            } else {
+                return 'Số lượng còn lại trong kho:' + quantity
+            }
         }
     },
     created() {
         const { id } = this.$route.params
         this.getProductImgDetail(Number(id))
         this.getProductDtoById(Number(id))
+        this.checkQuantity(this.productDto?.quantity)
     }
 })
 </script>
@@ -96,8 +104,8 @@ export default defineComponent({
                                 'w-[100px] h-[51px] flex flex-col justify-around items-center bg-red-500 rounded-xl cursor-pointer': selectedVar === variant
                             }" @click="changeVariant(variant)">
                                 <strong>{{ variant === 1.1 ? '1TBB' : variant === 1 ? '512GB' : '256GB' }}</strong>
-                                <span>{{ (productDto?.sellingPrice || 0) * variant }}đ</span>
-                        </button>
+                                <span>{{ Math.trunc((productDto?.sellingPrice || 0) * variant) * variant }}đ</span>
+                            </button>
                         </template>
                     </div>
                     <div class="mt-[10px] mb-[10px]">
@@ -105,7 +113,8 @@ export default defineComponent({
                     </div>
                     <div class="flex flex-row justify-around items-center cursor-pointer">
                         <template v-model="color" v-for="value in ['Đen', 'Vàng', 'Trắng']">
-                            <button :class="{ 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selected !== value, 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selected === value }"
+                            <button
+                                :class="{ 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selected !== value, 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selected === value }"
                                 @click="changeBackground(value)">
                                 <strong>{{ value }}</strong>
                             </button>
@@ -115,7 +124,9 @@ export default defineComponent({
                         <img src="https://cdn2.cellphones.com.vn/x120/https://dashboard.cellphones.com.vn/storage/B2SDIENTHOAI.jpg"
                             alt="">
                     </div>
-                    <p>Số lượng còn lại trong kho: {{ productDto?.quantity }}</p>
+                    <div class="w-[300px] flex justify-center">
+                        <p>{{ checkQuantity(Number(productDto?.quantity)) }}</p>
+                    </div>
                     <div class="w-[360px] h-[70px] flex flex-row justify-around items-center mt-[10px]">
                         <div @click="addOrderInstant(productDto?.id, productDto.sellingPrice, productDto?.quantity)"
                             class="w-[280px] h-[60px] flex flex-col justify-center items-center bg-[red] rounded-xl cursor-pointer">

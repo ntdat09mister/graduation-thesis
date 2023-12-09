@@ -34,8 +34,7 @@ export const useCartStore = defineStore('cart', () => {
         if (data.cartDtoList && Array.isArray(data.cartDtoList) && typeof data.totalAmount === 'number') {
           listCart.value = data.cartDtoList;
           totalAmountRef.value = data.totalAmount;
-          console.log(listCart);
-          console.log(totalAmountRef.value);
+          console.log(listCart.value);
         } else {
           console.error('Invalid data received from the API:', data);
         }
@@ -56,9 +55,11 @@ export const useCartStore = defineStore('cart', () => {
       if (!productId || !quantity || !priceCoefficient) {
         toast.error("Không thể tạo đơn hàng");
         return;
-    }
+      }
+
       const token = localStorage.getItem("accessToken");
       if (!token) {
+        toast.error("Vui lòng đăng nhập để thêm sản phẩm này vào giỏ hàng");
         console.error('Access token not found in localStorage');
         return;
       }
@@ -89,7 +90,6 @@ export const useCartStore = defineStore('cart', () => {
       const params = { cartId: cartId };
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.delete(apiUrl, { headers, params });
-      console.log(response);
       const scrollPosition = window.scrollY;
       location.reload();
       window.scrollTo(0, scrollPosition);
@@ -97,8 +97,12 @@ export const useCartStore = defineStore('cart', () => {
       console.error('Error fetching data:', error);
     }
   }
-  async function createOrderFromCart() {
+  async function createOrderFromCart(totalAmount: number) {
     try {
+      if (totalAmount === 0) {
+        toast.error("Không có đơn hàng nào")
+        return;
+      }
       const token = localStorage.getItem("accessToken");
       if (!token) {
         console.error('Access token not found in localStorage');
@@ -126,6 +130,7 @@ export const useCartStore = defineStore('cart', () => {
         console.error('Access token not found in localStorage');
         return;
       }
+      location.reload();
       const apiUrl = `http://localhost:8080/cart/updateQuantity?statusUpdate=${statusUpdate}&cartId=${cartId}`;
       const headers = { Authorization: `Bearer ${token}`, };
       const response = await axios.put(apiUrl, null, { headers });

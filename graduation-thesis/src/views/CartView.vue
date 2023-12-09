@@ -12,7 +12,7 @@ export default defineComponent({
         Header,
         Footer,
         IconBack,
-        IconRemove
+        IconRemove,
     },
     computed: {
         ...mapState(useCartStore, {
@@ -24,7 +24,7 @@ export default defineComponent({
         return {
             userId: 1,
             totalAmountShow: 0,
-            checkTotalAmountBoolean: false
+            totalAmountCheck: ''
         }
     },
     methods: {
@@ -34,16 +34,10 @@ export default defineComponent({
         },
         routerPage(name: string) {
             router.push({ name })
-        },
-        checkTotalAmount() {
-            if (this.totalAmount > 0) {
-                this.checkTotalAmountBoolean = true
-            }
         }
     },
     mounted() {
-        this.getListCart(),
-        this.checkTotalAmount()
+        this.getListCart()
     }
 })
 </script>
@@ -93,7 +87,7 @@ export default defineComponent({
                 </div>
             </div>
         </div>
-        <div v-if="checkTotalAmountBoolean" class="w-[600px] h-[100px] flex flex-col justify-between">
+        <div class="w-[600px] h-[100px] flex flex-col justify-between">
             <div class="w-[100px] h-[100px] flex flex-col justify-center items-center ml-[520px]">
                 <p>Tạm tính</p>
                 <div>
@@ -101,7 +95,7 @@ export default defineComponent({
                     <span>đ</span>
                 </div>
             </div>
-            <div class="w-[140px] h-[50px] bg-[red] flex justify-center items-center rounded-xl ml-[500px] cursor-pointer" @click="createOrderFromCart">
+            <div class="w-[140px] h-[50px] bg-[red] flex justify-center items-center rounded-xl ml-[500px] cursor-pointer" @click="createOrderFromCart(totalAmount)">
                 <p class="text-neutral-50">Tạo đơn hàng</p>
             </div>
         </div>

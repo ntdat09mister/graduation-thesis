@@ -10,7 +10,8 @@ export const useOrderStore = defineStore('order', () => {
         srcProduct: string,
         price: number,
         quantity: number,
-        createdAt: string
+        createdAt: string,
+        totalAmount: string
     }
     const nameCustomer = ref('')
     const address = ref('')
@@ -19,6 +20,7 @@ export const useOrderStore = defineStore('order', () => {
     const totalAmount = ref(1)
     const idOrder = ref(1)
     const statusDetail = ref('')
+    const createdAt = ref('')
     const listOrderItems = ref<OrderItem[]>([])
     const today = new Date(); 
     const toDaytime = ref('')
@@ -54,6 +56,8 @@ export const useOrderStore = defineStore('order', () => {
                     idOrder.value = data.orderId
                     statusDetail.value = data.status
                     paymentStatus.value = data.paymentStatus
+                    totalAmount.value = data.totalAmount
+                    createdAt.value = data.createdAt
                 } else {
                     console.error('Invalid data received from the API:', data);
                 }
@@ -107,6 +111,7 @@ export const useOrderStore = defineStore('order', () => {
             }
             const token = localStorage.getItem("accessToken");
             if (!token) {
+                toast.error("Vui lòng đăng nhập để mua sản phẩm");
                 console.error('Access token not found in localStorage');
                 return;
             }
@@ -135,8 +140,45 @@ export const useOrderStore = defineStore('order', () => {
                 console.error('Access token not found in localStorage');
                 return;
             }
-            toast.loading('Đang hủy đơn hàng....')
             const apiUrl = `http://localhost:8080/order/cancelOrder?orderId=${orderId}`;
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, null, { headers });
+            const responseData = response.data;
+            console.log(responseData);
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function updateReceived(orderId: number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = `http://localhost:8080/order/updateReceived?orderId=${orderId}`;
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, null, { headers });
+            const responseData = response.data;
+            console.log(responseData);
+            const scrollPosition = window.scrollY;
+            location.reload();
+            window.scrollTo(0, scrollPosition);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function refundOrder(orderId: number) {
+        try {
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const apiUrl = `http://localhost:8080/order/refundOrder?orderId=${orderId}`;
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, null, { headers });
             const responseData = response.data;
@@ -176,12 +218,11 @@ export const useOrderStore = defineStore('order', () => {
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
             if (response.data) {
-
                 toast.loading('Đang tạo đơn hàng....')
                 console.log(orderId)
                 setTimeout(() => {
                     router.push({ name: 'orderDetail', params: { id: orderId } })
-                }, 2000);
+                }, 1000);
             }
 
         } catch (error) {
@@ -254,6 +295,7 @@ export const useOrderStore = defineStore('order', () => {
         }
     }
 
+
     const adressSelected = ref('')
     async function concatAddress(wardsId: number, districtId: number, provinceId: number) {
         const response = await axios.get(`http://localhost:8080/address/concatAddress?wardsId=${wardsId}&districtId=${districtId}&provinceId=${provinceId}`)
@@ -284,6 +326,9 @@ export const useOrderStore = defineStore('order', () => {
         listOrders,
         updatePayment,
         toDaytime,
-        paymentStatus
+        paymentStatus,
+        createdAt,
+        updateReceived,
+        refundOrder
     }
 })

@@ -16,7 +16,7 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder']),
+        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder','updateReceived','refundOrder']),
         routerOrderDetail(orderId: number) {
             router.push({ name: 'orderDetail', params: { id: orderId } })
         }
@@ -81,6 +81,18 @@ export default defineComponent({
                     <button @click="cancelOrder(orderItem.id)"
                         class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Hủy
                         đơn</button>
+                </div>
+            </template>
+            <template v-if="orderItem.status === 'Đang giao'">
+                <div class="w-[70px] h-[50px] flex justify-center items-center">
+                    <button @click="updateReceived(orderItem.id)"
+                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Đã nhận hàng</button>
+                </div>
+            </template>
+            <template v-if="orderItem.status === 'Đã nhận hàng'">
+                <div class="w-[70px] h-[50px] flex justify-center items-center">
+                    <button @click="refundOrder(orderItem.id)"
+                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Trả hàng</button>
                 </div>
             </template>
             <template v-else>
