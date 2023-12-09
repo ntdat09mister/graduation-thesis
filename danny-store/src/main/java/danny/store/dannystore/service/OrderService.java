@@ -36,7 +36,7 @@ public class OrderService {
     @Transactional(rollbackOn = Exception.class)
     public Long createOrderFromCart(Long userId) throws NotFoundException {
         Order order = new Order();
-        Float countTotalAmount = 0F;
+        Long countTotalAmount = 0L;
         List<Cart> cartList = cartRepository.findByUserId(userId);
         if (!cartList.isEmpty() && cartList != null) {
             order.setCustomerId(userId);
@@ -148,6 +148,7 @@ public class OrderService {
                 orderItemDto.setPrice(orderItem.getPrice());
                 orderItemDto.setQuantity(orderItem.getQuantity());
                 orderItemDto.setSrcProduct(productOptional.get().getSrc());
+                orderItemDto.setTotalAmount(orderItem.getPrice() * orderItem.getQuantity());
                 return orderItemDto;
             }).collect(Collectors.toList());
             OrderDetailDto orderDetailDto = new OrderDetailDto();
@@ -157,11 +158,13 @@ public class OrderService {
             orderDetailDto.setTotalAmount(orderOptional.get().getTotalAmount());
             orderDetailDto.setCreatedAt(publicFunction.formatTimeDetail(orderOptional.get().getCreatedAt()));
             orderDetailDto.setNameCustomer(userOptional.get().getName());
-            orderDetailDto.setAddress(userOptional.get().getAddress());
-            orderDetailDto.setPhoneNumber(userOptional.get().getPhone());
             orderDetailDto.setUsername(userOptional.get().getUsername());
             orderDetailDto.setAddress(orderOptional.get().getDeliveryAddress());
-            orderDetailDto.setPhoneNumber(orderOptional.get().getPhone());
+            if (orderOptional.get().getPhone() == null || orderOptional.get().getPhone().isEmpty()) {
+                orderDetailDto.setPhoneNumber(userOptional.get().getPhone());
+            } else {
+                orderDetailDto.setPhoneNumber(orderOptional.get().getPhone());
+            }
             orderDetailDto.setPaymentStatus(orderOptional.get().getPaymentStatus());
             Optional<StatusOrder> statusOrderOptional = statusOrderRepository.findById(orderOptional.get().getStatusId());
             if (statusOrderOptional.isPresent()) {
@@ -355,6 +358,7 @@ public class OrderService {
             Order order = orderOptional.get();
             if (orderOptional.get().getStatusId() > 0 && orderOptional.get().getStatusId() < 3) {
                 order.setStatusId(6L);
+                orderRepository.save(order);
                 List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
                 for (OrderItem orderItem : orderItemList) {
                     Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());
@@ -369,4 +373,31 @@ public class OrderService {
         return null;
     }
 
+    public String updateReceived(Long userId, Long orderId) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            if (orderOptional.get().getStatusId() == 3L) {
+                order.setStatusId(4L);
+                orderRepository.save(order);
+            }
+        } else {
+            throw new NotFoundException("Không đổi được trạng thái!");
+        }
+        return null;
+    }
+
+    public String refundOrder(Long userId, Long orderId) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            if (orderOptional.get().getStatusId() == 4L) {
+                order.setStatusId(8L);
+                orderRepository.save(order);
+            }
+        } else {
+            throw new NotFoundException("Không đổi được trạng thái!");
+        }
+        return null;
+    }
 }

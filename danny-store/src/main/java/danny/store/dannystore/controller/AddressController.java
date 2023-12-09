@@ -37,6 +37,6 @@ public class AddressController {
         String province = provinceRepository.getProvince(provinceId);
         String district = districtRepository.getDistrict(districtId);
         String wards = wardsRepository.getWards(wardsId);
-        return wards + " " +district + " Tỉnh" +province;
+        return wards + ", " +district + ", " +province;
     }
 }

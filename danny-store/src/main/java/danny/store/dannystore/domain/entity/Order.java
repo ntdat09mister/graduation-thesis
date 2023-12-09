@@ -18,7 +18,7 @@ public class Order {
     private Long id;
     private Long saleStaffId;
     private Long customerId;
-    private Float totalAmount;
+    private Long totalAmount;
     private Long statusId;
     private String deliveryAddress;
     private String phone;

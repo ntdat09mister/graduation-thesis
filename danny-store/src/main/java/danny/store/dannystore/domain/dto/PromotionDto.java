@@ -6,7 +6,7 @@ import java.util.Date;
 @Data
 public class PromotionDto {
     private Long id;
-    private Float percentValue;
+    private Long percentValue;
     private String namePromotion;
     private String descriptionPromotion;
     private Date startDayPromotion;

@@ -7,7 +7,7 @@ public class ReportItemDto {
     private Long orderId;
     private String customerName;
     private String saleStaffName;
-    private Float totalAmount;
+    private Long totalAmount;
     private String status;
     private String createdAt;
 }

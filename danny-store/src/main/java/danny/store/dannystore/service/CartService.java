@@ -77,7 +77,7 @@ public class CartService {
             cartDetail.setModifiedAt(new Date());
             cartDetailRepository.save(cartDetail);
             Product product = productOptional.get();
-            product.setQuantity(productOptional.get().getQuantity() - cartInput.getQuantity());
+            product.setQuantity(productOptional.get().getQuantity() - 1);
             productRepository.save(product);
             System.out.println("Add success fully cart " + productOptional.get().getName());
             return RESPONSE_ADD_TO_CART_SUCCESS;
@@ -113,16 +113,17 @@ public class CartService {
             if (statusUpdate) {
                 cartDetails.get(0).setQuantity(cartDetails.get(0).getQuantity() + 1);
                 product.setQuantity(product.getQuantity() - 1);
-                productRepository.save(product);
             } else {
                 cartDetails.get(0).setQuantity(cartDetails.get(0).getQuantity() - 1);
-                product.setQuantity(product.getQuantity() - 1);
+                product.setQuantity(product.getQuantity() + 1);
                 if (cartDetails.get(0).getQuantity() == 0) {
                     cartRepository.deleteById(cartId);
                     cartDetailRepository.deleteByCartId(cartId);
+                    product.setQuantity(product.getQuantity() + 1);
                 }
             }
             cartDetailRepository.save(cartDetails.get(0));
+            productRepository.save(product);
         }
         return RESPONSE_UPDATE_SUCCESS;
     }

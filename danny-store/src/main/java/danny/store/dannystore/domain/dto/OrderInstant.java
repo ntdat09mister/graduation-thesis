@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class OrderInstant {
     private Long productId;
-    private Float price;
+    private Long price;
 }

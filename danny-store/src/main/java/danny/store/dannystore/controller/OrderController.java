@@ -48,6 +48,14 @@ public class OrderController extends BaseController{
     public ResponseEntity<?> cancelOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
         return successResponse(orderService.cancelOrder(user.getId(), orderId));
     }
+    @PutMapping("/updateReceived")
+    public ResponseEntity<?> updateReceived(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
+        return successResponse(orderService.updateReceived(user.getId(), orderId));
+    }
+    @PutMapping("/refundOrder")
+    public ResponseEntity<?> refundOrder(@UserInfo User user, @RequestParam Long orderId) throws NotFoundException {
+        return successResponse(orderService.refundOrder(user.getId(), orderId));
+    }
     @PutMapping("/updatePayment")
     public ResponseEntity<?> updatePayment(@UserInfo User user, @RequestBody PaymentDto paymentDto) throws NotFoundException {
         return successResponse(orderService.updatePayment(user.getId(), paymentDto));

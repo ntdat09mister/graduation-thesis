@@ -43,7 +43,7 @@ public class ProductService {
             } else {
                 products = productRepository.findAllProducts(true);
             }
-            Float valuePercent = 0F;
+            Long valuePercent = 0L;
             for (Product product : products) {
                 ProductDto productDto = new ProductDto();
                 productDto.setId(product.getId());
@@ -93,7 +93,7 @@ public class ProductService {
             productDto.setDescription(cleanedText);
             productDto.setOriginalPrice(String.valueOf(productOptional.get().getPrice()));
             Optional<Promotion> promotionOptional = promotionRepository.findById(productOptional.get().getPromotionId());
-            productDto.setSellingPrice(String.valueOf(productOptional.get().getPrice() + promotionOptional.get().getPercentValue()));
+            productDto.setSellingPrice(String.valueOf(productOptional.get().getPrice() - promotionOptional.get().getPercentValue() * productOptional.get().getPrice() / 100));
             return productDto;
         } else {
             throw new ClassNotFoundException();
@@ -103,7 +103,7 @@ public class ProductService {
     public List<ProductDto> searchProductDtosByName(String name) {
         List<Product> productList = productRepository.searchProductDtosByName(name);
         List<ProductDto> productDtos = new ArrayList<>();
-        Float valuePercent = 0F;
+        Long valuePercent = 0L;
         for (Product product : productList) {
             ProductDto productDto = objectMapper.convertValue(product, ProductDto.class);
             productDto.setOriginalPrice(String.valueOf(product.getPrice()));
@@ -111,7 +111,7 @@ public class ProductService {
             if (promotionOptional.isPresent()) {
                 valuePercent = promotionOptional.get().getPercentValue();
             }
-            productDto.setSellingPrice(String.valueOf(product.getPrice() - product.getPrice() * valuePercent / 100 ));
+            productDto.setSellingPrice(String.valueOf((product.getPrice() - product.getPrice() * valuePercent / 100)));
             String[] fullString = product.getDescription().split("\\n");
             if (fullString.length > 0) {
                 fullString[0] = fullString[0].substring(1);
@@ -183,7 +183,7 @@ public class ProductService {
                 if (productOptional.isPresent()) {
                     Product product = productOptional.get();
                     product.setName(productDtoForAdmin.getName());
-                    product.setPrice(Float.parseFloat(productDtoForAdmin.getPrice()));
+                    product.setPrice(Long.parseLong(productDtoForAdmin.getPrice()));
                     product.setDescription(productDtoForAdmin.getDescription());
                     product.setQuantity(productDtoForAdmin.getQuantity());
                     product.setStatus(productDtoForAdmin.getStatusProduct());
@@ -207,7 +207,7 @@ public class ProductService {
                 product.setName(productDtoAddForAdmin.getName());
                 product.setQuantity(productDtoAddForAdmin.getQuantity());
                 product.setDescription(productDtoAddForAdmin.getDescription());
-                product.setPrice(Float.parseFloat(productDtoAddForAdmin.getPrice()));
+                product.setPrice(Long.parseLong(productDtoAddForAdmin.getPrice()));
                 product.setSrc("https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/tecno-spark-10_5_.png");
                 product.setCreatedAt(new Date());
                 product.setStatus(false);

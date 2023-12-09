@@ -6,5 +6,5 @@ import lombok.Data;
 public class CartInput {
     private Long productId;
     private Long quantity;
-    private Float priceCoefficient;
+    private Long priceCoefficient;
 }

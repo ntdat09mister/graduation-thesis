@@ -11,7 +11,7 @@ public class OrderDetailDto {
     private String phoneNumber;
     private Long userId;
     private List<OrderItemDto> orderItemList;
-    private Float totalAmount;
+    private Long totalAmount;
     private String username;
     private String status;
     private Long paymentStatus;
