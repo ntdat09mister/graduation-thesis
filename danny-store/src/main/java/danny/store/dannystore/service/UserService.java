@@ -1,13 +1,17 @@
 package danny.store.dannystore.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import danny.store.dannystore.common.RoleType;
 import danny.store.dannystore.common.StatusType;
 import danny.store.dannystore.domain.dto.ChangePasswordDto;
 import danny.store.dannystore.domain.dto.InforUserUpdateDto;
+import danny.store.dannystore.domain.dto.OAuthTokenResponseDTO;
 import danny.store.dannystore.domain.dto.UserAdminDto;
 import danny.store.dannystore.domain.entity.Role;
 import danny.store.dannystore.domain.entity.User;
+import danny.store.dannystore.domain.model.ForgotPasswordInput;
+import danny.store.dannystore.domain.model.LoginInput;
 import danny.store.dannystore.domain.model.UserInput;
 import danny.store.dannystore.domain.model.UserOutput;
 import danny.store.dannystore.repository.OrderRepository;
@@ -16,12 +20,18 @@ import danny.store.dannystore.repository.UserRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedClientException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,6 +158,7 @@ public class UserService {
             user.setAddress(userAdminDto.getAddress());
             user.setPhone(userAdminDto.getPhone());
             user.setRole(roleOptional.get().getRoleName());
+            user.setActive(userAdminDto.getActive());
             user.setCreatedAt(new Date());
             userRepository.save(user);
             return "Update success user" + optionalUserUpdate.get().getUsername();
@@ -182,6 +193,52 @@ public class UserService {
             return "Đổi mật khẩu thành công";
         } else {
             return "Mật khẩu mới không khớp";
+        }
+    }
+
+    public Object login(LoginInput loginInput) throws JsonProcessingException {
+        Boolean activeUser = userRepository.getActiveUser(loginInput.getUsername());
+        if (activeUser) {
+            String tokenEndpoint = "http://localhost:8080/oauth/token";
+            String clientId = "client";
+            String clientSecret = "client@2022";
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.setBasicAuth(clientId, clientSecret);
+            MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+            map.add("grant_type", "password");
+            map.add("username", loginInput.getUsername());
+            map.add("password", loginInput.getPassword());
+            org.springframework.http.HttpEntity<MultiValueMap<String, String>> request = new org.springframework.http.HttpEntity<>(map, headers);
+            ResponseEntity<String> response = restTemplate.postForEntity(tokenEndpoint, request, String.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            OAuthTokenResponseDTO oAuthTokenResponseDTO = objectMapper.readValue(response.getBody(), OAuthTokenResponseDTO.class);
+            return oAuthTokenResponseDTO;
+        } else {
+            OAuthTokenResponseDTO oAuthTokenResponseDTO = new OAuthTokenResponseDTO();
+            oAuthTokenResponseDTO.setAccessToken("block");
+            return oAuthTokenResponseDTO;
+        }
+    }
+
+    public Object forgotPassword(ForgotPasswordInput forgotPasswordInput) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findByUsernameAndPhoneNumber(forgotPasswordInput.getUsername(), forgotPasswordInput.getPhoneNumber());
+        if (userOptional.isPresent()) {
+            SecureRandom random = new SecureRandom();
+            String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder sb = new StringBuilder(8);
+            for (int i = 0; i < 8; i++) {
+                int randomIndex = random.nextInt(characters.length());
+                char randomChar = characters.charAt(randomIndex);
+                sb.append(randomChar);
+            }
+            User user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(sb));
+            userRepository.save(user);
+            return sb;
+        } else {
+            throw new NotFoundException(RESPONSE_NOT_FOUND_USER);
         }
     }
 }

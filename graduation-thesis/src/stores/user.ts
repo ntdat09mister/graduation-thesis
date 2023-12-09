@@ -54,7 +54,8 @@ export const useUserStore = defineStore('user', () => {
         address: string,
         phone: string,
         role: string,
-        createdAt: string
+        createdAt: string,
+        active: boolean
     }
     const listUsersAdmin = ref<UserForAdmin[]>([]);
     async function getUsersAdmin() {
@@ -82,14 +83,16 @@ export const useUserStore = defineStore('user', () => {
                         address: item.address,
                         phone: item.phone,
                         role: item.role,
-                        createdAt: item.createdAt
+                        createdAt: item.createdAt,
+                        active: item.active
                     }));
                     listUsersAdmin.value = transformedData;
+                    console.log('123')
+                    console.log(listUsersAdmin)
                 } else {
-                    toast.error('Không tìm được sản phẩm!')
+                    toast.error('Không tìm thấy người dùng nào!')
                     setTimeout(() => {
                     }, 1000);
-                    console.error('Invalid data received from the API:', data);
                 }
             } else {
                 console.error('No data received from the API');
@@ -98,9 +101,10 @@ export const useUserStore = defineStore('user', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function updateUserAdmin(idInput: number, usernameInput: string, nameInput: string, genderInput: string, addressInput: string, phoneInput: string, roleInput: string) {
+    async function updateUserAdmin(idInput: number, usernameInput: string, nameInput: string, genderInput: string, addressInput: string, phoneInput: string, roleInput: string, seletedActive: boolean) {
         try {
-            if (!idInput || !usernameInput || !nameInput || !genderInput || !addressInput || !phoneInput || !roleInput) {
+            console.log(seletedActive)
+            if (!usernameInput || !nameInput || !genderInput || !addressInput || !phoneInput || !roleInput) {
                 toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
                 return;
             }
@@ -125,7 +129,8 @@ export const useUserStore = defineStore('user', () => {
                 gender: genderInput,
                 address: addressInput,
                 phone: phoneInput,
-                role: roleInput
+                role: roleInput,
+                active: seletedActive
             }
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
@@ -137,7 +142,7 @@ export const useUserStore = defineStore('user', () => {
             location.reload();
             window.scrollTo(0, scrollPosition);
         } catch (error) {
-            toast.success('Cập nhật thất bại!')
+            toast.error('Cập nhật thất bại!')
             setTimeout(() => {
             }, 1000);
             console.error('Error fetching data:', error);

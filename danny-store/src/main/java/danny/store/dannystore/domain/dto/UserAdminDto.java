@@ -13,5 +13,6 @@ public class UserAdminDto {
     private String address;
     private String phone;
     private String role;
+    private Boolean active;
     private String createdAt;
 }

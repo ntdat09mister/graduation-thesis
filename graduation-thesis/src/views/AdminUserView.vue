@@ -50,7 +50,8 @@ export default defineComponent({
             addressOuput: "",
             phoneOuput: "",
             seletedGender: "none",
-            currentPage: Number(sessionStorage.getItem("changePageUserAdmin"))
+            currentPage: Number(sessionStorage.getItem("changePageUserAdmin")),
+            seletedActive: true
         };
     },
     computed: {
@@ -68,7 +69,7 @@ export default defineComponent({
         routerPage(routerName: string) {
             router.push({ name: routerName })
         },
-        modifyUser(id: number, username: string, name: string, gender: string, address: string, phone: string, role: string) {
+        modifyUser(id: number, username: string, name: string, gender: string, address: string, phone: string, role: string, seletedActive: boolean) {
             this.valueId = id;
             this.usernameOuput = username,
                 this.nameOuput = name,
@@ -76,6 +77,7 @@ export default defineComponent({
                 this.addressOuput = address,
                 this.phoneOuput = phone,
                 this.seletedRole = role,
+                this.seletedActive = seletedActive,
                 this.showModify = true
         },
         saveUser() {
@@ -91,7 +93,7 @@ export default defineComponent({
         cancel() {
             this.showModify = false
         },
-        getRoleName(role : string) {
+        getRoleName(role: string) {
             if (role === "admin") {
                 return "Chủ cửa hàng";
             } else if (role === "sales") {
@@ -100,6 +102,13 @@ export default defineComponent({
                 return "Nhân viên kho";
             } else if (role === "customer") {
                 return "Khách hàng";
+            }
+        },
+        getActiveStatus(status: boolean) {
+            if (status == true) {
+                return "Hoạt động";
+            } else if (status == false) {
+                return "Khóa";
             }
         }
     },
@@ -166,6 +175,11 @@ export default defineComponent({
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Loại
                                 tài khoản</span>
                         </div>
+                        <div class="w-[100px] h-[80px] flex items-center">
+                            <span class="w-[100px] h-[80px] flex items-center"
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Tình
+                                trạng</span>
+                        </div>
                     </div>
                 </div>
 
@@ -216,9 +230,17 @@ export default defineComponent({
                                 <option value="admin">Chủ cửa hàng</option>
                             </select>
                         </div>
+                        <div class="w-[100px] h-[80px] flex items-center">
+                            <select
+                                class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300"
+                                v-model="seletedActive">
+                                <option :value= true>Hoạt động</option>
+                                <option :value= false>Khóa</option>
+                            </select>
+                        </div>
                         <div class="w-[80px] h-[80px] flex justify-center items-center">
                             <button
-                                @click="updateUserAdmin(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole)"
+                                @click="updateUserAdmin(valueId, usernameOuput, nameOuput, seletedGender, addressOuput, phoneOuput, seletedRole, seletedActive)"
                                 class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu</button>
                         </div>
                         <div class="w-[50px] h-[30px] flex justify-center items-center ">
@@ -270,9 +292,15 @@ export default defineComponent({
                                 {{ getRoleName(item.role) }}
                             </span>
                         </div>
+                        <div class="w-[100px] h-[80px] flex items-center">
+                            <span class="w-[200px] h-[80px] flex items-center"
+                                style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                                {{ getActiveStatus(item.active) }}
+                            </span>
+                        </div>
                         <div class=" flex justify-center items-center ">
                             <button
-                                @click="modifyUser(item.id, item.username, item.name, item.gender, item.address, item.phone, item.role)"
+                                @click="modifyUser(item.id, item.username, item.name, item.gender, item.address, item.phone, item.role, item.active)"
                                 class="w-[60px] h-[30px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Sửa</button>
                         </div>
                     </div>

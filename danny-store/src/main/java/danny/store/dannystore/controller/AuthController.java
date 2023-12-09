@@ -1,7 +1,10 @@
 package danny.store.dannystore.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import danny.store.dannystore.domain.dto.ChangePasswordDto;
 import danny.store.dannystore.domain.entity.User;
+import danny.store.dannystore.domain.model.ForgotPasswordInput;
+import danny.store.dannystore.domain.model.LoginInput;
 import danny.store.dannystore.domain.model.UserInput;
 import danny.store.dannystore.resolver.UserInfo;
 import danny.store.dannystore.service.UserService;
@@ -27,5 +30,13 @@ public class AuthController {
     @GetMapping("/test")
     public ResponseEntity<?> test() {
         return new ResponseEntity<>("Test authentication", HttpStatus.OK);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginInput loginInput) throws JsonProcessingException {
+        return new ResponseEntity<>(userService.login(loginInput),HttpStatus.OK);
+    }
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordInput forgotPasswordInput) throws NotFoundException {
+        return new ResponseEntity<>(userService.forgotPassword(forgotPasswordInput),HttpStatus.OK);
     }
 }

@@ -12,7 +12,7 @@ export const authStore = defineStore('auth', () => {
 
     return {
         authenticated: getIsAuthenticatedFromLocalStorage(),
-        login(username: string, password: string) {
+        async login(username: string, password: string) {
             if (username.length > 50) {
                 toast.error("Nhập quá số kí tự cho phép");
                 return;
@@ -30,40 +30,32 @@ export const authStore = defineStore('auth', () => {
                 toast.error("Vui lòng điền mật khẩu!");
                 return;
             }
-            const formData = new FormData();
-            formData.append('username', username);
-            formData.append('password', password);
-            formData.append('grant_type', 'password');
-            axios({
-                method: 'post',
-                url: 'http://localhost:8080/oauth/token',
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    "Authorization": "Basic Y2xpZW50OmNsaWVudEAyMDIy"
-                },
-            })
-                .then(function (response) {
-                    const { access_token } = response.data
-                    if (access_token) {
-                        localStorage.setItem("accessToken", access_token as string);
-                        localStorage.setItem("authenticated", 'true');
-                        toast.success("Đăng nhập thành công")
-                        setTimeout(() => {
-                            router.push({ name: 'home' }).then(() => {
-                                location.reload();
-                            });
-                        }, 1000);
-                    }
-                    console.log(response)
-                })
-                .catch(function (response) {
-                    toast.error("Sai tên đăng nhập hoặc mật khẩu, vui lòng nhập lại")
+            const apiUrl = 'http://localhost:8080/auth/login'
+            const userInput = {
+                username: username,
+                password: password,
+            }
+            const headers = { 'Content-Type': 'application/json', };
+            try {
+                const response = await axios.post(apiUrl, userInput, { headers });
+                const { access_token } = response.data
+                console.log(response)
+                if (access_token && access_token.length > 50) {
+                    localStorage.setItem("accessToken", access_token as string);
+                    localStorage.setItem("authenticated", 'true');
+                    toast.success("Đăng nhập thành công")
                     setTimeout(() => {
-
+                        router.push({ name: 'home' }).then(() => {
+                            location.reload();
+                        });
                     }, 1000);
-                    console.log(response)
-                })
+                }
+                if (access_token === 'block') {
+                    toast.error("Tài khoản đã bị khóa!")
+                }
+            } catch {
+                toast.error("Sai tên đăng nhập hoặc mật khẩu, vui lòng nhập lại")
+            }
         },
         async changePassword(userName: string, oldPassword: string, newPassword: string, retypeNewPassword: string) {
             try {
@@ -167,6 +159,30 @@ export const authStore = defineStore('auth', () => {
                 setTimeout(() => {
 
                 }, 1000);
+            }
+        },
+        async forgotPassword(userName: string, phoneNumber: string) {
+            try {
+                if (!userName || !phoneNumber) {
+                    toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
+                    return;
+                }
+                const apiUrl = 'http://localhost:8080/auth/forgotPassword';
+                const requestData = {
+                    username: userName,
+                    phoneNumber: phoneNumber,
+                }
+                const response = await axios.post(apiUrl, requestData, {});
+                console.log(response)
+                if (response.status === 200) {
+                    toast.success('Mật khẩu mới là: ' + response.data + '\nHãy lưu lại thông tin này để đăng nhập trong lần đăng nhập tiếp theo')
+                    setTimeout(() => {
+                        router.push({ name: 'login' })
+                    }, 1000);
+                }
+            } catch (error) {
+                toast.error('Sai tên tài khoản hoặc số điện thoại!')
+                console.error('Error fetching data:', error);
             }
         },
         getIsAuthenticatedFromLocalStorage,

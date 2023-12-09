@@ -27,14 +27,15 @@ export default defineComponent({
             showLogin: true,
             showForgotPass: false,
             newPassword: '',
-            retypeNewPassword: ''
+            retypeNewPassword: '',
+            phoneNumber: ''
         }
     },
     methods: {
         handleClick(valueRouter: string) {
             router.push({ name: valueRouter })
         },
-        ...mapActions(authStore, ['login']),
+        ...mapActions(authStore, ['login','forgotPassword']),
         handleLogin(username: string, password: string) {
             toast.success("Thành công")
             setTimeout(() => {
@@ -108,11 +109,11 @@ export default defineComponent({
                 </div>
                 <div class="flex flex-col mb-3">
                     <span>Số điện thoại:</span>
-                    <input
+                    <input v-model="phoneNumber"
                         class="w-[590px] h-[38px] text-[15px] rounded-xl focus:outline-none border border-gray-300"
-                        type="password" placeholder="Nhập số điện thoại.....">
+                        type="text" placeholder="Nhập số điện thoại.....">
                 </div>
-                <button
+                <button @click="forgotPassword(username, phoneNumber)"
                     class="w-[150px] h-[38px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">
                     Quên mật khẩu
                 </button>

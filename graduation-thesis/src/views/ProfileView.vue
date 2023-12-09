@@ -181,17 +181,17 @@ export default defineComponent({
                         <div class="col-sm-6">
                           <p class="m-b-10 f-w-600">Mật khẩu cũ:</p>
                           <input v-model="oldPassword"
-                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="text">
+                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="password">
                         </div>
                         <div class="col-sm-6">
                           <p class="m-b-10 f-w-600">Mật khẩu mới:</p>
                           <input v-model="newPassword"
-                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="text">
+                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="password">
                         </div>
                         <div class="col-sm-6">
                           <p class="m-b-10 f-w-600">Nhập lại mật khẩu mới:</p>
                           <input v-model="retypeNewPassword"
-                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="text">
+                            class="text-muted f-w-400 rounded-xl focus:outline-none border border-gray-300" type="password">
                         </div>
                         <div class="flex flex-row">
                           <button @click="changePassword(user.username, oldPassword, newPassword, retypeNewPassword)"
