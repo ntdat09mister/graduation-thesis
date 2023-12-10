@@ -36,6 +36,9 @@ export default defineComponent({
             } else {
                 return "Chưa thanh toán";
             }
+        },
+        routerBillOrder(orderId: number) {
+            router.push({ name: 'billOrder', params: { id: orderId } })
         }
     },
     mounted() {
@@ -123,6 +126,11 @@ export default defineComponent({
                 </div>
                 <div class="w-[1000px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
                     <span>TỔNG CỘNG: {{ totalAmount }}đ</span>
+                </div>
+                <div class="w-[1000px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
+                    <button @click="routerBillOrder(idOrder)"
+                        class="w-[100px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Xem
+                        hóa đơn</button>
                 </div>
             </div>
         </div>

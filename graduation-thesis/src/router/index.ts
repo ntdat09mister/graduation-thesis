@@ -108,7 +108,7 @@ const router = createRouter({
     },
     {
       path: '/billOrder/:id',
-      name: 'BillOrderView',
+      name: 'billOrder',
       component: BillOrderView
     },
     {
