@@ -18,6 +18,7 @@ public class CartDetail {
     private Long id;
     private Long cartId;
     private Long productId;
+    private String classify;
     private Long quantity;
     private Long price;
     private Date createdAt;

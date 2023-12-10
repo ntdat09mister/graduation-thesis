@@ -16,9 +16,14 @@ export default defineComponent({
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder','updateReceived','refundOrder']),
-        routerOrderDetail(orderId: number) {
-            router.push({ name: 'orderDetail', params: { id: orderId } })
+        ...mapActions(useOrderStore, ['getAllOrders', 'cancelOrder', 'updateReceived', 'refundOrder']),
+        routerOrderDetail(orderId: number, status: string) {
+            if (status === 'Tiếp nhận đơn') {
+                console.log(status)
+                router.push({ name: 'payment', params: { id: orderId } })
+            } else {
+                router.push({ name: 'orderDetail', params: { id: orderId } })
+            }
         }
     },
     mounted() {
@@ -59,7 +64,9 @@ export default defineComponent({
         <div class="w-[1000px] flex flex-row justify-center items-center p-4 border border border-gray-400"
             v-for="orderItem in listOrders">
             <div class="w-[150px] flex flex-row justify-center items-center">
-                <button @click="routerOrderDetail(orderItem.id)" class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500"> {{ orderItem.id }} </button>
+                <button @click="routerOrderDetail(orderItem.id, orderItem.status)"
+                    class="w-[50px] h-[38px] text-[12px] rounded-xl focus:outline-none border border-gray-500"> {{
+                        orderItem.id }} </button>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <img class="w-[52px] h-[52px] ml-[25px]" :src="orderItem.src" alt="product-img">
@@ -86,13 +93,15 @@ export default defineComponent({
             <template v-if="orderItem.status === 'Đang giao'">
                 <div class="w-[70px] h-[50px] flex justify-center items-center">
                     <button @click="updateReceived(orderItem.id)"
-                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Đã nhận hàng</button>
+                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Đã
+                        nhận hàng</button>
                 </div>
             </template>
             <template v-if="orderItem.status === 'Đã nhận hàng'">
                 <div class="w-[70px] h-[50px] flex justify-center items-center">
                     <button @click="refundOrder(orderItem.id)"
-                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Trả hàng</button>
+                        class="w-[50px] h-[30px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Trả
+                        hàng</button>
                 </div>
             </template>
             <template v-else>

@@ -20,6 +20,7 @@ public class OrderItem {
     private Long id;
     private Long orderId;
     private Long productId;
+    private String classify;
     private Long price;
     private Long quantity;
     private Date createdAt;

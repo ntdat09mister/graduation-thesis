@@ -9,6 +9,7 @@ export const useCartStore = defineStore('cart', () => {
     productId: number,
     src: string,
     nameProduct: string,
+    classify: string,
     price: string,
     quantity: number,
     createdAt: string
@@ -46,17 +47,19 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addToCart(productId: number, quantity: number, priceCoefficient: number, productQuantity: number) {
+  async function addToCart(productId: number, quantity: number, priceCoefficient: number, productQuantity: number, classify: string, productSelling: number) {
     try {
-      if (productQuantity === 0) {
+      if (productQuantity < 1) {
         toast.error("Sản phẩm đã hết vui lòng chọn sản phẩm khác");
         return;
       }
-      if (!productId || !quantity || !priceCoefficient) {
+      if (!productId || !quantity) {
         toast.error("Không thể tạo đơn hàng");
         return;
       }
-
+      if (priceCoefficient < 1 || !priceCoefficient) {
+        priceCoefficient = productSelling * 0.9
+      }
       const token = localStorage.getItem("accessToken");
       if (!token) {
         toast.error("Vui lòng đăng nhập để thêm sản phẩm này vào giỏ hàng");
@@ -67,7 +70,8 @@ export const useCartStore = defineStore('cart', () => {
       const requestData = {
         productId: productId,
         quantity: quantity,
-        priceCoefficient: priceCoefficient
+        priceCoefficient: priceCoefficient,
+        classify: classify
       }
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.post(apiUrl, requestData, { headers });

@@ -7,6 +7,7 @@ export const useOrderStore = defineStore('order', () => {
     interface OrderItem {
         orderId: number,
         productName: string,
+        classify: string,
         srcProduct: string,
         price: number,
         quantity: number,
@@ -101,7 +102,7 @@ export const useOrderStore = defineStore('order', () => {
     }
     async function addOrderInstant(productId: number, price: number, productQuantity: number) {
         try {
-            if (productQuantity === 0) {
+            if (productQuantity < 0) {
                 toast.error("Sản phẩm đã hết vui lòng chọn sản phẩm khác");
                 return;
               }

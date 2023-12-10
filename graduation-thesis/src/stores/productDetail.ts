@@ -37,7 +37,7 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         console.error('Error fetching data:', error);
       }
     }
-
+    const sellingPrice = ref(0)
     interface Item {
         id: number
         name: string
@@ -58,6 +58,7 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         // Kiểm tra xem response có dữ liệu không và có thuộc tính "data" không
         if (data && data.data) {
           const productData = data.data;
+          sellingPrice.value = productData.sellingPrice * 0.9
           const transformedData: Item = {
             id: productData.id,
             name: productData.name,
@@ -81,6 +82,7 @@ export const useProductDetailStore = defineStore('productDetail', () => {
         getProductImgDetail,
         listImagesDetailProducts,
         getProductDtoById,
-        productDto
+        productDto,
+        sellingPrice
     }
 })

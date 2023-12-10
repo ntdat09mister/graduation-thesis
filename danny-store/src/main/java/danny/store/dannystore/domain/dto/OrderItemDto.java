@@ -6,6 +6,7 @@ public class OrderItemDto {
     private Long orderId;
     private String srcProduct;
     private String productName;
+    private String classify;
     private Long price;
     private Long totalAmount;
     private Long quantity;

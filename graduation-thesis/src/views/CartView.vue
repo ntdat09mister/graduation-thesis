@@ -77,7 +77,7 @@ export default defineComponent({
                     </div>
                 </div>
                 <div class=" w-[150px] mb-[30px] ml-[20px] mt-[30px]">
-                    <p>1TB, màu vàng</p>
+                    <p>{{ cartItem.classify }}</p>
                 </div>
                 <div class="w-[50px]">
                     <p>{{ cartItem.price }}</p>

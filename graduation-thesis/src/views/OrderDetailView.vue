@@ -30,11 +30,6 @@ export default defineComponent({
     },
     methods: {
         ...mapActions(useOrderStore, ['getOrderDetail']),
-        checkStatusDetail(orderId: number) {
-            if (this.statusDetail === 'Tiếp nhận đơn') {
-                router.push({ name: 'payment', params: { id: Number(orderId) } })
-            }
-        },
         getPaymentName(paymentStatus: string) {
             if (paymentStatus === "1") {
                 return "Đã thanh toán";
@@ -46,12 +41,10 @@ export default defineComponent({
     mounted() {
         const { id } = this.$route.params
         this.getOrderDetail(Number(id))
-        this.checkStatusDetail(Number(id))
     },
     created() {
         const { id } = this.$route.params
         this.getOrderDetail(Number(id))
-        this.checkStatusDetail(Number(id))
     }
 })
 </script>
@@ -74,17 +67,20 @@ export default defineComponent({
                 <span class="h-[25px]">Trạng thái thanh toán: {{ getPaymentName(String(paymentStatus)) }}</span>
                 <span class="h-[25px]">Thời gian mua: {{ createdAt }}</span>
             </div>
-            <div class="w-[800px] flex flex-col mt-[10px]">
-                <div class="w-[800px] flex flex-col">
+            <div class="w-[1000px] flex flex-col mt-[10px]">
+                <div class="w-[1000px] flex flex-col">
                     <span class="text-[20px] font-[600]">Thông tin sản phẩm</span>
                 </div>
-                <div class="w-[800px] flex flex-row justify-between mt-[10px]">
-                    <div class="w-[400px] flex flex-row border">
+                <div class="w-[1000px] flex flex-row justify-between mt-[10px]">
+                    <div class="w-[600px] flex flex-row border">
                         <div class="w-[100px] flex justify-center items-center border">
                             <span>TT</span>
                         </div>
                         <div class="w-[300px] flex justify-center items-center">
                             <span>TÊN SẢN PHẨM</span>
+                        </div>
+                        <div class="w-[200px] flex justify-center items-center">
+                            <span>PHÂN LOẠI</span>
                         </div>
                     </div>
                     <div class="w-[400px] flex flex-row border">
@@ -100,13 +96,16 @@ export default defineComponent({
                     </div>
                 </div>
                 <div v-for="(item, index) in listOrderItems">
-                    <div class="w-[800px] flex flex-row justify-between">
-                        <div class="w-[400px] flex flex-row">
+                    <div class="w-[1000px] flex flex-row justify-between">
+                        <div class="w-[600px] flex flex-row">
                             <div class="w-[100px] flex justify-center items-center border">
                                 <span>{{ index + 1 }}</span>
                             </div>
                             <div class="w-[300px] flex justify-center items-center border">
                                 <span>{{ item.productName }}</span>
+                            </div>
+                            <div class="w-[200px] flex justify-center items-center border">
+                                <span>{{ item.classify }}</span>
                             </div>
                         </div>
                         <div class="w-[400px] flex flex-row">
@@ -122,7 +121,7 @@ export default defineComponent({
                         </div>
                     </div>
                 </div>
-                <div class="w-[800px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
+                <div class="w-[1000px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
                     <span>TỔNG CỘNG: {{ totalAmount }}đ</span>
                 </div>
             </div>

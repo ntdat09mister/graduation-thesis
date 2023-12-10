@@ -30,24 +30,31 @@ export default defineComponent({
     data() {
         return {
             selected: 'Đen',
-            selectedVar: 1.1,
             isTruncated: true,
-            capacity: '',
-            color: ''
+            selectedCapacity1: true,
+            selectedCapacity2: false,
+            selectedCapacity3: false,
+            selectedCapacity: '256GB',
+            selectedColor1: true,
+            selectedColor2: false,
+            selectedColor3: false,
+            selectedColor: 'Đen',
+            classify: 'Chưa ăn',
+            sellingPrice: 0
         };
     },
     methods: {
         ...mapActions(useProductDetailStore, ['getProductImgDetail', 'getProductDtoById']),
         ...mapActions(useCartStore, ['addToCart']),
         ...mapActions(useOrderStore, ['addOrderInstant']),
-        changeVariant(variant: number) {
-            this.selectedVar = variant;
-        },
         changeBackground(value: string) {
             this.selected = value;
         },
-        clickAddToCart(quantityProduct: number) {
-            this.addToCart(Number(this.productDto?.id), 1, this.selectedVar, quantityProduct)
+        clickAddToCart(quantityProduct: number, selectedCapacity: string, selectedColor: string, productSelling: number) {
+            // console.log(selectedCapacity, selectedColor)
+            this.classify = 'Màu ' + selectedColor + ', Dung lượng ' + selectedCapacity
+            console.log(this.classify, this.sellingPrice, productSelling)
+            this.addToCart(Number(this.productDto?.id), 1, this.sellingPrice, quantityProduct, this.classify, productSelling)
         },
         toggleDescription() {
             this.isTruncated = !this.isTruncated;
@@ -58,6 +65,54 @@ export default defineComponent({
             } else {
                 return 'Số lượng còn lại trong kho:' + quantity
             }
+        },
+        changeCapa1() {
+            this.selectedCapacity1 = true
+            this.selectedCapacity2 = false
+            this.selectedCapacity3 = false
+            this.sellingPrice = this.productDto?.sellingPrice * 0.9
+            this.selectedCapacity = '256GB'
+            console.log("Chọn bản 256GB")
+        },
+        changeCapa2() {
+            this.selectedCapacity1 = false
+            this.selectedCapacity2 = true
+            this.selectedCapacity3 = false
+            this.sellingPrice = this.productDto?.sellingPrice
+            this.selectedCapacity = '512GB'
+            console.log("Chọn bản 512GB")
+        },
+        changeCapa3() {
+            this.selectedCapacity1 = false
+            this.selectedCapacity2 = false
+            this.selectedCapacity3 = true
+            this.sellingPrice = this.productDto?.sellingPrice + this.productDto?.sellingPrice * 0.1
+            this.selectedCapacity = '1TB'
+            console.log("Chọn bản 1TB")
+        },
+        changeColor1() {
+            this.selectedColor1 = true
+            this.selectedColor2 = false
+            this.selectedColor3 = false
+            this.selectedColor = 'Đen'
+            console.log("Màu đen")
+        },
+        changeColor2() {
+            this.selectedColor1 = false
+            this.selectedColor2 = true
+            this.selectedColor3 = false
+            this.selectedColor = 'Vàng'
+            console.log("Màu vàng")
+        },
+        changeColor3() {
+            this.selectedColor1 = false
+            this.selectedColor2 = false
+            this.selectedColor3 = true
+            this.selectedColor = 'Trắng'
+            console.log("Màu trắng")
+        },
+        setDefaultPrice() {
+            this.sellingPrice = this.productDto?.sellingPrice * 0.9
         }
     },
     created() {
@@ -65,7 +120,12 @@ export default defineComponent({
         this.getProductImgDetail(Number(id))
         this.getProductDtoById(Number(id))
         this.checkQuantity(this.productDto?.quantity)
+        this.changeCapa1()
+    },
+    mounted() {
+        
     }
+
 })
 </script>
 <template>
@@ -98,27 +158,50 @@ export default defineComponent({
                         <p>Chọn dung lượng mong muốn</p>
                     </div>
                     <div class="flex flex-row justify-around items-center">
-                        <template v-model="capacity" v-for="variant in [1.1, 1, 0.9]">
-                            <button :class="{
-                                'w-[100px] h-[51px] flex flex-col justify-around items-center bg-slate-200 rounded-xl cursor-pointer': selectedVar !== variant,
-                                'w-[100px] h-[51px] flex flex-col justify-around items-center bg-red-500 rounded-xl cursor-pointer': selectedVar === variant
-                            }" @click="changeVariant(variant)">
-                                <strong>{{ variant === 1.1 ? '1TBB' : variant === 1 ? '512GB' : '256GB' }}</strong>
-                                <span>{{ Math.trunc((productDto?.sellingPrice || 0) * variant) * variant }}đ</span>
-                            </button>
-                        </template>
+                        <button @click="changeCapa1()" :class="{
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedCapacity1 === true,
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedCapacity1 === false
+                        }">
+                            <strong>256GB</strong>
+                            <span>{{ productDto?.sellingPrice * 0.9 }}</span>
+                        </button>
+                        <button @click="changeCapa2()" :class="{
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedCapacity2 === true,
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedCapacity2 === false
+                        }">
+                            <strong>512GB</strong>
+                            <span>{{ productDto?.sellingPrice }}</span>
+                        </button>
+                        <button @click="changeCapa3()" :class="{
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedCapacity3 === true,
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedCapacity3 === false
+                        }">
+                            <strong>1TB</strong>
+                            <span>{{ productDto?.sellingPrice + productDto?.sellingPrice * 0.1 }}</span>
+                        </button>
                     </div>
                     <div class="mt-[10px] mb-[10px]">
                         <p>Chọn màu để xem giá và chi nhánh có hàng</p>
                     </div>
-                    <div class="flex flex-row justify-around items-center cursor-pointer">
-                        <template v-model="color" v-for="value in ['Đen', 'Vàng', 'Trắng']">
-                            <button
-                                :class="{ 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selected !== value, 'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selected === value }"
-                                @click="changeBackground(value)">
-                                <strong>{{ value }}</strong>
-                            </button>
-                        </template>
+                    <div class="flex flex-row justify-around items-center">
+                        <button @click="changeColor1()" :class="{
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedColor1 === true,
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedColor1 === false
+                        }">
+                            <strong>Đen</strong>
+                        </button>
+                        <button @click="changeColor2()" :class="{
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedColor2 === true,
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedColor2 === false
+                        }">
+                            <strong>Vàng</strong>
+                        </button>
+                        <button @click="changeColor3()" :class="{
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedColor3 === true,
+                            'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedColor3 === false
+                        }">
+                            <strong>Trắng</strong>
+                        </button>
                     </div>
                     <div class="flex flex-row mt-[20px]">
                         <img src="https://cdn2.cellphones.com.vn/x120/https://dashboard.cellphones.com.vn/storage/B2SDIENTHOAI.jpg"
@@ -134,7 +217,7 @@ export default defineComponent({
                             <span class="text-white text-base text-xs">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>
                         </div>
                         <div class="w-[60px] h-[60px] flex flex-col justify-center items-center border-[2px] border-red-500 rounded-xl cursor-pointer"
-                            @click="clickAddToCart(productDto?.quantity)">
+                            @click="clickAddToCart(productDto?.quantity, selectedCapacity, selectedColor, productDto?.sellingPrice)">
                             <IconAddToCart class="w-[30px] h-[30px] fill-[#FF0000]" />
                             <span class="text-[7px] text-[red]">Thêm vào giỏ</span>
                         </div>

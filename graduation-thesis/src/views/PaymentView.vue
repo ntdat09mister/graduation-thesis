@@ -109,9 +109,12 @@ export default defineComponent({
                         <div class="w-[130px]">
                             <img class="w-[100px] h-[100px]" :src="item.srcProduct" alt="Ảnh">
                         </div>
-                        <div class="w-[200px] flex flex-col">
+                        <div class="w-[300px] flex flex-col">
                             <div>
                                 <span>Tên sản phẩm: {{ item.productName }}</span>
+                            </div>
+                            <div>
+                                <span>Phân loại: {{ item.classify }}</span>
                             </div>
                             <div>
                                 <span>Giá: {{ item.price }}đ</span>

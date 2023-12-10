@@ -6,5 +6,5 @@ import java.util.List;
 @Data
 public class CartDtoAndAmount {
     private List<CartDto> cartDtoList;
-    private Float totalAmount;
+    private Long totalAmount;
 }
