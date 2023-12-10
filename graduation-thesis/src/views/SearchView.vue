@@ -7,6 +7,7 @@ import { mapActions, mapState } from 'pinia';
 import { useSearchStore } from '@/stores/search';
 import { ElPagination } from 'element-plus';
 import Product from '@/components/Product.vue';
+import router from '@/router';
 export default defineComponent({
     components: {
         Header,
@@ -37,7 +38,11 @@ export default defineComponent({
     },
     methods: {
         ...mapActions(useHomeStore, ['getListIphones', 'getListManufacturers']),
-        ...mapActions(useSearchStore, ['getListSearch'])
+        ...mapActions(useSearchStore, ['getListSearch']),
+        filterResult(filterResult: string) {
+            sessionStorage.setItem("filterId", filterResult)
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")), String(sessionStorage.getItem("filterId")))
+        }
     },
     data() {
         return {
@@ -50,8 +55,9 @@ export default defineComponent({
     mounted() {
         this.getListIphones(this.productType, this.manufacturerId),
             this.getListManufacturers(),
-            this.getListSearch(String(sessionStorage.getItem("searchKeyword"))).then(() => {
-                this.nameSearch = String(sessionStorage.getItem("searchKeyword"));
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")), String(sessionStorage.getItem("filterId"))).then(() => {
+                this.nameSearch = String(sessionStorage.getItem("searchKeyword"))
+                router.push({ name: 'search' })
             });
     }
 })
@@ -65,25 +71,17 @@ export default defineComponent({
             </div>
             <div class="w-[1200px] flex flex-row justify-between items-center">
                 <h2 class="text-[25px] font-[600]">Kết quả tìm kiếm cho: '{{ nameSearch }}'</h2>
-                <!-- <div class="w-[600px] flex flex-row justify-between item-center">
-                    <div v-for="(company, id) in listManufacturers" :key="id"
-                        class="text-[18px] bg-[#f3f4f6] rounded-[7px] mr-[10px] cursor-pointer"
-                        @click="getListIphones(1, company.id)">
-                        <span>{{ company.manufacturer }}</span>
-                    </div>
-                </div> -->
             </div>
             <div class="w-[1200px] flex flex-col">
                 <h3>Sắp xếp theo</h3>
-                <div class="h-[30px] flex flex-row">
-                    <div class="w-[74px] h-[29px] flex justify-center items-center cursor-pointer">
-                        <span>Tất cả</span>
+                <div class="w-[280px] h-[30px] flex flex-row justify-between">
+                    <div @click="filterResult('1')"
+                        class="w-[130px] h-[29px] flex justify-center items-center rounded-[10px] bg-[#F2F2F2] cursor-pointer">
+                        <button><span>Giá cao -> thấp</span></button>
                     </div>
-                    <div class="w-[74px] h-[29px] flex justify-center items-center cursor-pointer">
-                        <span>Giá cao</span>
-                    </div>
-                    <div class="w-[74px] h-[29px] flex justify-center items-center cursor-pointer">
-                        <span>Giá thấp</span>
+                    <div @click="filterResult('0')"
+                        class="w-[130px] h-[29px] flex justify-center items-center rounded-[10px] bg-[#F2F2F2] cursor-pointer">
+                        <button><span>Giá thấp -> cao</span></button>
                     </div>
                 </div>
             </div>

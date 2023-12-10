@@ -16,9 +16,9 @@ export const useSearchStore = defineStore('search', () => {
 
     const listPhoneSearch = ref<Item[]>([]);
 
-    async function getListSearch(name: string) {
+    async function getListSearch(name: string, filterId: string) {
         try {
-            const response = await axios.get(`http://localhost:8080/product/search?name=${name}`);
+            const response = await axios.get(`http://localhost:8080/product/search?name=${name}&filterId=${filterId}`);
             const responseData = response.data;
             // Kiểm tra xem response có thuộc tính "data" không
             if (responseData && Array.isArray(responseData.data)) {

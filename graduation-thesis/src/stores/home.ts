@@ -66,7 +66,6 @@ export const useHomeStore = defineStore('home', () => {
       if (params.toString()) {
         url += `?${params.toString()}`;
       }
-  
       const response = await axios.get(url);
       const responseData = response.data;
       console.log('123123123')

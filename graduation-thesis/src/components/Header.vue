@@ -19,6 +19,7 @@ import { useSearchStore } from '@/stores/search';
 import { authStore } from '@/stores/auth';
 import { mapActions, mapState } from 'pinia';
 import { useUserStore } from '@/stores/user'
+
 import { toast } from 'vue3-toastify';
 export default defineComponent({
     components: {
@@ -51,7 +52,8 @@ export default defineComponent({
     },
     data() {
         return {
-            searchKeyword: ''
+            searchKeyword: '',
+            filterId: '1'
         }
     },
     methods: {
@@ -68,19 +70,27 @@ export default defineComponent({
         ...mapActions(useSearchStore, ['getListSearch']),
         ...mapActions(useUserStore, ['getInforUser']),
         handleSearch() {
-            const keyword = this.searchKeyword;
+            const keyword = this.searchKeyword
+            const filterId = this.filterId
             sessionStorage.setItem("searchKeyword", keyword)
-            this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
+            sessionStorage.setItem("filterId", filterId)
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")), String(sessionStorage.getItem("filterId")))
             console.log(this.searchKeyword)
-            router.push({ name: 'search' })
+            router.push({ name: 'search' }).then(() => {
+                location.reload();
+            });
             this.setVModelInput()
         },
         handleEnter() {
             const keyword = this.searchKeyword;
-            sessionStorage.setItem("searchKeyword", keyword);
-            this.getListSearch(String(sessionStorage.getItem("searchKeyword")))
+            const filterId = this.filterId
+            sessionStorage.setItem("searchKeyword", keyword)
+            sessionStorage.setItem("filterId", filterId)
+            this.getListSearch(String(sessionStorage.getItem("searchKeyword")), String(sessionStorage.getItem("filterId")))
             console.log(this.searchKeyword);
-            router.push({ name: 'search' });
+            router.push({ name: 'search' }).then(() => {
+                location.reload();
+            });
             this.setVModelInput()
         },
         routerPage(routerName: string) {
@@ -88,11 +98,11 @@ export default defineComponent({
         },
         logout() {
             localStorage.removeItem("accessToken"),
-            localStorage.removeItem("authenticated")
+                localStorage.removeItem("authenticated")
             toast.success("Đăng xuất thành công")
             router.push({ name: 'home' }).then(() => {
-                    location.reload();
-                });
+                location.reload();
+            });
         }
     },
     mounted() {

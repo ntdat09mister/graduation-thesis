@@ -104,7 +104,7 @@ export default defineComponent({
                 </div>
             </div>
             <div v-for="item in listOrderItems" class="w-[600px] flex flex-col items-center">
-                <div class="w-[580px] flex flex-col  rounded-[10px] bg-[#FFFFFF] mt-[10px]">
+                <div class="w-[580px] flex flex-col rounded-[10px] bg-[#FFFFFF] mt-[10px]">
                     <div class="ml-[40px] w-[400px] flex flex-row justify-between items-center">
                         <div class="w-[130px]">
                             <img class="w-[100px] h-[100px]" :src="item.srcProduct" alt="Ảnh">

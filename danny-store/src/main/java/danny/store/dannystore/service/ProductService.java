@@ -100,8 +100,14 @@ public class ProductService {
         }
     }
 
-    public List<ProductDto> searchProductDtosByName(String name) {
-        List<Product> productList = productRepository.searchProductDtosByName(name);
+    public List<ProductDto> searchProductDtosByName(String name, String filterId) {
+        List<Product> productList = new ArrayList<>();
+        if (filterId.equals("1")) {
+            productList = productRepository.searchProductDtosByNameDesc(name);
+        }
+        if (filterId.equals("0")) {
+            productList = productRepository.searchProductDtosByName(name);
+        }
         List<ProductDto> productDtos = new ArrayList<>();
         Long valuePercent = 0L;
         for (Product product : productList) {

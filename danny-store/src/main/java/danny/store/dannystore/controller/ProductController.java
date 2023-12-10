@@ -40,8 +40,8 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchProductDtosByName(@RequestParam String name) {
-        return successResponse(productService.searchProductDtosByName(name));
+    public ResponseEntity<?> searchProductDtosByName(@RequestParam String name, @RequestParam(required = false) String filterId) {
+        return successResponse(productService.searchProductDtosByName(name, filterId));
     }
 
     @PreAuthorize("hasAnyAuthority('warehouse','admin')")
