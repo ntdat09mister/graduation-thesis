@@ -6,4 +6,5 @@ import lombok.Data;
 public class OrderInstant {
     private Long productId;
     private Long price;
+    private String classify;
 }

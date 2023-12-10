@@ -86,6 +86,7 @@ public class OrderService {
             orderItem.setOrderId(order.getId());
             orderItem.setQuantity(1L);
             orderItem.setProductId(orderInstant.getProductId());
+            orderItem.setClassify(orderInstant.getClassify());
             orderItem.setCreatedAt(new Date());
             orderItem.setPrice(productOptional.get().getPrice());
             orderItemRepository.save(orderItem);
@@ -175,23 +176,6 @@ public class OrderService {
             }
             System.out.println(RESPONSE_LIST_ORDER_DETAIL);
             return orderDetailDto;
-        } else {
-            System.out.println(RESPONSE_NOT_FOUND_ORDER);
-            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
-        }
-    }
-    @Transactional(rollbackOn = Exception.class)
-    public Long updatePayment(Long userId, PaymentDto paymentDto) throws NotFoundException {
-        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(paymentDto.getOrderId(), userId);
-        if (orderOptional.isPresent()) { //Only update when status < deliver
-            Order order = orderOptional.get();
-            order.setStatusId(2L);
-            order.setDeliveryAddress(paymentDto.getAddress());
-            order.setPhone(paymentDto.getPhoneNumber());
-            if (orderOptional.get().getStatusId() < 3) {
-                orderRepository.save(order);
-            }
-            return order.getId();
         } else {
             System.out.println(RESPONSE_NOT_FOUND_ORDER);
             throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
@@ -402,5 +386,47 @@ public class OrderService {
             throw new NotFoundException("Không đổi được trạng thái!");
         }
         return null;
+    }
+    @Transactional(rollbackOn = Exception.class)
+    public Long updatePayment(Long userId, PaymentDto paymentDto) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(paymentDto.getOrderId(), userId);
+        if (orderOptional.isPresent()) { //Only update when status < deliver
+            Order order = orderOptional.get();
+            order.setStatusId(2L);
+            order.setDeliveryAddress(paymentDto.getAddress());
+            order.setPhone(paymentDto.getPhoneNumber());
+            if (orderOptional.get().getStatusId() < 3) {
+                orderRepository.save(order);
+            }
+            return order.getId();
+        } else {
+            System.out.println(RESPONSE_NOT_FOUND_ORDER);
+            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+        }
+    }
+    public Long updatePhone(Long userId, PaymentDto paymentDto) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(paymentDto.getOrderId(), userId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.setPhone(paymentDto.getPhoneNumber());
+            orderRepository.save(order);
+            return order.getId();
+        } else {
+            System.out.println(RESPONSE_NOT_FOUND_ORDER);
+            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+        }
+    }
+
+    public Long updateAddress(Long userId, PaymentDto paymentDto) throws NotFoundException {
+        Optional<Order> orderOptional = orderRepository.findByIdAndCustomerId(paymentDto.getOrderId(), userId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.setDeliveryAddress(paymentDto.getAddress());
+            orderRepository.save(order);
+            return order.getId();
+        } else {
+            System.out.println(RESPONSE_NOT_FOUND_ORDER);
+            throw new NotFoundException(RESPONSE_NOT_FOUND_ORDER);
+        }
     }
 }

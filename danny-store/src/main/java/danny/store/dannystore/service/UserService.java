@@ -58,6 +58,7 @@ public class UserService {
         user.setRole(RoleType.CUSTOMER);
         user.setActive(StatusType.ACTIVE);
         user.setCreatedAt(new Date());
+        user.setAddress(userInput.getAddress());
         user.setGender(userInput.getGender());
         userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);

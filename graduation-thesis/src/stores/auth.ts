@@ -97,7 +97,7 @@ export const authStore = defineStore('auth', () => {
                 console.error('Error fetching data:', error);
             }
         },
-        async register(username: string, password: string, retypePassword: string, name: string, phone: string, seletedGender: string) {
+        async register(username: string, password: string, retypePassword: string, name: string, phone: string, adressSelected: string, seletedGender: string) {
             if (!username) {
                 toast.error("Vui lòng điền tên tài khoản!");
                 return;
@@ -142,6 +142,8 @@ export const authStore = defineStore('auth', () => {
                 password: password,
                 name: name,
                 phone: phone,
+                adressSelected: adressSelected,
+                adress: adressSelected,
                 gender: seletedGender
             }
             const headers = { 'Content-Type': 'application/json', };

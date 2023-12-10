@@ -100,7 +100,7 @@ export const useOrderStore = defineStore('order', () => {
             console.error('Error fetching data:', error);
         }
     }
-    async function addOrderInstant(productId: number, price: number, productQuantity: number) {
+    async function addOrderInstant(productId: number, price: number, productQuantity: number, classify: string) {
         try {
             if (productQuantity < 0) {
                 toast.error("Sản phẩm đã hết vui lòng chọn sản phẩm khác");
@@ -119,7 +119,8 @@ export const useOrderStore = defineStore('order', () => {
             const apiUrl = 'http://localhost:8080/order/addOrderInstant';
             const requestData = {
                 productId: productId,
-                price: price
+                price: price,
+                classify: classify
             }
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.post(apiUrl, requestData, { headers });
@@ -193,14 +194,6 @@ export const useOrderStore = defineStore('order', () => {
     }
     async function updatePayment(orderId: number, address: string, phoneNumber: string) {
         try {
-            if (!phoneNumber) {
-                toast.error("Vui lòng nhập số điện thoại");
-                return;
-            }
-            if (phoneNumber.length > 11 || phoneNumber.length < 10) {
-                toast.error("Số điện thoại phải là 10 hoặc 11 số");
-                return;
-            }
             if (!address) {
                 toast.error("Vui lòng nhập địa chỉ");
                 return;
@@ -224,6 +217,68 @@ export const useOrderStore = defineStore('order', () => {
                 setTimeout(() => {
                     router.push({ name: 'orderDetail', params: { id: orderId } })
                 }, 1000);
+            }
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function updatePhone(orderId: number, address: string, phoneNumber: string) {
+        try {
+            if (!phoneNumber) {
+                toast.error("Vui lòng nhập số điện thoại");
+                return;
+            }
+            if (phoneNumber.length > 11 || phoneNumber.length < 10) {
+                toast.error("Số điện thoại phải là 10 hoặc 11 số");
+                return;
+            }
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const requestData = {
+                orderId: orderId,
+                address: address,
+                phoneNumber: phoneNumber
+            }
+            const apiUrl = `http://localhost:8080/order/updatePhone`;
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, requestData, { headers });
+            if (response.data) {
+                toast.success('Sửa thành công!')
+                router.push({ name: 'payment', params: { id: orderId } })
+                console.log(orderId)
+            }
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function updateAddress(orderId: number, address: string, phoneNumber: string) {
+        try {
+            if (!address) {
+                toast.error("Vui lòng nhập địa chỉ");
+                return;
+            }
+            const token = localStorage.getItem("accessToken");
+            if (!token) {
+                console.error('Access token not found in localStorage');
+                return;
+            }
+            const requestData = {
+                orderId: orderId,
+                address: address,
+                phoneNumber: phoneNumber
+            }
+            const apiUrl = `http://localhost:8080/order/updateAddress`;
+            const headers = { Authorization: `Bearer ${token}` };
+            const response = await axios.put(apiUrl, requestData, { headers });
+            if (response.data) {
+                toast.success('Sửa thành công!')
+                router.push({ name: 'payment', params: { id: orderId } })
+                console.log(orderId)
             }
 
         } catch (error) {
@@ -330,6 +385,8 @@ export const useOrderStore = defineStore('order', () => {
         paymentStatus,
         createdAt,
         updateReceived,
-        refundOrder
+        refundOrder,
+        updatePhone,
+        updateAddress
     }
 })

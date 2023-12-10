@@ -56,6 +56,10 @@ export default defineComponent({
             console.log(this.classify, this.sellingPrice, productSelling)
             this.addToCart(Number(this.productDto?.id), 1, this.sellingPrice, quantityProduct, this.classify, productSelling)
         },
+        clickAddOrderInstant(productId: number, sellingPrice: number, quantity: number, selectedCapacity: string, selectedColor: string) {
+            this.classify = 'Màu ' + selectedColor + ', Dung lượng ' + selectedCapacity
+            this.addOrderInstant(productId, sellingPrice, quantity, this.classify)
+        },
         toggleDescription() {
             this.isTruncated = !this.isTruncated;
         },
@@ -211,7 +215,7 @@ export default defineComponent({
                         <p>{{ checkQuantity(Number(productDto?.quantity)) }}</p>
                     </div>
                     <div class="w-[360px] h-[70px] flex flex-row justify-around items-center mt-[10px]">
-                        <div @click="addOrderInstant(productDto?.id, productDto.sellingPrice, productDto?.quantity)"
+                        <div @click="clickAddOrderInstant(productDto?.id, productDto.sellingPrice, productDto?.quantity, selectedCapacity, selectedColor)"
                             class="w-[280px] h-[60px] flex flex-col justify-center items-center bg-[red] rounded-xl cursor-pointer">
                             <strong class="text-white text-base text-sm">Mua ngay</strong>
                             <span class="text-white text-base text-xs">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>

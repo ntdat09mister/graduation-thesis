@@ -4,6 +4,7 @@ import Footer from '@/components/Footer.vue'
 import { defineComponent } from 'vue'
 import { mapActions, mapState } from 'pinia'
 import { useOrderStore } from '@/stores/order'
+import router from '@/router'
 import { toast } from 'vue3-toastify'
 export default defineComponent({
     components: {
@@ -12,16 +13,14 @@ export default defineComponent({
     },
     data() {
         return {
-            provinceId: 1,
-            districtId: 1,
-            wardsId: 1,
             showAddress: false,
             paymentMethod: true,
             orderId: 1,
-            passStepUpdatePayment: false,
             atStore: true,
             phoneNumberInput: '',
-            adressSelectedFinal: ''
+            addressInput: '',
+            modifyPhoneNumberBool: false,
+            modifyAddressBool: false
         }
     },
     computed: {
@@ -31,31 +30,12 @@ export default defineComponent({
             address: 'address',
             phoneNumber: 'phoneNumber',
             username: 'username',
-            listProvinces: 'listProvinces',
-            listDistricts: 'listDistricts',
-            listWards: 'listWards',
-            adressSelected: 'adressSelected',
             totalAmount: 'totalAmount',
             toDaytime: 'toDaytime'
         })
     },
     methods: {
-        ...mapActions(useOrderStore, ['getOrderDetail', 'getListProvinces', 'getListDistrictOfProvince', 'getListWardsOfDistrict', 'concatAddress', 'updatePayment']),
-        handleGetListDistrict(provinceIdSelected: number) {
-            provinceIdSelected = this.provinceId
-            this.getListDistrictOfProvince(provinceIdSelected)
-        },
-        handleGetListWards(districtIdSelected: number) {
-            districtIdSelected = this.districtId
-            this.getListWardsOfDistrict(districtIdSelected)
-        },
-        concatAddressHandle(wardsId: number, districtId: number, provinceId: number) {
-            console.log(wardsId, districtId, provinceId)
-            wardsId = this.wardsId
-            this.concatAddress(wardsId, districtId, provinceId)
-            this.showAddress = true
-            this.passStepUpdatePayment = true
-        },
+        ...mapActions(useOrderStore, ['getOrderDetail', 'getListProvinces', 'getListDistrictOfProvince', 'getListWardsOfDistrict', 'concatAddress', 'updatePayment', 'updatePhone', 'updateAddress']),
         selectPaymentMethod() {
             this.paymentMethod = !this.paymentMethod
         },
@@ -63,7 +43,7 @@ export default defineComponent({
             this.orderId = id
         },
         handleUpdatePayment(orderIdInput: number, addressInput: string, phoneNumber: string) {
-            if (this.passStepUpdatePayment || addressInput === 'Nhận tại cửa hàng') {
+            if (addressInput === 'Nhận tại cửa hàng') {
                 this.updatePayment(orderIdInput, addressInput, phoneNumber)
             } else {
                 toast.error("Vui lòng nhập xác lựa chọn thông tin nhận hàng!")
@@ -74,18 +54,33 @@ export default defineComponent({
         },
         changeLocationAtHome() {
             this.atStore = false
+        },
+        modifyPhoneNumber(phoneNumberFill: string) {
+            console.log(phoneNumberFill)
+            this.phoneNumberInput = phoneNumberFill
+            this.modifyPhoneNumberBool = true
+        },
+        updatePhoneNumber(phoneNumberFillUpdate: string) {
+            console.log(this.orderId)
+            this.updatePhone(this.orderId, '', phoneNumberFillUpdate)
+            this.modifyPhoneNumberBool = false
+            router.push({ name: 'payment', params: { id: this.orderId } })
+        },
+        modifyAddress(addressFill: string) {
+            this.addressInput = addressFill
+            this.modifyAddressBool = true
+        },
+        updateAddressClick(addressFillUpdate: string) {
+            console.log(this.orderId)
+            this.updateAddress(this.orderId, addressFillUpdate, '')
+            this.modifyAddressBool = false
+            router.push({ name: 'payment', params: { id: this.orderId } })
         }
     },
     created() {
         const { id } = this.$route.params
         this.getOrderDetail(Number(id)),
             this.setOrderId(Number(id))
-    },
-    mounted() {
-        this.getListProvinces(),
-            this.getListDistrictOfProvince(this.districtId),
-            this.getListWardsOfDistrict(this.wardsId),
-            this.concatAddressHandle(this.wardsId, this.districtId, this.provinceId)
     }
 })
 </script>
@@ -133,7 +128,17 @@ export default defineComponent({
                 <span>Tên khách hàng:</span>
                 <span>{{ nameCustomer }}</span>
                 <span>Số điện thoại:</span>
-                <input v-model="phoneNumberInput" type="text" :placeholder="`${phoneNumber}`">
+                <div v-if="modifyPhoneNumberBool" class="w-[600px] h-[24px] flex flex-row">
+                    <input v-model="phoneNumberInput" type="text" :placeholder="`${phoneNumber}`">
+                    <button @click="updatePhoneNumber(phoneNumberInput)"
+                        class="w-[60px] h-[24px] text-[12px] text-white rounded-xl focus:outline-none bg-red-500 hover:bg-blue-600 border border-gray-500">Lưu</button>
+                </div>
+                <div v-else class="w-[600px] h-[24px] flex flex-row">
+                    <span>{{ phoneNumber }}</span>
+                    <button @click="modifyPhoneNumber(phoneNumber)"
+                        class="w-[60px] h-[24px] text-[12px] rounded-xl focus:outline-none border border-gray-500 ml-[95px]">Chỉnh
+                        sửa</button>
+                </div>
                 <span>Tài khoản đăng nhập:</span>
                 <span>{{ username }}</span>
             </div>
@@ -152,39 +157,22 @@ export default defineComponent({
                                 <button>Nhận hàng tại cửa hàng</button>
                             </div>
                         </div>
-                        <div class="flex flex-row justify-around">
-                            <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
-                                <span>Chọn tỉnh thành</span>
-                                <select v-model="provinceId" @change="handleGetListDistrict(provinceId)"
-                                    class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
-                                    <option v-for="province in listProvinces" :value=province.provinceId>{{
-                                        province.name }}</option>
-                                </select>
-                            </div>
-                            <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
-                                <span>Chọn quận huyện</span>
-                                <select v-model="districtId" @change="handleGetListWards(districtId)"
-                                    class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
-                                    <option v-for="district in listDistricts" :value=district.districtId>{{ district.name }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="w-[200px] h-[80px] flex flex-col justify-center items-center">
-                                <span>Chọn xã phường</span>
-                                <select v-model="wardsId" @change="concatAddressHandle(wardsId, districtId, provinceId)"
-                                    class="w-[100px] h-[38px] text-[14px] rounded-xl focus:outline-none border border-gray-300">
-                                    <option v-for="wards in listWards" :value=wards.wardsId>{{
-                                        wards.name }}</option>
-                                </select>
+                        <div v-if="!modifyAddressBool">
+                            <div class="flex flex-col justify-between h-[80px]">
+                                <span>Địa chỉ nhận hàng:</span>
+                                <span>{{ address }}</span>
+                                <button @click="modifyAddress(address)"
+                                    class="w-[60px] h-[24px] text-[12px] rounded-xl focus:outline-none border border-gray-500">Chỉnh
+                                    sửa</button>
                             </div>
                         </div>
-                        <div class="flex flex-col">
-                            <span>Địa chỉ tương đối:</span>
-                            <input v-model="adressSelected" type="text" :placeholder="`${adressSelected}`">
-                        </div>
-                        <div class="flex flex-col">
-                            <span>Địa chỉ chi tiết:</span>
-                            <input v-model="adressSelectedFinal" type="text" :placeholder="`${adressSelected}`">
+                        <div v-else>
+                            <div class="flex flex-col justify-between h-[80px]">
+                                <span>Địa chỉ nhận hàng:</span>
+                                <input v-model="addressInput" type="text" :placeholder="`${address}`">
+                                <button @click="updateAddressClick(addressInput)"
+                        class="w-[60px] h-[24px] text-[12px] text-white rounded-xl focus:outline-none bg-red-500 hover:bg-blue-600 border border-gray-500">Lưu</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -244,7 +232,7 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
                             {{ totalAmount }}đ</p>
                     </div>
-                    <button @click="handleUpdatePayment(orderId, adressSelectedFinal, phoneNumberInput)"
+                    <button @click="handleUpdatePayment(orderId, address, phoneNumber)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
                         trang theo dõi đơn</button>
                 </div>
@@ -280,7 +268,7 @@ export default defineComponent({
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
                             {{ totalAmount }}đ</p>
                     </div>
-                    <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng', phoneNumberInput)"
+                    <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng', phoneNumber)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
                         trang theo dõi đơn</button>
                 </div>

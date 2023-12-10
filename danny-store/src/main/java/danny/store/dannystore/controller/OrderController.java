@@ -60,4 +60,12 @@ public class OrderController extends BaseController{
     public ResponseEntity<?> updatePayment(@UserInfo User user, @RequestBody PaymentDto paymentDto) throws NotFoundException {
         return successResponse(orderService.updatePayment(user.getId(), paymentDto));
     }
+    @PutMapping("/updatePhone")
+    public ResponseEntity<?> updatePhone(@UserInfo User user, @RequestBody PaymentDto paymentDto) throws NotFoundException {
+        return successResponse(orderService.updatePhone(user.getId(), paymentDto));
+    }
+    @PutMapping("/updateAddress")
+    public ResponseEntity<?> updateAddress(@UserInfo User user, @RequestBody PaymentDto paymentDto) throws NotFoundException {
+        return successResponse(orderService.updateAddress(user.getId(), paymentDto));
+    }
 }
