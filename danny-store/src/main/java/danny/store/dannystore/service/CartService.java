@@ -48,8 +48,8 @@ public class CartService {
                 cartDto.setCreatedAt(publicFunction.formatTime(cart.getCreatedAt()));
             }
             cartDto.setCartId(cart.getId());
-            cartDto.setPrice(cartDetails.get(0).getPrice());
             cartDto.setQuantity(cartDetails.get(0).getQuantity());
+            cartDto.setPrice(cartDetails.get(0).getPrice() * cartDetails.get(0).getQuantity());
             cartDto.setClassify(cartDetails.get(0).getClassify());
             cartDtoList.add(cartDto);
             countTotalAmount += Long.valueOf(cartDetails.get(0).getPrice()) * Long.valueOf(cartDetails.get(0).getQuantity());

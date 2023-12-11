@@ -7,13 +7,11 @@ import ProductView from '../views/ProductView.vue'
 import CartView from '../views/CartView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
-import UserInforView from '../views/UserInformation.vue'
 import OrderView from '../views/OrderView.vue'
 import OrderDetailView from '../views/OrderDetailView.vue'
 import AdminOrderView from '../views/AdminOrderView.vue'
 import AdminProductView from '../views/AdminProductView.vue'
 import AdminUserView from '../views/AdminUserView.vue'
-import TestPopup from '../views/TestPopup.vue'
 import PaymentView from '../views/PaymentView.vue'
 import AdminPromotionView from '../views/AdminPromotionView.vue'
 import BillOrderView from '../views/BillOrderView.vue'
@@ -62,11 +60,6 @@ const router = createRouter({
       component: RegisterView
     },
     {
-      path: '/userInfor',
-      name: 'userInfor',
-      component: UserInforView
-    },
-    {
       path: '/order',
       name: 'order',
       component: OrderView
@@ -90,11 +83,6 @@ const router = createRouter({
       path: '/adminUserView',
       name: 'adminUserView',
       component: AdminUserView
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: TestPopup
     },
     {
       path: '/payment/:id',

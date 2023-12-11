@@ -51,9 +51,6 @@ public class OrderService {
                 orderItem.setPrice(cartDetails.get(0).getPrice());
                 orderItem.setClassify(cartDetails.get(0).getClassify());
                 orderItem.setCreatedAt(new Date());
-//                Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
-//                Product product = productOptional.get();
-//                product.setQuantity(product.getQuantity() - cartDetails.get(0).getQuantity());
                 countTotalAmount += cartDetails.get(0).getPrice() * cartDetails.get(0).getQuantity();
                 orderItemRepository.save(orderItem);
                 cartRepository.deleteById(cart.getId());
@@ -88,7 +85,7 @@ public class OrderService {
             orderItem.setProductId(orderInstant.getProductId());
             orderItem.setClassify(orderInstant.getClassify());
             orderItem.setCreatedAt(new Date());
-            orderItem.setPrice(productOptional.get().getPrice());
+            orderItem.setPrice(orderInstant.getPrice());
             orderItemRepository.save(orderItem);
             Product product = productOptional.get();
             product.setQuantity(product.getQuantity() - 1);
@@ -149,8 +146,8 @@ public class OrderService {
                 orderItemDto.setOrderId(orderItem.getId());
                 orderItemDto.setProductName(productOptional.get().getName());
                 orderItemDto.setClassify(orderItem.getClassify());
-                orderItemDto.setPrice(orderItem.getPrice());
                 orderItemDto.setQuantity(orderItem.getQuantity());
+                orderItemDto.setPrice(orderItem.getPrice());
                 orderItemDto.setSrcProduct(productOptional.get().getSrc());
                 orderItemDto.setTotalAmount(orderItem.getPrice() * orderItem.getQuantity());
                 return orderItemDto;

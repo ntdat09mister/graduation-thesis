@@ -53,12 +53,19 @@ export default defineComponent({
         clickAddToCart(quantityProduct: number, selectedCapacity: string, selectedColor: string, productSelling: number) {
             // console.log(selectedCapacity, selectedColor)
             this.classify = 'Màu ' + selectedColor + ', Dung lượng ' + selectedCapacity
-            console.log(this.classify, this.sellingPrice, productSelling)
+            console.log(productSelling)
             this.addToCart(Number(this.productDto?.id), 1, this.sellingPrice, quantityProduct, this.classify, productSelling)
         },
-        clickAddOrderInstant(productId: number, sellingPrice: number, quantity: number, selectedCapacity: string, selectedColor: string) {
+        clickAddOrderInstant(productId: number, sellingPriceInput: number, quantity: number, selectedCapacity: string, selectedColor: string) {
             this.classify = 'Màu ' + selectedColor + ', Dung lượng ' + selectedCapacity
-            this.addOrderInstant(productId, sellingPrice, quantity, this.classify)
+            if (selectedCapacity === '256GB') {
+                sellingPriceInput = sellingPriceInput - sellingPriceInput * 0.1
+            }
+            if (selectedCapacity === '1TB') {
+                sellingPriceInput = sellingPriceInput + sellingPriceInput * 0.1
+            }
+            console.log(sellingPriceInput)
+            this.addOrderInstant(productId, sellingPriceInput, quantity, this.classify)
         },
         toggleDescription() {
             this.isTruncated = !this.isTruncated;
@@ -167,21 +174,21 @@ export default defineComponent({
                             'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedCapacity1 === false
                         }">
                             <strong>256GB</strong>
-                            <span>{{ productDto?.sellingPrice * 0.9 }}</span>
+                            <span>{{ (productDto?.sellingPrice * 0.9).toLocaleString('vi-VN') }}đ</span>
                         </button>
                         <button @click="changeCapa2()" :class="{
                             'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedCapacity2 === true,
                             'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedCapacity2 === false
                         }">
                             <strong>512GB</strong>
-                            <span>{{ productDto?.sellingPrice }}</span>
+                            <span>{{ productDto?.sellingPrice.toLocaleString('vi-VN') }}đ</span>
                         </button>
                         <button @click="changeCapa3()" :class="{
                             'w-[100px] h-[51px] flex flex-col justify-center items-center bg-red-500 rounded-xl': selectedCapacity3 === true,
                             'w-[100px] h-[51px] flex flex-col justify-center items-center bg-slate-200 rounded-xl': selectedCapacity3 === false
                         }">
                             <strong>1TB</strong>
-                            <span>{{ productDto?.sellingPrice + productDto?.sellingPrice * 0.1 }}</span>
+                            <span>{{ (productDto?.sellingPrice + productDto?.sellingPrice * 0.1).toLocaleString('vi-VN') }}đ</span>
                         </button>
                     </div>
                     <div class="mt-[10px] mb-[10px]">

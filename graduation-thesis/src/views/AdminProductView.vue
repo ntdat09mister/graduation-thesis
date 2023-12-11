@@ -284,7 +284,7 @@ export default defineComponent({
                     <div class="w-[100px] h-[80px] flex items-center">
                         <span class="w-[100px] h-[80px] flex items-center"
                             style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                            {{ item.price }}
+                            {{ parseFloat(item.price).toLocaleString('vi-VN') }}
                         </span>
                     </div>
                     <div class="w-[250px] h-[80px] flex items-center">

@@ -88,8 +88,8 @@ export default defineComponent({
         </div>
         <div class="flex flex-row justify-center">
             <div v-for="item in listDisplayProducts" :key="item.id">
-                <Product :src="item.src" :alt="item.name" :name="item.name" :original-price="item.originalPrice"
-                    :sellingPrice="item.sellingPrice" :description="item.description" :id="item.id" />
+                <Product :src="item.src" :alt="item.name" :name="item.name" :original-price="item.originalPrice.toLocaleString('vi-VN')"
+                    :sellingPrice="item.sellingPrice.toLocaleString('vi-VN')" :description="item.description" :id="item.id" />
             </div>
         </div>
         <div class="flex flex-row justify-center items-center">

@@ -28,10 +28,10 @@ export const useHomeStore = defineStore('home', () => {
     { id: 11, component: IconSale, content: 'Khuyến mại' },
     { id: 12, component: IconNews, content: 'Tin tức công nghệ' }
   ], imageList = [
-    { id: 1, src: 'https://hanoicomputercdn.com/media/banner/10_Jul294bd0f9ecb07b3e6c234e02459a1063.jpg' },
-    { id: 2, src: 'https://hanoicomputercdn.com/media/banner/25_Jul881704812919b35faec78a46dee5a555.png' },
-    { id: 3, src: 'https://hanoicomputercdn.com/media/banner/28_Julbf16a308bf06183c64581b5a763da365.jpg' },
-    { id: 4, src: 'https://hanoicomputercdn.com/media/banner/31_Julf855258be0815e2eb82e233d3f2954d0.jpg' }
+    { id: 1, src: 'https://news.khangz.com/wp-content/uploads/2022/09/tinh-nang-moi-cua-iPhone-14-pro-max-8.jpg' },
+    { id: 2, src: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2022/8/4/1077179/Anh-Chup-Man-Hinh-20-04.png' },
+    { id: 3, src: 'https://cdn.sforum.vn/sforum/wp-content/uploads/2022/01/iPhone-14-se-khong-co-man-hinh-120Hz.jpg' },
+    { id: 4, src: 'https://minhtuanmobile.com/uploads/blog/cach-chup-anh-thien-van-cuc-dep-chi-voi-iphone-cua-ban-220805072120.jpg' }
   ]
   interface Item {
     id: number,

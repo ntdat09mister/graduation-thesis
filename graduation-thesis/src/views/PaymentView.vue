@@ -88,7 +88,7 @@ export default defineComponent({
         <div class="w-[600px] flex flex-col items-center">
             <p
                 style="font-family: 'Lato';font-style: normal;font-weight: 600;font-size: 20px;line-height: 21px;color: #1C1D21;">
-                Thông tin khách hàng</p>
+                Thông tin đơn hàng</p>
             <div class="w-[600px] flex flex-row items-center">
                 <div class="w-[600px] flex">
                     <p
@@ -110,7 +110,7 @@ export default defineComponent({
                                 <span>Phân loại: {{ item.classify }}</span>
                             </div>
                             <div>
-                                <span>Giá: {{ item.price }}đ</span>
+                                <span>Giá: {{ item.price.toLocaleString('vi-VN') }}đ</span>
                             </div>
                             <span>Số lượng: {{ item.quantity }}</span>
                         </div>
@@ -228,7 +228,7 @@ export default defineComponent({
                             Tổng tiền tạm tính</p>
                         <p
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
-                            {{ totalAmount }}đ</p>
+                            {{ totalAmount.toLocaleString('vi-VN') }}đ</p>
                     </div>
                     <button @click="handleUpdatePayment(orderId, address, phoneNumber)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới
@@ -264,7 +264,7 @@ export default defineComponent({
                             Tổng tiền tạm tính</p>
                         <p
                             style="font-family: 'Lato';font-style: normal;font-weight: 500;font-size: 19px;line-height: 21px;color: #1C1D21;">
-                            {{ totalAmount }}đ</p>
+                            {{ totalAmount.toLocaleString('vi-VN') }}đ</p>
                     </div>
                     <button @click="handleUpdatePayment(orderId, 'Nhận tại cửa hàng', phoneNumber)"
                         class="w-[570px] h-[38px] text-[12px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none mt-[10px]">Tới

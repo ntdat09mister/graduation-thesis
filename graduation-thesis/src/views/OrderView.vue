@@ -75,7 +75,7 @@ export default defineComponent({
                 <span>{{ orderItem.listProducts }}</span>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
-                <span>{{ orderItem.totalAmount }}</span>
+                <span>{{ orderItem.totalAmount.toLocaleString('vi-VN') }}</span>
             </div>
             <div class="w-[150px] flex flex-row justify-center items-center">
                 <span>{{ orderItem.createdAt }}</span>

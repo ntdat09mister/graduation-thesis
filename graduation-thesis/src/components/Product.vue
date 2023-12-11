@@ -7,8 +7,8 @@ export default defineComponent({
         src: { type: String, require: true },
         description: { type: String, require: true },
         name: { type: String, require: true },
-        originalPrice: { type: Number, require: true },
-        sellingPrice: { type: Number, require: true },
+        originalPrice: { type: String, require: true },
+        sellingPrice: { type: String, require: true },
     },
     methods: {
         handleClick(id: number) {

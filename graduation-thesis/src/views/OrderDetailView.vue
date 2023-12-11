@@ -116,16 +116,16 @@ export default defineComponent({
                                 <span>{{ item.quantity }}</span>
                             </div>
                             <div class="w-[133px] flex justify-center items-center border">
-                                <span>{{ item.price }}</span>
+                                <span>{{ item.price.toLocaleString('vi-VN') }}</span>
                             </div>
                             <div class="w-[133px] flex justify-center items-center border">
-                                <span>{{ item.totalAmount }}</span>
+                                <span>{{ parseFloat(item.totalAmount).toLocaleString('vi-VN') }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="w-[1000px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
-                    <span>TỔNG CỘNG: {{ totalAmount }}đ</span>
+                    <span>TỔNG CỘNG: {{ totalAmount.toLocaleString('vi-VN') }}đ</span>
                 </div>
                 <div class="w-[1000px] h-[50px] text-[20px] font-[600] flex flex-row justify-end items-center">
                     <button @click="routerBillOrder(idOrder)"

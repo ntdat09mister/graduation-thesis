@@ -159,7 +159,7 @@ export default defineComponent({
                                 thu</span>
                             <span
                                 style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;color: #1C1D21;">{{
-                                    totalAmount }}</span>
+                                    totalAmount.toLocaleString('vi-VN') }}</span>
                         </div>
                     </div>
                 </div>
@@ -223,14 +223,14 @@ export default defineComponent({
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Trạng
                         thái</span>
                 </div>
-                <div class="w-[130px] h-[80px] flex items-center">
+                <div class="w-[120px] h-[80px] flex items-center">
                     <span
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 12px;line-height: 18px;color: #1B51E5;">Thanh
                         toán</span>
                 </div>
-                <div class="w-[50px] h-[40px] flex justify-center items-center"></div>
+                <div class="w-[40px] h-[40px] flex justify-center items-center"></div>
             </div>
-            <div class="w-[1381px] h-[649px]">
+            <div class="w-[1381px] h-[649px] flex flex-col">
                 <div v-for="item in listDisplayOrderAdmin"
                     class="w-[1381px] h-[80px] flex flex-row justify-between items-center">
                     <div class="w-[80px] h-[80px] flex justify-center items-center">
@@ -257,22 +257,24 @@ export default defineComponent({
                             {{ item.phoneNumber }}
                         </span>
                     </div>
-                    <div class="w-[160px] h-[80px] flex justify-center items-center">
+                    <div class="w-[130px] h-[80px] flex justify-center items-center">
                         <span
                             style="font-family: 'Lato';font-style: normal;font-weight: 400;font-size: 14px;line-height: 21px;color: #1C1D21;">
                             {{ item.address }}
                         </span>
                     </div>
+                    <div class="w-[130px] h-[80px] flex justify-center items-center">
+                        <span class="w-[130px] h-[80px] flex justify-center items-center"
+                            style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
+                            {{ item.createdAt }}
+                        </span>
+                    </div>
                     <span class="w-[130px] h-[80px] flex justify-center items-center"
                         style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                        {{ item.createdAt }}
+                        {{ item.totalAmount.toLocaleString('vi-VN') }}
                     </span>
-                    <span class="w-[130px] h-[80px] flex justify-center items-center"
-                        style="font-family: 'Lato';font-style: normal;font-weight: 700;font-size: 14px;line-height: 21px;color: #1C1D21;">
-                        {{ item.totalAmount }}
-                    </span>
-                    <div class="w-[120px] h-[80px] flex flex-row justify-between items-center">
-                        <select v-model="item.statusId">
+                    <div class="w-[130px] h-[80px] flex flex-row justify-between items-center">
+                        <select class="text-sm" v-model="item.statusId">
                             <option value="1">Tiếp nhận đơn</option>
                             <option value="2">Lên đơn</option>
                             <option value="3">Đang giao</option>
@@ -283,16 +285,16 @@ export default defineComponent({
                             <option value="8">Chờ phê duyệt</option>
                         </select>
                     </div>
-                    <div class="w-[80px] h-[80px] flex flex-row justify-between items-center">
-                        <select v-model="item.paymentStatus">
+                    <div class="w-[120px] h-[80px] flex flex-row justify-between items-center">
+                        <select class="w-[120px] text-sm" v-model="item.paymentStatus">
                             <option value="1">Đã thanh toán</option>
                             <option value="0">Chưa thanh toán</option>
                         </select>
                     </div>
-                    <div class="w-[100px] h-[40px] flex justify-center items-center">
+                    <div class="w-[40px] h-[40px] flex justify-center items-center">
                         <button @click="updateStatusOrder(item.id, item.statusId, item.paymentStatus)"
-                            class="w-[70px] h-[30px] text-[10px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu
-                            trạng thái</button>
+                            class="w-[40px] h-[30px] text-[10px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none">Lưu
+                        </button>
                     </div>
                 </div>
             </div>

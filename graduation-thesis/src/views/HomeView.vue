@@ -45,13 +45,14 @@ export default defineComponent({
   <div class="flex flex-col justify-center items-center">
     <Header />
     <div class="w-[1200px] h-[385px] flex flex-row justify-between items-center mt-[5px]">
-      <div class="w-[200px] h-[376px] flex flex-col justify-around shadow-inner rounded-[15px]">
-        <div v-for="(component, id) in contentComponents" :key="id">
+      <div class="w-[260px] h-[376px] flex flex-col justify-around shadow-inner rounded-[15px] mb-[17px]">
+        <!-- <div v-for="(component, id) in contentComponents" :key="id">
           <div class="w-[181px] h-[29px] flex flex-row justify-between items-center">
             <component :is="component.component" width="25px" />
             <span>{{ component.content }}</span>
           </div>
-        </div>
+        </div> -->
+        <img class="w-[260px] h-[376px]" src="https://cdn.editorji.com/6540db44c36a8_web-story-5-.jpg" alt="">
       </div>
       <div class="w-[650px] flex justify-center items-center shadow-inner rounded-[10px]">
         <carousel :items-to-show="1" :autoplay="2000" :wrap-around="true">
@@ -64,20 +65,20 @@ export default defineComponent({
           </template>
         </carousel>
       </div>
-      <div class="w-[258px] h-[376px] flex flex-col justify-around shadow-inner rounded-[10px]">
+      <div class="w-[260px] h-[376px] flex flex-col justify-around shadow-inner rounded-[10px]  mb-[17px]">
         <div class="w-[260px] h-[115px]">
           <img
-            src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/right-watch6-009-new-th8.png"
+            src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:10/plain/https://dashboard.cellphones.com.vn/storage/m14.png"
             alt="">
         </div>
         <div class="w-[260px] h-[115px]">
           <img
-            src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/ipadth7-new.png"
+            src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:10/plain/https://dashboard.cellphones.com.vn/storage/gen%209.jpg"
             alt="">
         </div>
         <div class="w-[260px] h-[115px]">
           <img
-            src="https://cdn2.cellphones.com.vn/690x300,webp,q10/https://dashboard.cellphones.com.vn/storage/asus tuf.jpg"
+            src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:10/plain/https://dashboard.cellphones.com.vn/storage/%C6%B0u-dai-sinhvien-chung-right-banner.png"
             alt="">
         </div>
       </div>
@@ -101,7 +102,7 @@ export default defineComponent({
       <div class="flex justify-center items-center">
         <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="2500" :wrap-around="true">
           <slide v-for="item in listIphones" :key="item.id">
-            <Product :src="item.src" :alt="item.name" :name="item.name" :selling-price="item.sellingPrice" :original-price="item.originalPrice"
+            <Product :src="item.src" :alt="item.name" :name="item.name" :selling-price="item.sellingPrice.toLocaleString('vi-VN')" :original-price="item.originalPrice.toLocaleString('vi-VN')"
               :description="item.description" :id="item.id" />
           </slide>
           <template #addons>
@@ -116,7 +117,7 @@ export default defineComponent({
       <div class="flex justify-center items-center">
         <carousel class="w-[1200px] h-[350px]" :items-to-show="4" :autoplay="1000" :wrap-around="true">
           <slide v-for="item in listIphones" :key="item.id">
-            <Product :src="item.src" :alt="item.name" :name="item.name" :selling-price="item.sellingPrice" :original-price="item.originalPrice"
+            <Product :src="item.src" :alt="item.name" :name="item.name" :selling-price="item.sellingPrice.toLocaleString('vi-VN')" :original-price="item.originalPrice.toLocaleString('vi-VN')"
               :description="item.description" :id="item.id" />
           </slide>
           <template #addons>

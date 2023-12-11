@@ -80,7 +80,7 @@ export default defineComponent({
                     <p>{{ cartItem.classify }}</p>
                 </div>
                 <div class="w-[50px]">
-                    <p>{{ cartItem.price }}</p>
+                    <p>{{ parseFloat(cartItem.price).toLocaleString('vi-VN') }}</p>
                 </div>
                 <div class="w-[50px] mb-[10px] flex justify-center cursor-pointer mr-[20px]" @click="removeCartItem(cartItem.cartId)">
                     <IconRemove class="w-[20px]" />
@@ -91,7 +91,7 @@ export default defineComponent({
             <div class="w-[100px] h-[100px] flex flex-col justify-center items-center ml-[520px]">
                 <p>Tạm tính</p>
                 <div>
-                    <span>{{ totalAmount }}</span>
+                    <span>{{ totalAmount.toLocaleString('vi-VN') }}</span>
                     <span>đ</span>
                 </div>
             </div>

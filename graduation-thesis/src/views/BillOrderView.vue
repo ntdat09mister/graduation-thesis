@@ -110,10 +110,10 @@ export default defineComponent({
                                     <span>{{ item.quantity }}</span>
                                 </div>
                                 <div class="w-[133px] flex justify-center items-center border">
-                                    <span>{{ item.price }}</span>
+                                    <span>{{ item.price.toLocaleString('vi-VN') }}</span>
                                 </div>
                                 <div class="w-[133px] flex justify-center items-center border">
-                                    <span>{{ item.price }}</span>
+                                    <span>{{ parseFloat(item.totalAmount).toLocaleString('vi-VN') }}</span>
                                 </div>
                             </div>
                         </div>
