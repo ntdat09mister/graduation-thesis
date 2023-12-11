@@ -23,10 +23,10 @@ export const useOrderStore = defineStore('order', () => {
     const statusDetail = ref('')
     const createdAt = ref('')
     const listOrderItems = ref<OrderItem[]>([])
-    const today = new Date(); 
+    const today = new Date();
     const toDaytime = ref('')
-    const day = today.getDate(); 
-    const month = today.getMonth(); 
+    const day = today.getDate();
+    const month = today.getMonth();
     const year = today.getFullYear();
     const paymentStatus = ref(0)
     toDaytime.value = `${day + 1}/${month}/${year}`
@@ -105,7 +105,7 @@ export const useOrderStore = defineStore('order', () => {
             if (productQuantity < 0) {
                 toast.error("Sản phẩm đã hết vui lòng chọn sản phẩm khác");
                 return;
-              }
+            }
             if (!productId || !price) {
                 toast.error("Không tạo được đơn hàng");
                 return;
@@ -247,8 +247,12 @@ export const useOrderStore = defineStore('order', () => {
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
             if (response.data) {
-                toast.success('Sửa thành công!')
-                router.push({ name: 'payment', params: { id: orderId } })
+                toast.success("Sửa thành công!")
+                setTimeout(() => {
+                    router.push({ name: 'payment', params: { id: orderId } }).then(() => {
+                        location.reload();
+                    });
+                }, 1000);
                 console.log(orderId)
             }
 
@@ -276,9 +280,12 @@ export const useOrderStore = defineStore('order', () => {
             const headers = { Authorization: `Bearer ${token}` };
             const response = await axios.put(apiUrl, requestData, { headers });
             if (response.data) {
-                toast.success('Sửa thành công!')
-                router.push({ name: 'payment', params: { id: orderId } })
-                console.log(orderId)
+                toast.success("Sửa thành công!")
+                setTimeout(() => {
+                    router.push({ name: 'payment', params: { id: orderId } }).then(() => {
+                        location.reload();
+                    });
+                }, 1000);
             }
 
         } catch (error) {

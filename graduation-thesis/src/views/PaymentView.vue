@@ -44,9 +44,9 @@ export default defineComponent({
         },
         handleUpdatePayment(orderIdInput: number, addressInput: string, phoneNumber: string) {
             if (addressInput === 'Nhận tại cửa hàng') {
-                this.updatePayment(orderIdInput, addressInput, phoneNumber)
+                this.updatePayment(orderIdInput, 'Nhận tại cửa hàng Danny Store - 341 Xuân Phương, Nam Từ Liêm, Hà Nội', phoneNumber)
             } else {
-                toast.error("Vui lòng nhập xác lựa chọn thông tin nhận hàng!")
+                this.updatePayment(orderIdInput, addressInput, phoneNumber)
             }
         },
         changeLocationAtStore() {
@@ -64,7 +64,6 @@ export default defineComponent({
             console.log(this.orderId)
             this.updatePhone(this.orderId, '', phoneNumberFillUpdate)
             this.modifyPhoneNumberBool = false
-            router.push({ name: 'payment', params: { id: this.orderId } })
         },
         modifyAddress(addressFill: string) {
             this.addressInput = addressFill
@@ -74,7 +73,6 @@ export default defineComponent({
             console.log(this.orderId)
             this.updateAddress(this.orderId, addressFillUpdate, '')
             this.modifyAddressBool = false
-            router.push({ name: 'payment', params: { id: this.orderId } })
         }
     },
     created() {
@@ -171,7 +169,7 @@ export default defineComponent({
                                 <span>Địa chỉ nhận hàng:</span>
                                 <input v-model="addressInput" type="text" :placeholder="`${address}`">
                                 <button @click="updateAddressClick(addressInput)"
-                        class="w-[60px] h-[24px] text-[12px] text-white rounded-xl focus:outline-none bg-red-500 hover:bg-blue-600 border border-gray-500">Lưu</button>
+                                    class="w-[60px] h-[24px] text-[12px] text-white rounded-xl focus:outline-none bg-red-500 hover:bg-blue-600 border border-gray-500">Lưu</button>
                             </div>
                         </div>
                     </div>
