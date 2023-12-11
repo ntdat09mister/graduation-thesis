@@ -63,7 +63,7 @@ export const authStore = defineStore('auth', () => {
                     toast.error("Vui lòng không bỏ trống bất cứ trường thông tin nào!");
                     return;
                 }
-                if (oldPassword.length < 7 || oldPassword.length > 50 || newPassword.length < 6 || newPassword.length > 50 || retypeNewPassword.length < 6 || retypeNewPassword.length > 50) {
+                if (oldPassword.length < 6 || oldPassword.length > 50 || newPassword.length < 6 || newPassword.length > 50 || retypeNewPassword.length < 6 || retypeNewPassword.length > 50) {
                     toast.error("Nhập sai số kí tự cho phép");
                     return;
                 }

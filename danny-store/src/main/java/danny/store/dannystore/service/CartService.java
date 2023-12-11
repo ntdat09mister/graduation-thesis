@@ -129,7 +129,7 @@ public class CartService {
             product.setQuantity(productOptional.get().getQuantity() + cartDetailList.get(0).getQuantity());
             productRepository.save(product);
             cartRepository.deleteById(cartId);
-            cartDetailRepository.deleteById(cartId);
+            cartDetailRepository.deleteByCartId(cartId);
             return "Delete success!";
         } else {
             throw new NotFoundException(RESPONSE_ADD_TO_CART_FAIL);

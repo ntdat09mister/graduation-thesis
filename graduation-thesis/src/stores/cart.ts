@@ -94,9 +94,15 @@ export const useCartStore = defineStore('cart', () => {
       const params = { cartId: cartId };
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.delete(apiUrl, { headers, params });
-      const scrollPosition = window.scrollY;
-      location.reload();
-      window.scrollTo(0, scrollPosition);
+      console.log(response.data)
+      if (response.data) {
+        toast.success("Xóa thành công!")
+        setTimeout(() => {
+          router.push({ name: 'cart' }).then(() => {
+            location.reload();
+          });
+        }, 1000);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }

@@ -51,9 +51,9 @@ public class OrderService {
                 orderItem.setPrice(cartDetails.get(0).getPrice());
                 orderItem.setClassify(cartDetails.get(0).getClassify());
                 orderItem.setCreatedAt(new Date());
-                Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
-                Product product = productOptional.get();
-                product.setQuantity(product.getQuantity() - cartDetails.get(0).getQuantity());
+//                Optional<Product> productOptional = productRepository.findById(cartDetails.get(0).getProductId());
+//                Product product = productOptional.get();
+//                product.setQuantity(product.getQuantity() - cartDetails.get(0).getQuantity());
                 countTotalAmount += cartDetails.get(0).getPrice() * cartDetails.get(0).getQuantity();
                 orderItemRepository.save(orderItem);
                 cartRepository.deleteById(cart.getId());
@@ -324,7 +324,7 @@ public class OrderService {
                 Order order = orderOptional.get();
                     order.setStatusId(statusUpdate);
                     order.setPaymentStatus(paymentStatus);
-                    if (order.getStatusId() == 5) {
+                    if (order.getStatusId() == 5 || order.getStatusId() == 6) {
                         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId);
                         for (OrderItem orderItem : orderItemList) {
                             Optional<Product> productOptional = productRepository.findById(orderItem.getProductId());

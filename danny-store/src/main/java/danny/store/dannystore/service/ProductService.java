@@ -85,7 +85,7 @@ public class ProductService {
     }
 
     public ProductDto getProductDtoById(Long id) throws ClassNotFoundException {
-        Optional<Product> productOptional = productRepository.findById(id);
+        Optional<Product> productOptional = productRepository.findByIdAndStatus(id, true);
         if (productOptional.isPresent()) {
             ProductDto productDto = objectMapper.convertValue(productOptional, ProductDto.class);
             String cleanText = productDto.getDescription().replaceAll("\\n\\n", "\n");
