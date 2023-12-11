@@ -163,7 +163,11 @@ public class OrderService {
             orderDetailDto.setCreatedAt(publicFunction.formatTimeDetail(orderOptional.get().getCreatedAt()));
             orderDetailDto.setNameCustomer(userOptional.get().getName());
             orderDetailDto.setUsername(userOptional.get().getUsername());
-            orderDetailDto.setAddress(orderOptional.get().getDeliveryAddress());
+            if (orderOptional.get().getDeliveryAddress() == null || orderOptional.get().getDeliveryAddress().isEmpty()) {
+                orderDetailDto.setAddress(userOptional.get().getAddress());
+            } else {
+                orderDetailDto.setAddress(orderOptional.get().getDeliveryAddress());
+            }
             if (orderOptional.get().getPhone() == null || orderOptional.get().getPhone().isEmpty()) {
                 orderDetailDto.setPhoneNumber(userOptional.get().getPhone());
             } else {

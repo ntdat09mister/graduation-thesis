@@ -56,6 +56,9 @@ export default defineComponent({
         handleGetListDistrict(provinceIdSelected: number) {
             provinceIdSelected = this.provinceId
             this.getListDistrictOfProvince(provinceIdSelected)
+        },
+        handleShowLog(address: string) {
+            console.log('123123123' + address)
         }
     },
     mounted() {
@@ -152,7 +155,8 @@ export default defineComponent({
             <div class="h-[35px]">
                 <button
                     class="w-[150px] h-[35px] text-[15px] rounded-xl bg-red-500 hover:bg-red-600 text-white focus:outline-none"
-                    @click="register(username, password, retypePassword, name, phone, adressSelected, seletedGender)">
+                    @click="register(username, password, retypePassword, name, phone, adressSelected, seletedGender)"
+                    >
                     Đăng ký
                 </button>
             </div>
@@ -164,3 +168,5 @@ export default defineComponent({
         <Footer />
     </div>
 </template>
+
+

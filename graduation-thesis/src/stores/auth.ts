@@ -102,6 +102,7 @@ export const authStore = defineStore('auth', () => {
                 toast.error("Vui lòng điền tên tài khoản!");
                 return;
             }
+            
             if (username.length > 50) {
                 toast.error("Nhập quá số kí tự cho phép");
                 return;
@@ -136,15 +137,15 @@ export const authStore = defineStore('auth', () => {
                 toast.error("Vui lòng điền số điện thoại!");
                 return;
             }
+            console.log('value' + adressSelected)
             const apiUrl = 'http://localhost:8080/auth/register/'
             const userInput = {
                 username: username,
                 password: password,
                 name: name,
-                phone: phone,
-                adressSelected: adressSelected,
-                adress: adressSelected,
-                gender: seletedGender
+                gender: seletedGender,
+                address: adressSelected,
+                phone: phone             
             }
             const headers = { 'Content-Type': 'application/json', };
             try {
