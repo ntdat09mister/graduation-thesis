@@ -15,6 +15,8 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE IF NOT EXISTS danny_store_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE danny_store_db;
+create user 'datdeptrai'@'%' identified by 'datdeptrai';
+grant all privileges on `danny-store-db`.* to 'datdeptrai'@'%';
 -- Dumping structure for table danny-store-db.cart
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE IF NOT EXISTS `cart` (
